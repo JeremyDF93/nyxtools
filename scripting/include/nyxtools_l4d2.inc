@@ -8,6 +8,15 @@
 #define L4D2_TEAM_SURVIVOR    2
 #define L4D2_TEAM_INFECTED    3
 
+/***
+ *        ______                          
+ *       / ____/___  __  ______ ___  _____
+ *      / __/ / __ \/ / / / __ `__ \/ ___/
+ *     / /___/ / / / /_/ / / / / / (__  ) 
+ *    /_____/_/ /_/\__,_/_/ /_/ /_/____/  
+ *                                        
+ */
+
 // Smoker = 1, Boomer = 2, Hunter = 3, Spitter = 4, Jockey = 5, 
 // Charger = 6, Witch = 7, Tank = 8, Survivor = 9
 enum L4D2ClassType {
@@ -29,6 +38,15 @@ enum L4D2Team {
   L4D2Team_Survivor = L4D2_TEAM_SURVIVOR,
   L4D2Team_Infected = L4D2_TEAM_INFECTED
 }
+
+/***
+ *        _   __      __  _                
+ *       / | / /___ _/ /_(_)   _____  _____
+ *      /  |/ / __ `/ __/ / | / / _ \/ ___/
+ *     / /|  / /_/ / /_/ /| |/ /  __(__  ) 
+ *    /_/ |_/\__,_/\__/_/ |___/\___/____/  
+ *                                         
+ */
 
 native void L4D2_RespawnPlayer(int client);
 native void L4D2_TakeOverBot(int client, bool flag=true);
@@ -53,6 +71,15 @@ public __pl_nyxtools_l4d2_SetNTVOptional() {
   MarkNativeAsOptional("L4D2_ChangeTeam");
 }
 #endif
+
+/***
+ *        ______                 __  _                 
+ *       / ____/_  ______  _____/ /_(_)___  ____  _____
+ *      / /_  / / / / __ \/ ___/ __/ / __ \/ __ \/ ___/
+ *     / __/ / /_/ / / / / /__/ /_/ / /_/ / / / (__  ) 
+ *    /_/    \__,_/_/ /_/\___/\__/_/\____/_/ /_/____/  
+ *                                                     
+ */
 
 stock bool IsPlayerSurvivor(int client) {
   if (!IsValidClient(client)) return false;

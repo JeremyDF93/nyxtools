@@ -10,6 +10,42 @@
 #define TF_TEAM_RED         2
 #define TF_TEAM_BLUE        3
 
+/***
+ *        _   __      __  _                
+ *       / | / /___ _/ /_(_)   _____  _____
+ *      /  |/ / __ `/ __/ / | / / _ \/ ___/
+ *     / /|  / /_/ / /_/ /| |/ /  __(__  ) 
+ *    /_/ |_/\__,_/\__/_/ |___/\___/____/  
+ *                                         
+ */
+
+native void TF2_RemoveAllObjects(int client, bool flag=true);
+
+public SharedPlugin:__pl_nyxtools_tf2 = {
+  name = "nyxtools_tf2",
+  file = "nyxtools_tf2.smx",
+#if defined REQUIRE_PLUGIN
+  required = 1,
+#else
+  required = 0,
+#endif
+};
+
+#if !defined REQUIRE_PLUGIN
+public __pl_nyxtools_tf2_SetNTVOptional() {
+  MarkNativeAsOptional("TF2_RemoveAllObjects");
+}
+#endif
+
+/***
+ *        ______                 __  _                 
+ *       / ____/_  ______  _____/ /_(_)___  ____  _____
+ *      / /_  / / / / __ \/ ___/ __/ / __ \/ __ \/ ___/
+ *     / __/ / /_/ / / / / /__/ /_/ / /_/ / / / (__  ) 
+ *    /_/    \__,_/_/ /_/\___/\__/_/\____/_/ /_/____/  
+ *                                                     
+ */
+
 stock int TF2_GetPlayerCount(bool playing = false) {
   int playerCount = 0;
   for (int i = 1; i <= MaxClients; i++) {
@@ -113,7 +149,7 @@ stock int TF2_StringToSlot(char[] str) {
 
 stock int TF2_StringToTeam(char[] str) {
   if (strcmp(str, "unassigned", false) == 0) return TF_TEAM_UNASSIGNED;
-  if (strcmp(str, "spectate", false) == 0) return TF_TEAM_SPECTATOR;
+  if (strncmp(str, "spectate", 4, false) == 0) return TF_TEAM_SPECTATOR;
   if (strcmp(str, "red", false) == 0) return TF_TEAM_RED;
   if (strcmp(str, "blue", false) == 0) return TF_TEAM_BLUE;
 
@@ -141,4 +177,18 @@ stock void TF2_ClassToString(TFClassType class, char[] str, int maxlength) {
   if (class == TFClass_Spy) strcopy(str, maxlength, "spy");
   if (class == TFClass_Soldier) strcopy(str, maxlength, "soldier");
   if (class == TFClass_Engineer) strcopy(str, maxlength, "engineer");
+}
+
+stock TFClassType TF2_StringToClass(char[] str) {
+  if (strcmp(str, "scout", false) == 0) return TFClass_Scout;
+  if (strcmp(str, "sniper", false) == 0) return TFClass_Sniper;
+  if (strncmp(str, "demoman", 4, false) == 0) return TFClass_DemoMan;
+  if (strcmp(str, "medic", false) == 0) return TFClass_Medic;
+  if (strncmp(str, "heavyweapons", 5, false) == 0) return TFClass_Heavy;
+  if (strcmp(str, "pyro", false) == 0) return TFClass_Pyro;
+  if (strcmp(str, "spy", false) == 0) return TFClass_Spy;
+  if (strcmp(str, "soldier", false) == 0) return TFClass_Soldier;
+  if (strncmp(str, "engineer", 4, false) == 0) return TFClass_Engineer;
+
+  return TFClass_Unknown;
 }
