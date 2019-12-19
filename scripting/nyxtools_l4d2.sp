@@ -212,9 +212,9 @@ public Action ConCmd_ChangeTeam(int client, int args) {
   }
 
   if (team < 0 || team > 3) {
-		NyxMsgReply(client, "No team matchs '%s'", teamStr);
-		return Plugin_Handled;
-	}
+    NyxMsgReply(client, "No team matchs '%s'", teamStr);
+    return Plugin_Handled;
+  }
 
   for (int i = 0; i < target_count; i++) {
     L4D2_ChangeTeam(target_list[i], team);

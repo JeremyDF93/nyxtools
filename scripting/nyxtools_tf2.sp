@@ -131,9 +131,9 @@ public Action ConCmd_ChangeTeam(int client, int args) {
   }
 
   if (team < 0 || team > 3) {
-		NyxMsgReply(client, "No team matchs '%s'", teamStr);
-		return Plugin_Handled;
-	}
+    NyxMsgReply(client, "No team matchs '%s'", teamStr);
+    return Plugin_Handled;
+  }
 
   for (int i = 0; i < target_count; i++) {
     ChangeClientTeam(target_list[i], team);
@@ -172,9 +172,9 @@ public Action ConCmd_ChangeClass(int client, int args) {
   }
 
   if (class < 0 || class > 9) {
-		NyxMsgReply(client, "No class matchs '%s'", classStr);
-		return Plugin_Handled;
-	}
+    NyxMsgReply(client, "No class matchs '%s'", classStr);
+    return Plugin_Handled;
+  }
 
   for (int i = 0; i < target_count; i++) {
     ChangeClientTeam(target_list[i], class);
