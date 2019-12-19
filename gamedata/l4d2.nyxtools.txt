@@ -1,0 +1,29 @@
+"Games"
+{
+	"left4dead2"
+	{
+		"Signatures"
+		{
+			"CCSPlayer::RoundRespawn"
+			{
+				"library"			"server"
+				"linux"				"@_ZN9CCSPlayer12RoundRespawnEv"
+			}
+			"CTerrorPlayer::TakeOverBot"
+			{
+				"library"			"server"
+				"linux"				"@_ZN13CTerrorPlayer11TakeOverBotEb"
+			}
+			"SurvivorBot::SetHumanSpectator"
+			{
+				"library"			"server"
+				"linux"				"@_ZN11SurvivorBot17SetHumanSpectatorEP13CTerrorPlayer"
+			}
+			"CTerrorPlayer::ChangeTeam"
+			{
+				"library"			"server"
+				"linux"				"@_ZN13CTerrorPlayer10ChangeTeamEi"
+			}
+		}
+	}
+}
