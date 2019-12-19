@@ -53,7 +53,7 @@ public void OnPluginStart() {
 
   // game config
   g_hGameConf = LoadGameConfigFile("l4d2.nyxtools");
-  
+
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CCSPlayer::RoundRespawn");
   g_hSDKCall[SDK_RoundRespawn] = EndPrepSDKCall();
@@ -203,7 +203,19 @@ public Action ConCmd_ChangeTeam(int client, int args) {
     return Plugin_Handled;
   }
 
-  int team = GetCmdIntEx(2, 0, 3);
+  char teamStr[32];
+  GetCmdArg(2, teamStr, sizeof(teamStr));
+
+  int team;
+  if (StringToIntEx(teamStr, team) == 0) {
+    team = L4D2_StringToTeam(teamStr);
+  }
+
+  if (team < 0 || team > 3) {
+		NyxMsgReply(client, "No team matchs '%s'", teamStr);
+		return Plugin_Handled;
+	}
+
   for (int i = 0; i < target_count; i++) {
     L4D2_ChangeTeam(target_list[i], team);
     LogAction(client, target_list[i], "\"%L\" changed \"%L\" to team \"%d\"", client, target_list[i], team);
