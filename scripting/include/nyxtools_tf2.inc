@@ -35,6 +35,7 @@ public SharedPlugin:__pl_nyxtools_tf2 = {
 #if !defined REQUIRE_PLUGIN
 public __pl_nyxtools_tf2_SetNTVOptional() {
   MarkNativeAsOptional("TF2_RemoveAllObjects");
+  MarkNativeAsOptional("TF2_GetObjectCount");
 }
 #endif
 

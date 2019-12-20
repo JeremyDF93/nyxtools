@@ -18,7 +18,8 @@ public Plugin myinfo = {
 ///
 
 enum NyxSDK {
-  Handle:SDK_RemoveAllObjects
+  Handle:SDK_RemoveAllObjects,
+  Handle:SDK_GetObjectCount
 }
 
 ///
@@ -36,6 +37,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   RegPluginLibrary("nyxtools_tf2");
 
   CreateNative("TF2_RemoveAllObjects", Native_RemoveAllObjects);
+  CreateNative("TF2_GetObjectCount", Native_GetObjectCount);
 
   return APLRes_Success;
 }
@@ -56,6 +58,10 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTFPlayer::RemoveAllObjects");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_RemoveAllObjects] = EndPrepSDKCall();
+
+  StartPrepSDKCall(SDKCall_Player);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTFPlayer::GetObjectCount");
+  g_hSDKCall[SDK_GetObjectCount] = EndPrepSDKCall();
 }
 
 ///
@@ -70,6 +76,16 @@ public int Native_RemoveAllObjects(Handle plugin, int numArgs) {
   }
 
   SDKCall(g_hSDKCall[SDK_RemoveAllObjects], client, flag);
+  return 0;
+}
+
+public int Native_GetObjectCount(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  SDKCall(g_hSDKCall[SDK_GetObjectCount], client);
   return 0;
 }
 
