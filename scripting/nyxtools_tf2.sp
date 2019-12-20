@@ -46,8 +46,8 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_changeclass", ConCmd_ChangeClass, ADMFLAG_SLAY, "Usage: nyx_changeclass <#userid|name> <class>");
   RegAdminCmd("nyx_removeobjects", ConCmd_RemoveObjects, ADMFLAG_SLAY, "nyx_removeobjects <#userid|name>");
   RegAdminCmd("nyx_regen", ConCmd_Regenerate, ADMFLAG_SLAY, "nyx_regen <#userid|name>");
-  RegAdminCmd("nyx_addcond", ConCmd_AddCond, ADMFLAG_ROOT, "nyx_addcond <#userid|name> <cond>");
-  RegAdminCmd("nyx_removecond", ConCmd_RemoveCond, ADMFLAG_ROOT, "nyx_removecond <#userid|name> <cond>");
+  RegAdminCmd("nyx_addcond", ConCmd_AddCond, ADMFLAG_SLAY, "nyx_addcond <#userid|name> <cond>");
+  RegAdminCmd("nyx_removecond", ConCmd_RemoveCond, ADMFLAG_SLAY, "nyx_removecond <#userid|name> <cond>");
 
   // game config
   g_hGameConf = LoadGameConfigFile("tf2.nyxtools");
