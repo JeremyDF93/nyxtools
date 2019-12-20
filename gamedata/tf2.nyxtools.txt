@@ -1,19 +1,19 @@
 "Games"
 {
-	"tf"
-	{
-		"Signatures"
-		{
-			"CTFPlayer::GetObjectCount"
-			{
-				"library"			"server"
-				"linux"				"@_ZNK9CTFPlayer14GetObjectCountEv"
-			}
-			"CTFPlayer::RemoveAllObjects"
-			{
-				"library"			"server"
-				"linux"				"@_ZN9CTFPlayer16RemoveAllObjectsEb"
-			}
-		}
-	}
+  "tf"
+  {
+    "Signatures"
+    {
+      "CTFPlayer::GetObjectCount"
+      {
+        "library"			"server"
+        "linux"				"@_ZNK9CTFPlayer14GetObjectCountEv"
+      }
+      "CTFPlayer::RemoveAllObjects"
+      {
+        "library"			"server"
+        "linux"				"@_ZN9CTFPlayer16RemoveAllObjectsEb"
+      }
+    }
+  }
 }

@@ -272,6 +272,15 @@ stock void CopyVectors(float vec[3], float result[3]) {
   result[2] = vec[2];
 }
 
+stock void StringToVector(const char[] str, float vector[3]) {
+  char num[64][3];
+  ExplodeString(str, " ", num, 3, sizeof(num), false);
+
+  vector[0] = StringToFloat(num[0]);
+  vector[1] = StringToFloat(num[1]);
+  vector[2] = StringToFloat(num[2]);
+}
+
 stock void SayText2(int client, int from, char[] msg) {
   char buffer[256];
   Format(buffer, sizeof(buffer), "\x01%s", msg);

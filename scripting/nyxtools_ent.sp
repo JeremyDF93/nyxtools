@@ -294,8 +294,9 @@ void WriteEntProp(int entity, const char[] prop, int client, const char[] value)
       NyxMsgReply(client, "'%s' is read only!", prop);
     }
     case PropField_Vector: {
-      //SetEntDataVector(entity, offset, vec);
-      NyxMsgReply(client, "TODO: Vectors");
+      float vec[3];
+      StringToVector(value, vec);
+      SetEntDataVector(entity, offset, vec);
     }
     case PropField_Float: {
       SetEntDataFloat(entity, offset, StringToFloat(value), true);
