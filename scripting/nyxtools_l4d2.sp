@@ -122,17 +122,17 @@ public int Native_TakeOverBot(Handle plugin, int numArgs) {
 }
 
 public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
-  int client = GetNativeCell(1);
-  int target = GetNativeCell(2);
+  int bot = GetNativeCell(1);
+  int client = GetNativeCell(2);
   if (!IsValidClient(client)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
-  if (!IsValidClient(target)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid target index (%d)", target);
+  if (!IsValidClient(bot)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid target index (%d)", target);
 
-  int survivorCharacter = GetEntProp(target, Prop_Send, "m_survivorCharacter");
-  int modelIndex = GetEntProp(target, Prop_Data, "m_nModelIndex");
+  int survivorCharacter = GetEntProp(bot, Prop_Send, "m_survivorCharacter");
+  int modelIndex = GetEntProp(bot, Prop_Data, "m_nModelIndex");
   SetEntProp(client, Prop_Send, "m_survivorCharacter", survivorCharacter);
   SetEntProp(client, Prop_Data, "m_nModelIndex", modelIndex);
 
-  SDKCall(g_hSDKCall[SDK_RoundRespawn], target, client);
+  SDKCall(g_hSDKCall[SDK_RoundRespawn], bot, client);
   return 0;
 }
 

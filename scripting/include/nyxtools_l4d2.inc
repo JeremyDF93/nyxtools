@@ -50,7 +50,7 @@ enum L4D2Team {
 
 native void L4D2_RespawnPlayer(int client);
 native void L4D2_TakeOverBot(int client, bool flag=true);
-native void L4D2_SetHumanSpectator(int client, int target);
+native void L4D2_SetHumanSpectator(int bot, int client);
 native void L4D2_ChangeTeam(int client, int team);
 
 public SharedPlugin:__pl_nyxtools_l4d2 = {
