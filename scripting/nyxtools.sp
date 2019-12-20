@@ -22,6 +22,8 @@ public Plugin myinfo = {
  */
 
 public void OnPluginStart() {
+  LoadTranslations("common.phrases");
+  
   RegAdminCmd("nyx_sendcvar", ConCmd_SendConVar, ADMFLAG_ROOT, "nyx_sendcvar <#userid|name> <convar> <value>");
   RegAdminCmd("nyx_querycvar", ConCmd_QueryConVar, ADMFLAG_ROOT, "nyx_querycvar <#userid|name> <convar>");
   RegAdminCmd("nyx_connectmethod", ConCmd_ConnectMethod, ADMFLAG_ROOT, "nyx_connectmethod");
