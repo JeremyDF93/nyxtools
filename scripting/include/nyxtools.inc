@@ -115,8 +115,8 @@ stock void NyxMsgAdmin(char[] format, any ...) {
   VFormat(buffer, sizeof(buffer), format, 2);
 
   for (int i = 1; i <= MaxClients; i++) {
-    if (IsValidClient(i, true)) continue;
-    if (IsClientAdmin(i)) continue;
+    if (!IsValidClient(i, true)) continue;
+    if (!IsClientAdmin(i)) continue;
 
     PrintToChat(i, "[%s] %s", NYX_PLUGIN_NAME, buffer);
     PrintToConsole(i, "[%s] %s", NYX_PLUGIN_NAME, buffer);
