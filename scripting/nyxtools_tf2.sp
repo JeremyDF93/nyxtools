@@ -44,6 +44,10 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_respawn", ConCmd_Respawn, ADMFLAG_SLAY, "Usage: nyx_respawn <#userid|name>");
   RegAdminCmd("nyx_changeteam", ConCmd_ChangeTeam, ADMFLAG_SLAY, "Usage: nyx_changeteam <#userid|name> <team>");
   RegAdminCmd("nyx_changeclass", ConCmd_ChangeClass, ADMFLAG_SLAY, "Usage: nyx_changeclass <#userid|name> <class>");
+  RegAdminCmd("nyx_removeobjects", ConCmd_RemoveObjects, ADMFLAG_SLAY, "nyx_removeobjects <#userid|name>");
+  RegAdminCmd("nyx_regen", ConCmd_Regenerate, ADMFLAG_SLAY, "nyx_regen <#userid|name>");
+  RegAdminCmd("nyx_addcond", ConCmd_AddCond, ADMFLAG_ROOT, "nyx_addcond <#userid|name> <cond>");
+  RegAdminCmd("nyx_removecond", ConCmd_RemoveCond, ADMFLAG_ROOT, "nyx_removecond <#userid|name> <cond>");
 
   // game config
   g_hGameConf = LoadGameConfigFile("tf2.nyxtools");
@@ -103,7 +107,7 @@ public Action ConCmd_Respawn(int client, int args) {
 }
 
 public Action ConCmd_ChangeTeam(int client, int args) {
-  if (args < 1) {
+  if (args < 2) {
     NyxMsgReply(client, "Usage: nyx_changeteam <#userid|name> <team>");
     return Plugin_Handled;
   }
@@ -144,7 +148,7 @@ public Action ConCmd_ChangeTeam(int client, int args) {
   return Plugin_Handled;
 }
 public Action ConCmd_ChangeClass(int client, int args) {
-  if (args < 1) {
+  if (args < 2) {
     NyxMsgReply(client, "Usage: nyx_changeclass <#userid|name> <class>");
     return Plugin_Handled;
   }
@@ -177,10 +181,136 @@ public Action ConCmd_ChangeClass(int client, int args) {
   }
 
   for (int i = 0; i < target_count; i++) {
-    ChangeClientTeam(target_list[i], class);
+    TF2_RemoveAllWearables(target_list[i]); // fixes multi-class cosmetics staying on as the previous class
+    TF2_SetPlayerClass(target_list[i], view_as<TFClassType>(class));
+
+    // we have to regenerate health because manually changing classes keeps the old health for some reason
+    if (IsPlayerAlive(target_list[i])) {
+      SetEntityHealth(target_list[i], 25);
+      TF2_RegeneratePlayer(target_list[i]);
+    }
+    
     LogAction(client, target_list[i], "\"%L\" changed \"%L\" to class \"%s\"", client, target_list[i], classStr);
   }
   NyxAct(client, "Changed %s to class %s", target_name, classStr);
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_RemoveObjects(int client, int args) {
+  if (args < 1) {
+    NyxMsgReply(client, "Usage: nyx_removeobjects <#userid|name>");
+    return Plugin_Handled;
+  }
+
+  char target[MAX_NAME_LENGTH];
+  GetCmdArg(1, target, sizeof(target));
+
+  char target_name[MAX_TARGET_LENGTH];
+  int target_list[MAXPLAYERS], target_count;
+  bool tn_is_ml;
+
+  if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
+      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+  {
+    ReplyToTargetError(client, target_count);
+    return Plugin_Handled;
+  }
+
+  for (int i = 0; i < target_count; i++) {
+    TF2_RemoveAllObjects(target_list[i]);
+    LogAction(client, target_list[i], "\"%L\" removed all objects for \"%L\"", client, target_list[i]);
+  }
+  NyxAct(client, "Removed all objects for %s", target_name);
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_Regenerate(int client, int args) {
+  if (args < 1) {
+    NyxMsgReply(client, "Usage: nyx_regen <#userid|name>");
+    return Plugin_Handled;
+  }
+
+  char target[MAX_NAME_LENGTH];
+  GetCmdArg(1, target, sizeof(target));
+
+  char target_name[MAX_TARGET_LENGTH];
+  int target_list[MAXPLAYERS], target_count;
+  bool tn_is_ml;
+
+  if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
+      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+  {
+    ReplyToTargetError(client, target_count);
+    return Plugin_Handled;
+  }
+
+  for (int i = 0; i < target_count; i++) {
+    TF2_RegeneratePlayer(target_list[i]);
+    LogAction(client, target_list[i], "\"%L\" regenerated \"%L\"", client, target_list[i]);
+  }
+  NyxAct(client, "Regenerated %s", target_name);
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_AddCond(int client, int args) {
+  if (args < 2) {
+    NyxMsgReply(client, "Usage: nyx_addcond <#userid|name> <cond>");
+    return Plugin_Handled;
+  }
+
+  char target[MAX_NAME_LENGTH];
+  GetCmdArg(1, target, sizeof(target));
+
+  char target_name[MAX_TARGET_LENGTH];
+  int target_list[MAXPLAYERS], target_count;
+  bool tn_is_ml;
+
+  if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
+      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+  {
+    ReplyToTargetError(client, target_count);
+    return Plugin_Handled;
+  }
+
+  int cond = GetCmdInt(2);
+  for (int i = 0; i < target_count; i++) {
+    TF2_AddCondition(target_list[i], view_as<TFCond>(cond));
+    LogAction(client, target_list[i], "\"%L\" regenerated \"%L\"", client, target_list[i]);
+  }
+  NyxAct(client, "Regenerated %s", target_name);
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_RemoveCond(int client, int args) {
+  if (args < 2) {
+    NyxMsgReply(client, "Usage: nyx_removecond <#userid|name> <cond>");
+    return Plugin_Handled;
+  }
+
+  char target[MAX_NAME_LENGTH];
+  GetCmdArg(1, target, sizeof(target));
+
+  char target_name[MAX_TARGET_LENGTH];
+  int target_list[MAXPLAYERS], target_count;
+  bool tn_is_ml;
+
+  if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
+      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+  {
+    ReplyToTargetError(client, target_count);
+    return Plugin_Handled;
+  }
+
+  int cond = GetCmdInt(2);
+  for (int i = 0; i < target_count; i++) {
+    TF2_RemoveCondition(target_list[i], view_as<TFCond>(cond));
+    LogAction(client, target_list[i], "\"%L\" regenerated \"%L\"", client, target_list[i]);
+  }
+  NyxAct(client, "Regenerated %s", target_name);
 
   return Plugin_Handled;
 }

@@ -184,7 +184,7 @@ public Action ConCmd_TakeOverBot(int client, int args) {
 }
 
 public Action ConCmd_ChangeTeam(int client, int args) {
-  if (args < 1) {
+  if (args < 2) {
     NyxMsgReply(client, "Usage: nyx_changeteam <#userid|name> <team>");
     return Plugin_Handled;
   }

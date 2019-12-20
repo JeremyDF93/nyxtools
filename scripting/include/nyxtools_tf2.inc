@@ -4,6 +4,7 @@
 #define _nyxtools_tf2_included_
 
 #include <tf2>
+#include <tf2_stocks>
 
 #define TF_TEAM_UNASSIGNED  0
 #define TF_TEAM_SPECTATOR   1
@@ -62,7 +63,7 @@ stock int TF2_GetPlayerCount(bool playing = false) {
   return playerCount;
 }
 
-stock void TF2_ChangeClientTeam(int client, int team, bool respawn = true) {
+stock void TF2_ChangeClientTeamEx(int client, int team, bool respawn = true) {
   int lifeState = GetEntProp(client, Prop_Send, "m_lifeState");
   SetEntProp(client, Prop_Send, "m_lifeState", 2);
   ChangeClientTeam(client, team);
