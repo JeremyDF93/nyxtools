@@ -8,7 +8,7 @@
 public Plugin myinfo = {
   name = "NyxTools - L4D2",
   author = "JeremyDF93",
-  description = "",
+  description = "General set of L4D2 tools",
   version = "1.0",
   url = "https://praisethemoon.com/"
 };

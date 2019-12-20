@@ -7,7 +7,7 @@
 public Plugin myinfo = {
   name = "NyxTools",
   author = "JeremyDF93",
-  description = "",
+  description = "General set of source engine tools",
   version = "1.0",
   url = "https://praisethemoon.com/"
 };
