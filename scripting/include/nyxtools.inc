@@ -55,6 +55,15 @@
 #define SOLID_CUSTOM   5 // Always call into the entity for tests
 #define SOLID_VPHYSICS 6 // solid vphysics object, get vcollide from the model and collide with that
 
+/***
+ *       _________            __     ________              __       
+ *      / ____/ (_)__  ____  / /_   / ____/ /_  ___  _____/ /_______
+ *     / /   / / / _ \/ __ \/ __/  / /   / __ \/ _ \/ ___/ //_/ ___/
+ *    / /___/ / /  __/ / / / /_   / /___/ / / /  __/ /__/ ,< (__  ) 
+ *    \____/_/_/\___/_/ /_/\__/   \____/_/ /_/\___/\___/_/|_/____/  
+ *                                                                  
+ */
+
 stock bool IsValidClient(int client, bool filterBots = false, bool filterReplay = true, bool filterSourceTV = true) {
   if (client <= 0 || client > MaxClients) return false;
   if (!IsClientInGame(client)) return false;
@@ -68,6 +77,15 @@ stock bool IsValidClient(int client, bool filterBots = false, bool filterReplay 
 stock bool IsClientAdmin(int client, int flags = ADMFLAG_GENERIC) {
   return (GetUserFlagBits(client) & flags) > 0 || (GetUserFlagBits(client) & ADMFLAG_ROOT) > 0;
 }
+
+/***
+ *        __  ___                                    
+ *       /  |/  /__  ______________ _____ ____  _____
+ *      / /|_/ / _ \/ ___/ ___/ __ `/ __ `/ _ \/ ___/
+ *     / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  ) 
+ *    /_/  /_/\___/____/____/\__,_/\__, /\___/____/  
+ *                                /____/             
+ */
 
 stock void NyxMsg(char[] format, any ...) {
   char buffer[256];
@@ -148,6 +166,29 @@ stock void NyxAct(int client, char[] format, any ...) {
   ShowActivity2(client, prefix, "%s", buffer);
 }
 
+stock void SayText2(int client, int from, char[] msg) {
+  char buffer[256];
+  Format(buffer, sizeof(buffer), "\x01%s", msg);
+
+  Handle hBf;
+  hBf = StartMessageOne("SayText2", client);
+  if (hBf != null) {
+    BfWriteByte(hBf, from); 
+    BfWriteByte(hBf, 0); 
+    BfWriteString(hBf, msg);
+    EndMessage();
+  }
+}
+
+/***
+ *       ______                                          __   __  __     __                    
+ *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /  / / / /__  / /___  ___  __________
+ *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  /  / /_/ / _ \/ / __ \/ _ \/ ___/ ___/
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ /  / __  /  __/ / /_/ /  __/ /  (__  ) 
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/  /_/ /_/\___/_/ .___/\___/_/  /____/  
+ *                                                                    /_/                      
+ */
+
 stock int GetCmdTarget(int argnum, int client, bool nobots = false, bool immunity = true) {
   char target[MAX_TARGET_LENGTH];
   GetCmdArg(argnum, target, sizeof(target));
@@ -202,28 +243,14 @@ stock float GetCmdFloatEx(int argnum, float min, float max, float def = 0.0) {
   return result;
 }
 
-stock any MathMin(any x, any y) {
-  if (x < y) return x;
-
-  return y;
-}
-
-stock any MathMax(any x, any y) {
-  if (x > y) return x;
-
-  return y;
-}
-
-stock void ShowURLPanel(int client, const char[] title, const char[] url, bool show = true) {
-  Handle kv = CreateKeyValues("data");
-  KvSetString(kv, "title", title);
-  KvSetNum(kv, "type", MOTDPANEL_TYPE_URL);
-  KvSetString(kv, "msg", url);
-  KvSetNum(kv, "customsvr", 1);
-
-  ShowVGUIPanel(client, "info", kv, show);
-  CloseHandle(kv);
-}
+/***
+ *        ____                 ______                _            
+ *       / __ \____ ___  __   /_  __/________ ______(_)___  ____ _
+ *      / /_/ / __ `/ / / /    / / / ___/ __ `/ ___/ / __ \/ __ `/
+ *     / _, _/ /_/ / /_/ /    / / / /  / /_/ / /__/ / / / / /_/ / 
+ *    /_/ |_|\__,_/\__, /    /_/ /_/   \__,_/\___/_/_/ /_/\__, /  
+ *                /____/                                 /____/   
+ */
 
 stock bool GetClientAimPos(int client, float vec[3], int mask = MASK_ALL) {
   float origin[3], angles[3];
@@ -261,10 +288,49 @@ public bool TraceEntityFilter_Players(int entity, int contentsMask) {
   return entity > MaxClients;
 }
 
+/***
+ *        ______      __  _ __  _          
+ *       / ____/___  / /_(_) /_(_)__  _____
+ *      / __/ / __ \/ __/ / __/ / _ \/ ___/
+ *     / /___/ / / / /_/ / /_/ /  __(__  ) 
+ *    /_____/_/ /_/\__/_/\__/_/\___/____/  
+ *                                         
+ */
+
 stock int FindEntityByClassnameSafe(int startEnt, const char[] classname) {
   while (startEnt > -1 && !IsValidEntity(startEnt)) startEnt--;
   return FindEntityByClassname(startEnt, classname);
 }
+
+/***
+ *        __  ___      __  __  
+ *       /  |/  /___ _/ /_/ /_ 
+ *      / /|_/ / __ `/ __/ __ \
+ *     / /  / / /_/ / /_/ / / /
+ *    /_/  /_/\__,_/\__/_/ /_/ 
+ *                             
+ */
+
+stock any MathMin(any x, any y) {
+  if (x < y) return x;
+
+  return y;
+}
+
+stock any MathMax(any x, any y) {
+  if (x > y) return x;
+
+  return y;
+}
+
+/***
+ *     _    __          __                 
+ *    | |  / /__  _____/ /_____  __________
+ *    | | / / _ \/ ___/ __/ __ \/ ___/ ___/
+ *    | |/ /  __/ /__/ /_/ /_/ / /  (__  ) 
+ *    |___/\___/\___/\__/\____/_/  /____/  
+ *                                         
+ */
 
 stock void CopyVectors(float vec[3], float result[3]) {
   result[0] = vec[0];
@@ -281,16 +347,22 @@ stock void StringToVector(const char[] str, float vector[3]) {
   vector[2] = StringToFloat(num[2]);
 }
 
-stock void SayText2(int client, int from, char[] msg) {
-  char buffer[256];
-  Format(buffer, sizeof(buffer), "\x01%s", msg);
+/***
+ *        __  ____          
+ *       /  |/  (_)_________
+ *      / /|_/ / / ___/ ___/
+ *     / /  / / (__  ) /__  
+ *    /_/  /_/_/____/\___/  
+ *                          
+ */
 
-  Handle hBf;
-  hBf = StartMessageOne("SayText2", client);
-  if (hBf != null) {
-    BfWriteByte(hBf, from); 
-    BfWriteByte(hBf, 0); 
-    BfWriteString(hBf, msg);
-    EndMessage();
-  }
+stock void ShowURLPanel(int client, const char[] title, const char[] url, bool show = true) {
+  Handle kv = CreateKeyValues("data");
+  KvSetString(kv, "title", title);
+  KvSetNum(kv, "type", MOTDPANEL_TYPE_URL);
+  KvSetString(kv, "msg", url);
+  KvSetNum(kv, "customsvr", 1);
+
+  ShowVGUIPanel(client, "info", kv, show);
+  CloseHandle(kv);
 }
