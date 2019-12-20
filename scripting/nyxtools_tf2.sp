@@ -107,8 +107,7 @@ public int Native_GetObjectCount(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  SDKCall(g_hSDKCall[SDK_GetObjectCount], client);
-  return 0;
+  return SDKCall(g_hSDKCall[SDK_GetObjectCount], client);
 }
 
 /***
