@@ -13,25 +13,40 @@ public Plugin myinfo = {
   url = "https://praisethemoon.com/"
 };
 
-///
-/// enums
-///
+/***
+ *        ______                          
+ *       / ____/___  __  ______ ___  _____
+ *      / __/ / __ \/ / / / __ `__ \/ ___/
+ *     / /___/ / / / /_/ / / / / / (__  ) 
+ *    /_____/_/ /_/\__,_/_/ /_/ /_/____/  
+ *                                        
+ */
 
 enum NyxSDK {
   Handle:SDK_RemoveAllObjects,
   Handle:SDK_GetObjectCount
 }
 
-///
-/// Globals
-///
+/***
+ *       ________      __          __    
+ *      / ____/ /___  / /_  ____ _/ /____
+ *     / / __/ / __ \/ __ \/ __ `/ / ___/
+ *    / /_/ / / /_/ / /_/ / /_/ / (__  ) 
+ *    \____/_/\____/_.___/\__,_/_/____/  
+ *                                       
+ */
 
 Handle g_hGameConf;
 Handle g_hSDKCall[NyxSDK];
 
-///
-/// Plugin Interface
-///
+/***
+ *        ____  __            _          ____      __            ____              
+ *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________ 
+ *      / /_/ / / / / / __ `/ / __ \    / // __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
+ *     / ____/ / /_/ / /_/ / / / / /  _/ // / / / /_/  __/ /  / __/ /_/ / /__/  __/
+ *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/ 
+ *                  /____/                                                         
+ */
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
   RegPluginLibrary("nyxtools_tf2");
@@ -44,7 +59,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart() {
   LoadTranslations("common.phrases");
-  
+
   RegAdminCmd("nyx_respawn", ConCmd_Respawn, ADMFLAG_SLAY, "Usage: nyx_respawn <#userid|name>");
   RegAdminCmd("nyx_changeteam", ConCmd_ChangeTeam, ADMFLAG_SLAY, "Usage: nyx_changeteam <#userid|name> <team>");
   RegAdminCmd("nyx_changeclass", ConCmd_ChangeClass, ADMFLAG_SLAY, "Usage: nyx_changeclass <#userid|name> <class>");
@@ -66,9 +81,14 @@ public void OnPluginStart() {
   g_hSDKCall[SDK_GetObjectCount] = EndPrepSDKCall();
 }
 
-///
-/// Natives
-///
+/***
+ *        _   __      __  _                
+ *       / | / /___ _/ /_(_)   _____  _____
+ *      /  |/ / __ `/ __/ / | / / _ \/ ___/
+ *     / /|  / /_/ / /_/ /| |/ /  __(__  ) 
+ *    /_/ |_/\__,_/\__/_/ |___/\___/____/  
+ *                                         
+ */
 
 public int Native_RemoveAllObjects(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
@@ -91,9 +111,14 @@ public int Native_GetObjectCount(Handle plugin, int numArgs) {
   return 0;
 }
 
-///
-/// Commands
-///
+/***
+ *       ______                                          __    
+ *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /____
+ *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  / ___/
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  ) 
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/  
+ *                                                             
+ */
 
 public Action ConCmd_Respawn(int client, int args) {
   if (args < 1) {

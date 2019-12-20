@@ -12,13 +12,18 @@ public Plugin myinfo = {
   url = "https://praisethemoon.com/"
 };
 
-///
-/// Plugin Interface
-///
+/***
+ *        ____  __            _          ____      __            ____              
+ *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________ 
+ *      / /_/ / / / / / __ `/ / __ \    / // __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
+ *     / ____/ / /_/ / /_/ / / / / /  _/ // / / / /_/  __/ /  / __/ /_/ / /__/  __/
+ *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/ 
+ *                  /____/                                                         
+ */
 
 public void OnPluginStart() {
   LoadTranslations("common.phrases");
-  
+
   RegAdminCmd("nyx_entprop_class", ConCmd_EntPropClass, ADMFLAG_ROOT, "nyx_entprop_class <classname> <prop> [value]");
   RegAdminCmd("nyx_entfire_class", ConCmd_EntFireClass, ADMFLAG_ROOT, "nyx_entfire_class <classname> <input> [value]");
   RegAdminCmd("nyx_entprop_aim", ConCmd_EntPropAim, ADMFLAG_ROOT, "nyx_entprop_aim <prop> [value]");
@@ -28,9 +33,14 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_entprop_weapon", ConCmd_EntPropWeapon, ADMFLAG_ROOT, "nyx_entprop_weapon <#userid|name> <slot> <prop> [value]");
 }
 
-///
-/// Commands
-///
+/***
+ *       ______                                          __    
+ *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /____
+ *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  / ___/
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  ) 
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/  
+ *                                                             
+ */
 
 public Action ConCmd_EntPropClass(int client, int args) {
   if (args < 2) {
@@ -249,9 +259,14 @@ public Action ConCmd_EntPropWeapon(int client, int args) {
   return Plugin_Handled;
 }
 
-///
-/// Functions
-///
+/***
+ *        ______                 __  _                 
+ *       / ____/_  ______  _____/ /_(_)___  ____  _____
+ *      / /_  / / / / __ \/ ___/ __/ / __ \/ __ \/ ___/
+ *     / __/ / /_/ / / / / /__/ /_/ / /_/ / / / (__  ) 
+ *    /_/    \__,_/_/ /_/\___/\__/_/\____/_/ /_/____/  
+ *                                                     
+ */
 
 int GetEntDataOffs(int entity, const char[] prop, PropFieldType &type) {
   int offset = -1;
