@@ -29,7 +29,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_connectmethod", ConCmd_ConnectMethod, ADMFLAG_ROOT, "nyx_connectmethod");
   RegAdminCmd("nyx_fakecmd", ConCmd_FakeCmd, ADMFLAG_ROOT, "nyx_fakecmd <#userid|name> <cmd>");
   RegAdminCmd("nyx_showurl", ConCmd_ShowURL, ADMFLAG_ROOT, "nyx_showurl <#userid|name> <url> [show]");
-  RegAdminCmd("nyx_tele", ConCmd_Teleport, ADMFLAG_ROOT, "nyx_tele <#userid|name> [stack]");
+  RegAdminCmd("nyx_tele", ConCmd_Teleport, ADMFLAG_SLAY, "nyx_tele <#userid|name> [stack]");
 }
 
 /***
