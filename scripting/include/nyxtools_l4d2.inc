@@ -126,7 +126,7 @@ stock bool IsPlayerIncapacitated(int client) {
   return false;
 }
 
-stock bool L4D2_IsClientPlaying(int client) {
+stock bool IsClientPlaying(int client) {
   if (!IsValidClient(client)) return false;
 
   int team = GetClientTeam(client);
@@ -136,7 +136,7 @@ stock bool L4D2_IsClientPlaying(int client) {
   return false;
 }
 
-stock int L4D2_GetPlayerCount(bool playing = false) {
+stock int GetPlayerCount(bool playing = false) {
   int playerCount = 0;
   for (int i = 1; i <= MaxClients; i++) {
     if (!IsValidClient(i, true)) continue;

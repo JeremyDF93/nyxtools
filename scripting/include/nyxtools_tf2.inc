@@ -49,7 +49,17 @@ public __pl_nyxtools_tf2_SetNTVOptional() {
  *                                                     
  */
 
-stock int TF2_GetPlayerCount(bool playing = false) {
+ stock bool IsClientPlaying(int client) {
+  if (!IsValidClient(client)) return false;
+
+  int team = GetClientTeam(client);
+  if (team == TF_TEAM_RED) return true;
+  if (team == TF_TEAM_BLUE) return true;
+
+  return false;
+}
+
+stock int GetPlayerCount(bool playing = false) {
   int playerCount = 0;
   for (int i = 1; i <= MaxClients; i++) {
     if (!IsValidClient(i, true)) continue;
