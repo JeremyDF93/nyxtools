@@ -17,6 +17,8 @@ public Plugin myinfo = {
 ///
 
 public void OnPluginStart() {
+  LoadTranslations("common.phrases");
+  
   RegAdminCmd("nyx_entprop_class", ConCmd_EntPropClass, ADMFLAG_ROOT, "nyx_entprop_class <classname> <prop> [value]");
   RegAdminCmd("nyx_entfire_class", ConCmd_EntFireClass, ADMFLAG_ROOT, "nyx_entfire_class <classname> <input> [value]");
   RegAdminCmd("nyx_entprop_aim", ConCmd_EntPropAim, ADMFLAG_ROOT, "nyx_entprop_aim <prop> [value]");

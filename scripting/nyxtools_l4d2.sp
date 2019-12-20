@@ -47,6 +47,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 }
 
 public void OnPluginStart() {
+  LoadTranslations("common.phrases");
+  
   RegAdminCmd("nyx_respawn", ConCmd_Respawn, ADMFLAG_SLAY, "Usage: nyx_respawn <#userid|name>");
   RegAdminCmd("nyx_takeoverbot", ConCmd_TakeOverBot, ADMFLAG_SLAY, "Usage: nyx_takeoverbot <#userid|name>");
   RegAdminCmd("nyx_changeteam", ConCmd_ChangeTeam, ADMFLAG_SLAY, "Usage: nyx_changeteam <#userid|name> <team>");
