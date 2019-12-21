@@ -142,8 +142,9 @@ stock int GetPlayerCount(bool playing = false) {
     if (!IsValidClient(i, true)) continue;
     if (playing) {
       int team = GetClientTeam(i);
-      if (team != L4D2_TEAM_SURVIVOR) continue;
-      if (team != L4D2_TEAM_INFECTED) continue;
+      if (team != L4D2_TEAM_SURVIVOR && team != L4D2_TEAM_INFECTED) {
+        continue;
+      }
     }
 
     playerCount++;

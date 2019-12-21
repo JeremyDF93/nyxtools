@@ -65,8 +65,9 @@ stock int GetPlayerCount(bool playing = false) {
     if (!IsValidClient(i, true)) continue;
     if (playing) {
       int team = GetClientTeam(i);
-      if (team != TF_TEAM_RED) continue;
-      if (team != TF_TEAM_BLUE) continue;
+      if (team != TF_TEAM_RED && team != TF_TEAM_BLUE) {
+        continue;
+      }
     }
 
     playerCount++;
