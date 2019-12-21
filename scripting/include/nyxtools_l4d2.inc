@@ -152,6 +152,15 @@ stock int GetPlayerCount(bool playing = false) {
   return playerCount;
 }
 
+/***
+ *        __   __ __  ____ ___ 
+ *       / /  / // / / __ \__ \
+ *      / /  / // /_/ / / /_/ /
+ *     / /__/__  __/ /_/ / __/ 
+ *    /_____/ /_/ /_____/____/ 
+ *                             
+ */
+
 stock L4D2ClassType L4D2_GetClassType(const char[] classname) {
   if (strcmp(classname, "boomer", false) == 0) return L4D2Class_Boomer;
   if (strcmp(classname, "smoker", false) == 0) return L4D2Class_Smoker;

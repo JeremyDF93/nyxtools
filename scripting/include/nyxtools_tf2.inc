@@ -75,6 +75,15 @@ stock int GetPlayerCount(bool playing = false) {
   return playerCount;
 }
 
+/***
+ *      _______________ 
+ *     /_  __/ ____/__ \
+ *      / / / /_   __/ /
+ *     / / / __/  / __/ 
+ *    /_/ /_/    /____/ 
+ *                      
+ */
+
 stock void TF2_ChangeClientTeamEx(int client, int team, bool respawn = true) {
   int lifeState = GetEntProp(client, Prop_Send, "m_lifeState");
   SetEntProp(client, Prop_Send, "m_lifeState", 2);
