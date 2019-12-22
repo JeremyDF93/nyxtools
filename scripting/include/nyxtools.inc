@@ -110,7 +110,7 @@ stock void NyxMsgClient(int client, char[] format, any ...) {
 
 stock void NyxMsgAll(char[] format, any ...) {
   char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 3);
+  VFormat(buffer, sizeof(buffer), format, 2);
 
   PrintToChatAll("[%s] %s", NYX_PLUGIN_NAME, buffer);
 }
@@ -243,6 +243,16 @@ stock float GetCmdFloatEx(int argnum, float min, float max, float def = 0.0) {
   return result;
 }
 
+stock void GetCmdVector(int argnum, float vec[3], float def[3]={ 0.0, 0.0, 0.0 }) {
+  char arg[64];
+  GetCmdArg(argnum, arg, sizeof(arg));
+
+  bool success = StringToVector(arg, vec);
+  if (!success) {
+    CopyVectors(def, vec);
+  }
+}
+
 /***
  *        ____                 ______                _            
  *       / __ \____ ___  __   /_  __/________ ______(_)___  ____ _
@@ -332,19 +342,24 @@ stock any MathMax(any x, any y) {
  *                                         
  */
 
-stock void CopyVectors(float vec[3], float result[3]) {
-  result[0] = vec[0];
-  result[1] = vec[1];
-  result[2] = vec[2];
+stock void CopyVectors(float vector[3], float copy[3]) {
+  copy[0] = vector[0];
+  copy[1] = vector[1];
+  copy[2] = vector[2];
 }
 
-stock void StringToVector(const char[] str, float vector[3]) {
+stock bool StringToVector(const char[] str, float vector[3]) {
   char num[64][3];
-  ExplodeString(str, " ", num, 3, sizeof(num), false);
+  int found = ExplodeString(str, " ", num, 3, sizeof(num), false);
+  if (found == 3) {
+    vector[0] = StringToFloat(num[0]);
+    vector[1] = StringToFloat(num[1]);
+    vector[2] = StringToFloat(num[2]);
 
-  vector[0] = StringToFloat(num[0]);
-  vector[1] = StringToFloat(num[1]);
-  vector[2] = StringToFloat(num[2]);
+    return true;
+  }
+
+  return false;
 }
 
 /***
