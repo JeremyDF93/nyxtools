@@ -40,8 +40,8 @@
 
 #include <sdktools>
 
-#if !defined NYX_PLUGIN_NAME
-  #define NYX_PLUGIN_NAME "Nyx"
+#if !defined NYX_PLUGIN_TAG
+  #define NYX_PLUGIN_TAG "Nyx"
 #endif
 
 #if !defined NYX_PLUGIN_VERSION
@@ -95,28 +95,28 @@ stock void NyxMsg(char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 2);
 
-  PrintToServer("[%s] %s", NYX_PLUGIN_NAME, buffer);
+  PrintToServer("[%s] %s", NYX_PLUGIN_TAG, buffer);
 }
 
 stock void NyxMsgReply(int client, char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
-  ReplyToCommand(client, "[%s] %s", NYX_PLUGIN_NAME, buffer);
+  ReplyToCommand(client, "[%s] %s", NYX_PLUGIN_TAG, buffer);
 }
 
 stock void NyxMsgClient(int client, char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
-  PrintToChat(client, "[%s] %s", NYX_PLUGIN_NAME, buffer);
+  PrintToChat(client, "[%s] %s", NYX_PLUGIN_TAG, buffer);
 }
 
 stock void NyxMsgAll(char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 2);
 
-  PrintToChatAll("[%s] %s", NYX_PLUGIN_NAME, buffer);
+  PrintToChatAll("[%s] %s", NYX_PLUGIN_TAG, buffer);
 }
 
 stock void NyxMsgTeam(int team, char[] format, any ...) {
@@ -127,8 +127,8 @@ stock void NyxMsgTeam(int team, char[] format, any ...) {
     if (!IsValidClient(i, true)) continue;
     if (GetClientTeam(i) != team) continue;
 
-    PrintToChat(i, "[%s] %s", NYX_PLUGIN_NAME, buffer);
-    PrintToConsole(i, "[%s] %s", NYX_PLUGIN_NAME, buffer);
+    PrintToChat(i, "[%s] %s", NYX_PLUGIN_TAG, buffer);
+    PrintToConsole(i, "[%s] %s", NYX_PLUGIN_TAG, buffer);
   }
 }
 
@@ -140,11 +140,11 @@ stock void NyxMsgAdmin(char[] format, any ...) {
     if (!IsValidClient(i, true)) continue;
     if (!IsClientAdmin(i)) continue;
 
-    PrintToChat(i, "[%s] %s", NYX_PLUGIN_NAME, buffer);
-    PrintToConsole(i, "[%s] %s", NYX_PLUGIN_NAME, buffer);
+    PrintToChat(i, "[%s] %s", NYX_PLUGIN_TAG, buffer);
+    PrintToConsole(i, "[%s] %s", NYX_PLUGIN_TAG, buffer);
   }
 
-  PrintToServer("[%s] %s", NYX_PLUGIN_NAME, buffer);
+  PrintToServer("[%s] %s", NYX_PLUGIN_TAG, buffer);
 }
 
 stock void NyxMsgDebug(char[] format, any ...) {
@@ -165,7 +165,7 @@ stock void NyxAct(int client, char[] format, any ...) {
   VFormat(buffer, sizeof(buffer), format, 3);
 
   char prefix[64];
-  FormatEx(prefix, sizeof(prefix), "[%s] ", NYX_PLUGIN_NAME);
+  FormatEx(prefix, sizeof(prefix), "[%s] ", NYX_PLUGIN_TAG);
 
   ShowActivity2(client, prefix, "%s", buffer);
 }
