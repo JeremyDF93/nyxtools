@@ -8,7 +8,7 @@ public Plugin myinfo = {
   name = "NyxTools - Event",
   author = "JeremyDF93",
   description = "Tool for viewing event values",
-  version = "1.0",
+  version = NYX_PLUGIN_VERSION,
   url = "https://praisethemoon.com/"
 };
 

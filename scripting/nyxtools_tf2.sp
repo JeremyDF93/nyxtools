@@ -9,7 +9,7 @@ public Plugin myinfo = {
   name = "NyxTools - TF2",
   author = "JeremyDF93",
   description = "General set of TF2 tools",
-  version = "1.0",
+  version = NYX_PLUGIN_VERSION,
   url = "https://praisethemoon.com/"
 };
 

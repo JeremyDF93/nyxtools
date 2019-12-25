@@ -8,7 +8,7 @@ public Plugin myinfo = {
   name = "NyxTools - Cheats",
   author = "JeremyDF93",
   description = "Allows admins to run cheat commands without setting sv_cheats",
-  version = "1.0",
+  version = NYX_PLUGIN_VERSION,
   url = "https://praisethemoon.com/"
 };
 

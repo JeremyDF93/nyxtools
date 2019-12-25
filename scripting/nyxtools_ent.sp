@@ -8,7 +8,7 @@ public Plugin myinfo = {
   name = "NyxTools - Entity",
   author = "JeremyDF93",
   description = "Entity data editing tools",
-  version = "1.0",
+  version = NYX_PLUGIN_VERSION,
   url = "https://praisethemoon.com/"
 };
 

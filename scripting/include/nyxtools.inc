@@ -43,6 +43,7 @@
 #if !defined NYX_PLUGIN_NAME
   #define NYX_PLUGIN_NAME "Nyx"
 #endif
+#define NYX_PLUGIN_VERSION "1.0.1"
 
 #define INT_MAX 2147483647
 #define INT_MIN -2147483648
