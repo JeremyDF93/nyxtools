@@ -26,7 +26,9 @@ enum NyxSDK {
   Handle:SDK_RoundRespawn,
   Handle:SDK_TakeOverBot,
   Handle:SDK_SetHumanSpectator,
-  Handle:SDK_ChangeTeam
+  Handle:SDK_ChangeTeam,
+  Handle:SDK_SetClass,
+  Handle:SDK_CreateAbility
 }
 
 /***
@@ -57,6 +59,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   CreateNative("L4D2_TakeOverBot", Native_TakeOverBot);
   CreateNative("L4D2_SetHumanSpectator", Native_SetHumanSpectator);
   CreateNative("L4D2_ChangeTeam", Native_ChangeTeam);
+  CreateNative("L4D2_SetInfectedClass", Native_SetInfectedClass);
 
   return APLRes_Success;
 }
@@ -67,6 +70,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_respawn", ConCmd_Respawn, ADMFLAG_SLAY, "Usage: nyx_respawn <#userid|name>");
   RegAdminCmd("nyx_takeoverbot", ConCmd_TakeOverBot, ADMFLAG_ROOT, "Usage: nyx_takeoverbot <#userid|name>");
   RegAdminCmd("nyx_changeteam", ConCmd_ChangeTeam, ADMFLAG_SLAY, "Usage: nyx_changeteam <#userid|name> <team>");
+  RegAdminCmd("nyx_changeclass", ConCmd_ChangeClass, ADMFLAG_SLAY, "Usage: nyx_changeclass <#userid|name> <class>");
 
   // game config
   g_hGameConf = LoadGameConfigFile("l4d2.nyxtools");
@@ -89,6 +93,17 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ChangeTeam");
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
   g_hSDKCall[SDK_ChangeTeam] = EndPrepSDKCall();
+
+  StartPrepSDKCall(SDKCall_Player);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::SetClass");
+  PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+  g_hSDKCall[SDK_SetClass] = EndPrepSDKCall();
+
+  StartPrepSDKCall(SDKCall_Static);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CBaseAbility::CreateForPlayer");
+  PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
+  PrepSDKCall_SetReturnInfo(SDKType_CBaseEntity, SDKPass_Pointer);
+  g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
 }
 
 /***
@@ -106,8 +121,7 @@ public int Native_RespawnPlayer(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  SDKCall(g_hSDKCall[SDK_RoundRespawn], client);
-  return 0;
+  return SDKCall(g_hSDKCall[SDK_RoundRespawn], client);
 }
 
 public int Native_TakeOverBot(Handle plugin, int numArgs) {
@@ -117,14 +131,13 @@ public int Native_TakeOverBot(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  SDKCall(g_hSDKCall[SDK_TakeOverBot], client, flag);
-  return 0;
+  return SDKCall(g_hSDKCall[SDK_TakeOverBot], client, flag);
 }
 
 public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
   int bot = GetNativeCell(1);
   int client = GetNativeCell(2);
-  if (!IsValidClient(bot)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
+  if (!IsValidClient(bot, true)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
   if (!IsValidClient(client)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
 
   int survivorCharacter = GetEntProp(bot, Prop_Send, "m_survivorCharacter");
@@ -132,8 +145,7 @@ public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
   SetEntProp(client, Prop_Send, "m_survivorCharacter", survivorCharacter);
   SetEntProp(client, Prop_Data, "m_nModelIndex", modelIndex);
 
-  SDKCall(g_hSDKCall[SDK_RoundRespawn], bot, client);
-  return 0;
+  return SDKCall(g_hSDKCall[SDK_RoundRespawn], bot, client);
 }
 
 public int Native_ChangeTeam(Handle plugin, int numArgs) {
@@ -143,8 +155,41 @@ public int Native_ChangeTeam(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  SDKCall(g_hSDKCall[SDK_ChangeTeam], client, team);
-  return 0;
+  return SDKCall(g_hSDKCall[SDK_ChangeTeam], client, team);
+}
+
+public int Native_SetInfectedClass(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  L4D2ClassType class = view_as<L4D2ClassType>(GetNativeCell(2));
+
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  } else if (!IsPlayerAlive(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Can only be used on alive players");
+  } else if (!IsPlayerInfected(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client team");
+  } else if (class == L4D2Class_Unknown || class == L4D2Class_Witch || class == L4D2Class_Survivor) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid or blocked class index (%d)", class);
+  }
+
+  int weapon = GetPlayerWeaponSlot(client, 0);
+  if (IsValidEdict(weapon)) {
+    RemovePlayerItem(client, weapon);
+    RemoveEdict(weapon);
+  }
+
+  SDKCall(g_hSDKCall[SDK_SetClass], client, class);
+
+  int customAbility = GetEntProp(client, Prop_Send, "m_customAbility");
+  if (customAbility != -1) {
+    AcceptEntityInput(MakeCompatEntRef(customAbility), "Kill");
+  }
+
+  int ent = SDKCall(g_hSDKCall[SDK_CreateAbility], client);
+  int offs = FindDataMapInfo(ent, "m_angRotation") + 12; // the offset we want is 12 bytes after 'm_angRotation'
+  SetEntProp(client, Prop_Send, "m_customAbility", GetEntData(ent, offs));
+
+  return true;
 }
 
 /***
@@ -248,6 +293,48 @@ public Action ConCmd_ChangeTeam(int client, int args) {
     LogAction(client, target_list[i], "\"%L\" changed \"%L\" to team \"%d\"", client, target_list[i], team);
   }
   NyxAct(client, "Changed %s to team %d", target_name, team);
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_ChangeClass(int client, int args) {
+  if (args < 2) {
+    NyxMsgReply(client, "Usage: nyx_changeclass <#userid|name> <class>");
+    return Plugin_Handled;
+  }
+
+  char target[MAX_NAME_LENGTH];
+  GetCmdArg(1, target, sizeof(target));
+
+  char target_name[MAX_TARGET_LENGTH];
+  int target_list[MAXPLAYERS], target_count;
+  bool tn_is_ml;
+
+  if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
+      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+  {
+    ReplyToTargetError(client, target_count);
+    return Plugin_Handled;
+  }
+
+  char classStr[32];
+  GetCmdArg(2, classStr, sizeof(classStr));
+
+  int class;
+  if (StringToIntEx(classStr, class) == 0) {
+    class = view_as<int>(L4D2_StringToClass(classStr));
+  }
+
+  if (class < 0 || class > 9) {
+    NyxMsgReply(client, "No class matchs '%s'", classStr);
+    return Plugin_Handled;
+  }
+
+  for (int i = 0; i < target_count; i++) {
+    L4D2_SetInfectedClass(target_list[i], view_as<L4D2ClassType>(class));
+    LogAction(client, target_list[i], "\"%L\" changed \"%L\" to class \"%s\"", client, target_list[i], classStr);
+  }
+  NyxAct(client, "Changed %s to class %s", target_name, classStr);
 
   return Plugin_Handled;
 }

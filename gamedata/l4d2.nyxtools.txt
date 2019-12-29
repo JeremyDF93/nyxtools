@@ -24,6 +24,16 @@
         "library"			"server"
         "linux"				"@_ZN13CTerrorPlayer10ChangeTeamEi"
       }
+      "CTerrorPlayer::SetClass"
+      {
+        "library"			"server"
+        "linux"				"@_ZN13CTerrorPlayer8SetClassE15ZombieClassType"
+      }
+      "CBaseAbility::CreateForPlayer"
+      {
+        "library"			"server"
+        "linux"				"@_ZN12CBaseAbility15CreateForPlayerEP13CTerrorPlayer"
+      }
     }
   }
 }

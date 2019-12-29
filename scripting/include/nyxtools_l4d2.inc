@@ -52,6 +52,7 @@ native void L4D2_RespawnPlayer(int client);
 native void L4D2_TakeOverBot(int client, bool flag=true);
 native void L4D2_SetHumanSpectator(int bot, int client);
 native void L4D2_ChangeTeam(int client, int team);
+native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
 
 public SharedPlugin:__pl_nyxtools_l4d2 = {
   name = "nyxtools_l4d2",
@@ -69,6 +70,7 @@ public __pl_nyxtools_l4d2_SetNTVOptional() {
   MarkNativeAsOptional("L4D2_TakeOverBot");
   MarkNativeAsOptional("L4D2_SetHumanSpectator");
   MarkNativeAsOptional("L4D2_ChangeTeam");
+  MarkNativeAsOptional("L4D2_SetInfectedClass");
 }
 #endif
 
@@ -162,7 +164,7 @@ stock int GetPlayerCount(bool playing = false) {
  *                             
  */
 
-stock L4D2ClassType L4D2_GetClassType(const char[] classname) {
+stock L4D2ClassType L4D2_StringToClass(const char[] classname) {
   if (strcmp(classname, "boomer", false) == 0) return L4D2Class_Boomer;
   if (strcmp(classname, "smoker", false) == 0) return L4D2Class_Smoker;
   if (strcmp(classname, "hunter", false) == 0) return L4D2Class_Hunter;
