@@ -311,7 +311,7 @@ public Action ConCmd_ChangeClass(int client, int args) {
   bool tn_is_ml;
 
   if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
-      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+      COMMAND_FILTER_CONNECTED|COMMAND_FILTER_ALIVE, target_name, sizeof(target_name), tn_is_ml)) <= 0)
   {
     ReplyToTargetError(client, target_count);
     return Plugin_Handled;
