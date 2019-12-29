@@ -39,6 +39,7 @@ nyx_respawn             admin        Usage: nyx_respawn <#userid|name>
 nyx_changeteam    admin        Usage: nyx_changeteam <#userid|name> <team>
 nyx_respawn       admin        Usage: nyx_respawn <#userid|name>
 nyx_takeoverbot   admin        Usage: nyx_takeoverbot <#userid|name>
+nyx_changeclass   admin        Usage: nyx_changeclass <#userid|name> <class>
 ```
 ### NyxTools - Event
 ```
