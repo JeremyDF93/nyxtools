@@ -8,7 +8,7 @@ Work in progress.
 void FakeClientCommandCheat(int client, const char[] fmt, any ...);
 bool HasCheatPermissions(int client);
 ```
-### NyxTools - L4D2
+### NyxTools - L4D2 (Linux Support Only)
 ```c
 void L4D2_RespawnPlayer(int client);
 void L4D2_TakeOverBot(int client, bool flag=true);
@@ -18,7 +18,7 @@ void L4D2_SetHumanSpectator(int bot, int client);
 void L4D2_ChangeTeam(int client, int team);
 void L4D2_SetInfectedClass(int client, L4D2ClassType class);
 ```
-### NyxTools - TF2
+### NyxTools - TF2 (Linux Support Only)
 ```c
 void TF2_RemoveAllObjects(int client, bool flag=true);
 int TF2_GetObjectCount(int client);
@@ -56,7 +56,7 @@ nyx_entprop_weapon    admin        Usage: nyx_entprop_weapon <#userid|name> <slo
 nyx_hookevent     admin        Usage: nyx_hookevent <event> <key> [mode]
 nyx_unhookevent   admin        Usage: nyx_unhookevent <event> [mode]
 ```
-### NyxTools - L4D2
+### NyxTools - L4D2 (Linux Support Only)
 ```
 [Name]            [Type]       [Help]
 nyx_changeclass   admin        Usage: nyx_changeclass <#userid|name> <class>
@@ -64,7 +64,7 @@ nyx_changeteam    admin        Usage: nyx_changeteam <#userid|name> <team>
 nyx_respawn       admin        Usage: nyx_respawn <#userid|name>
 nyx_takeoverbot   admin        Usage: nyx_takeoverbot <#userid|name>
 ```
-### NyxTools - TF2
+### NyxTools - TF2 (Linux Support Only)
 ```
 [Name]                  [Type]       [Help]
 nyx_addcond             admin        Usage: nyx_addcond <#userid|name> <cond>
