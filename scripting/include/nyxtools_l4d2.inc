@@ -70,6 +70,7 @@ public SharedPlugin:__pl_nyxtools_l4d2 = {
 public __pl_nyxtools_l4d2_SetNTVOptional() {
   MarkNativeAsOptional("L4D2_RespawnPlayer");
   MarkNativeAsOptional("L4D2_TakeOverBot");
+  MarkNativeAsOptional("L4D2_TakeOverZombieBot");
   MarkNativeAsOptional("L4D2_ReplaceWithBot");
   MarkNativeAsOptional("L4D2_SetHumanSpectator");
   MarkNativeAsOptional("L4D2_ChangeTeam");
