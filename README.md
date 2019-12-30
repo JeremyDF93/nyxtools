@@ -5,7 +5,7 @@ Work in progress.
 ## Natives
 ### NyxTools - Cheats
 ```c
-void FakeClientCommandCheat(int client, const char[] cmd, const char[] args);
+void FakeClientCommandCheat(int client, const char[] fmt, any ...);
 bool HasCheatPermissions(int client);
 ```
 ### NyxTools - L4D2
