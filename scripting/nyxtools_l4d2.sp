@@ -154,15 +154,10 @@ public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
 public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
   int bot = GetNativeCell(1);
   int client = GetNativeCell(2);
-  if (!IsValidClient(bot, true)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
+  if (!IsValidClient(bot) && !IsFakeClient(bot)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
   if (!IsValidClient(client)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
 
-  int survivorCharacter = GetEntProp(bot, Prop_Send, "m_survivorCharacter");
-  int modelIndex = GetEntProp(bot, Prop_Data, "m_nModelIndex");
-  SetEntProp(client, Prop_Send, "m_survivorCharacter", survivorCharacter);
-  SetEntProp(client, Prop_Data, "m_nModelIndex", modelIndex);
-
-  return SDKCall(g_hSDKCall[SDK_RoundRespawn], bot, client);
+  return SDKCall(g_hSDKCall[SDK_SetHumanSpectator], bot, client);
 }
 
 public int Native_ChangeTeam(Handle plugin, int numArgs) {
@@ -263,8 +258,14 @@ public Action ConCmd_TakeOverBot(int client, int args) {
     return Plugin_Handled;
   }
 
+  if (IsPlayerInfected(target)) {
+    NyxMsgReply(client, "Can't target the infected team", target);
+    return Plugin_Handled;
+  }
+
+  L4D2_ChangeTeam(client, L4D2_TEAM_SPECTATOR);
   L4D2_SetHumanSpectator(target, client);
-  L4D2_TakeOverBot(client, true);
+  L4D2_TakeOverBot(client);
 
   LogAction(client, target, "\"%L\" took over \"%L\"", client, target);
   NyxAct(client, "Taking over %N", target);

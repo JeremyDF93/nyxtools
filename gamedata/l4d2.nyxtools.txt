@@ -7,7 +7,7 @@
       "CCSPlayer::RoundRespawn"
       {
         "library"			"server"
-        "linux"				"@_ZN9CCSPlayer12RoundRespawnEv"
+        "linux"				"@_ZN13CTerrorPlayer12RoundRespawnEv"
       }
       "CTerrorPlayer::TakeOverBot"
       {
@@ -33,16 +33,6 @@
       {
         "library"			"server"
         "linux"				"@_ZN13CTerrorPlayer8SetClassE15ZombieClassType"
-      }
-      "CTerrorPlayer::SetPreSpawnClass"
-      {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer16SetPreSpawnClassE15ZombieClassType"
-      }
-      "CTerrorPlayer::SetCharacter"
-      {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer12SetCharacterE21SurvivorCharacterType"
       }
       "CBaseAbility::CreateForPlayer"
       {
