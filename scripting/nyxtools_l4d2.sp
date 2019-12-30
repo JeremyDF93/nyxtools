@@ -151,9 +151,12 @@ public int Native_TakeOverBot(Handle plugin, int numArgs) {
 public int Native_TakeOverZombieBot(Handle plugin, int numArgs) {
   int bot = GetNativeCell(1);
   int client = GetNativeCell(2);
+  if (!IsValidClient(bot) || !IsFakeClient(bot)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
+  }
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
-  }
+  } else 
 
   return SDKCall(g_hSDKCall[SDK_TakeOverZombieBot], client, bot);
 }
@@ -171,8 +174,12 @@ public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
 public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
   int bot = GetNativeCell(1);
   int client = GetNativeCell(2);
-  if (!IsValidClient(bot) && !IsFakeClient(bot)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
-  if (!IsValidClient(client)) return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  if (!IsValidClient(bot) || !IsFakeClient(bot)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
+  }
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
 
   return SDKCall(g_hSDKCall[SDK_SetHumanSpectator], bot, client);
 }
