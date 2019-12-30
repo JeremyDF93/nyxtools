@@ -1,5 +1,7 @@
 # NyxTools
 A collection of plugins to help make development easier and reduce repetitiveness.
+## Documentation
+Work in progress.
 ## Commands
 ### NyxTools
 ```
@@ -36,14 +38,21 @@ nyx_respawn             admin        Usage: nyx_respawn <#userid|name>
 ### NyxTools - L4D2
 ```
 [Name]            [Type]       [Help]
+nyx_changeclass   admin        Usage: nyx_changeclass <#userid|name> <class>
 nyx_changeteam    admin        Usage: nyx_changeteam <#userid|name> <team>
 nyx_respawn       admin        Usage: nyx_respawn <#userid|name>
 nyx_takeoverbot   admin        Usage: nyx_takeoverbot <#userid|name>
-nyx_changeclass   admin        Usage: nyx_changeclass <#userid|name> <class>
 ```
 ### NyxTools - Event
 ```
 [Name]            [Type]       [Help]
 nyx_hookevent     admin        Usage: nyx_hookevent <event> <key> [mode]
 nyx_unhookevent   admin        Usage: nyx_unhookevent <event> [mode]
+```
+## ConVars
+### NyxTools - Cheats
+```
+[Name]                           [Default]        [Help]
+nyx_cheats_override              z                Override flag required to execute cheat commands
+nyx_cheats_silent                1                Hide activity
 ```
