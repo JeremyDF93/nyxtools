@@ -53,6 +53,6 @@ nyx_unhookevent   admin        Usage: nyx_unhookevent <event> [mode]
 ### NyxTools - Cheats
 ```
 [Name]                           [Default]        [Help]
-nyx_cheats_override              z                Override flag required to execute cheat commands
-nyx_cheats_silent                1                Hide activity
+nyx_cheats_override              n                Override flag required to execute cheat commands
+nyx_cheats_notify                1                Hide activity
 ```
