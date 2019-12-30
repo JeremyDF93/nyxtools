@@ -72,6 +72,8 @@ public void OnPluginStart() {
     HookConVarChange(host_timescale, ConVarChanged_HostTimescale);
   }
 
+  RegAdminCmd("nyx_fakecmdc", ConCmd_FakeCmdCheat, ADMFLAG_CHEATS, "nyx_fakecmdc <#userid|name> <cmd>");
+
   HookCheatCommands();
 }
 
@@ -167,13 +169,50 @@ public void ConVarChanged_HostTimescale(ConVar convar, const char[] oldValue, co
  *                                                             
  */
 
+public Action ConCmd_FakeCmdCheat(int client, int args) {
+  if (args < 2) {
+    NyxMsgReply(client, "Usage: nyx_fakecmdc <#userid|name> <cmd>");
+    return Plugin_Handled;
+  }
+
+  char buffer[256], target[MAX_TARGET_LENGTH], cmd[128], cmdArgs[256];
+  GetCmdArgString(buffer, sizeof(buffer));
+  TrimString(buffer);
+
+  int len1 = BreakString(buffer, target, sizeof(target));
+  int len2 = BreakString(buffer[len1], cmd, sizeof(cmd));
+  strcopy(cmdArgs, sizeof(cmdArgs), buffer[len1 + len2]);
+  StripQuotes(cmdArgs);
+
+  char target_name[MAX_TARGET_LENGTH];
+  int target_list[MAXPLAYERS], target_count;
+  bool tn_is_ml;
+
+  if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
+      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+  {
+    ReplyToTargetError(client, target_count);
+    return Plugin_Handled;
+  }
+
+  for (int i = 0; i < target_count; i++) {
+    if (IsValidClient(target_list[i])) {
+      FakeClientCommandCheat(target_list[i], cmd, cmdArgs);
+      LogAction(client, target_list[i], "\"%L\" ran fake command \"%s\" on \"%L\"", client, cmd, target_list[i]);
+    }
+  }
+  NyxAct(client, "Ran fake command '%s' on %s", cmd, target_name);
+
+  return Plugin_Handled;
+}
+
 public Action ConCmd_Cheat(int client, int args) {
   char cmd[256], cmdArgs[256];
   GetCmdArg(0, cmd, 256);
   GetCmdArgString(cmdArgs, sizeof(cmdArgs));
   TrimString(cmdArgs);
 
-  if (!HasCheatPermissions(client) || !g_bAllowOnce[client]) {
+  if (!HasCheatPermissions(client) && !g_bAllowOnce[client]) {
     LogAction(client, -1, "\"%L\" was prevented from running cheat command \"%s\" [%s]", client, cmd, cmdArgs);
     return Plugin_Handled;
   }

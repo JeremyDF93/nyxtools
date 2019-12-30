@@ -36,7 +36,7 @@
                        `-._        _(`.:  \-...)  ``'''``
                            `''''=:_`   |---'
                                    ````
-                                                                              */
+*/
 
 #include <nyxtools_version>
 #include <sdktools>
