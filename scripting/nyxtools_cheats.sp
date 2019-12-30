@@ -111,12 +111,19 @@ public void OnClientPostAdminCheck(int client) {
 
 public int Native_FakeClientCommandCheat(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
-  char cmd[128]; GetNativeString(2, cmd, sizeof(cmd));
-  char args[256]; GetNativeString(3, args, sizeof(args));
-
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
+
+  char buffer[256];
+  int error = FormatNativeString(0, 2, 3, sizeof(buffer), _, buffer);
+  if (error != SP_ERROR_NONE) {
+    return ThrowNativeError(error, "Failed to format native string");
+  }
+
+  char cmd[128], args[256];
+  int len = BreakString(buffer, cmd, sizeof(cmd));
+  strcopy(args, sizeof(args), buffer[len]);
 
   for (int i = 0; i < g_iHookedCount; i++) {
     if (strcmp(g_sHookedCmd[i], cmd) == 0) {
@@ -197,11 +204,11 @@ public Action ConCmd_FakeCmdCheat(int client, int args) {
 
   for (int i = 0; i < target_count; i++) {
     if (IsValidClient(target_list[i])) {
-      FakeClientCommandCheat(target_list[i], cmd, cmdArgs);
-      LogAction(client, target_list[i], "\"%L\" ran fake command \"%s\" on \"%L\"", client, cmd, target_list[i]);
+      FakeClientCommandCheat(target_list[i], "%s %s", cmd, cmdArgs);
+      LogAction(client, target_list[i], "\"%L\" ran fake command \"%s\" [%s] on \"%L\"", client, cmd, cmdArgs, target_list[i]);
     }
   }
-  NyxAct(client, "Ran fake command '%s' on %s", cmd, target_name);
+  NyxAct(client, "Ran fake command '%s' [%s] on %s", cmd, cmdArgs, target_name);
 
   return Plugin_Handled;
 }

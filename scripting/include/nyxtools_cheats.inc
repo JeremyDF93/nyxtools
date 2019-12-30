@@ -3,7 +3,7 @@
 #endif
 #define _nyxtools_cheats_included
 
-native void FakeClientCommandCheat(int client, const char[] cmd, const char[] args);
+native void FakeClientCommandCheat(int client, const char[] fmt, any ...);
 native bool HasCheatPermissions(int client);
 
 public SharedPlugin:__pl_nyxtools_cheats = {
