@@ -343,8 +343,8 @@ public Action ConCmd_ChangeClass(int client, int args) {
     class = view_as<int>(L4D2_StringToClass(classStr));
   }
 
-  if (class < 0 || class > 9) {
-    NyxMsgReply(client, "No class matchs '%s'", classStr);
+  if (class < 0 || class > 6 && class != 8) {
+    NyxMsgReply(client, "No valid class matchs '%s'", classStr);
     return Plugin_Handled;
   }
 
