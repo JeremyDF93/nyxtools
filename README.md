@@ -34,6 +34,11 @@ nyx_sendcvar       admin        Usage: nyx_sendcvar <#userid|name> <convar> <val
 nyx_showurl        admin        Usage: nyx_showurl <#userid|name> <url> [show]
 nyx_tele           admin        Usage: nyx_tele <#userid|name> [stack]
 ```
+### NyxTools - Cheats
+```
+[Name]              [Type]       [Help]
+nyx_fakecmdc        admin        Usage: nyx_fakecmdc <#userid|name> <cmd>
+```
 ### NyxTools - Entities
 ```
 [Name]                [Type]       [Help]
