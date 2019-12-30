@@ -1,7 +1,7 @@
-#if defined _nyxtools_included_
+#if defined _nyxtools_included
   #endinput
 #endif
-#define _nyxtools_included_
+#define _nyxtools_included
 
 /*
                                               .,
@@ -44,6 +44,8 @@
 #if !defined NYX_PLUGIN_TAG
   #define NYX_PLUGIN_TAG "Nyx"
 #endif
+#define NYX_PLUGIN_AUTHOR "Kiwi, JeremyDF93"
+#define NYX_PLUGIN_WEBSITE "https://praisethemoon.com/"
 
 #define INT_MAX 2147483647
 #define INT_MIN -2147483648

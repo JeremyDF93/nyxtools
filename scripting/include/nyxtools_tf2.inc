@@ -1,7 +1,7 @@
-#if defined _nyxtools_tf2_included_
+#if defined _nyxtools_tf2_included
   #endinput
 #endif
-#define _nyxtools_tf2_included_
+#define _nyxtools_tf2_included
 
 #include <tf2>
 #include <tf2_stocks>

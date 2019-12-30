@@ -1,15 +1,16 @@
 #pragma semicolon 1
 #include <sourcemod>
 #include <nyxtools>
+#include <nyxtools_cheats>
 
 #pragma newdecls required
 
 public Plugin myinfo = {
   name = "NyxTools - Cheats",
-  author = "JeremyDF93",
+  author = NYX_PLUGIN_AUTHOR,
   description = "Allows admins to run cheat commands without setting sv_cheats",
   version = NYX_PLUGIN_VERSION,
-  url = "https://praisethemoon.com/"
+  url = NYX_PLUGIN_WEBSITE
 };
 
 #define MAX_COMMANDS 512
@@ -24,7 +25,7 @@ public Plugin myinfo = {
  */
 
 ConVar nyx_cheats_override;
-ConVar nyx_cheats_silent;
+ConVar nyx_cheats_notify;
 ConVar sv_cheats;
 ConVar host_timescale;
 
@@ -37,8 +38,9 @@ ConVar host_timescale;
  *                                       
  */
 
-char g_HookedCmd[MAX_COMMANDS][128];
-int g_HookedCount = 0;
+int g_iHookedCount = 0;
+char g_sHookedCmd[MAX_COMMANDS][128];
+bool g_bAllowOnce[MAXPLAYERS + 1];
 
 /***
  *        ____  __            _          ____      __            ____              
@@ -49,9 +51,20 @@ int g_HookedCount = 0;
  *                  /____/                                                         
  */
 
+public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
+  RegPluginLibrary("nyxtools_cheats");
+
+  CreateNative("FakeClientCommandCheat", Native_FakeClientCommandCheat);
+  CreateNative("HasCheatPermissions", Native_HasCheatPermissions);
+
+  return APLRes_Success;
+}
+
 public void OnPluginStart() {
-  nyx_cheats_override = CreateConVar("nyx_cheats_override", "z", "Override flag required to execute cheat commands");
-  nyx_cheats_silent = CreateConVar("nyx_cheats_silent", "1", "Hide activity");
+  nyx_cheats_override = CreateConVar("nyx_cheats_override", "n",
+      "Override flag required to execute cheat commands");
+  nyx_cheats_notify = CreateConVar("nyx_cheats_notify", "1",
+      "Notify admins when a cheat command is ran?", _, true, 0.0, true, 1.0);
 
   sv_cheats = FindConVar("sv_cheats");
   host_timescale = FindConVar("host_timescale");
@@ -63,28 +76,68 @@ public void OnPluginStart() {
 }
 
 public void OnPluginEnd() {
-  for (int i = 0; i < g_HookedCount; i++) {
-    SetCommandFlags(g_HookedCmd[i], GetCommandFlags(g_HookedCmd[i]) | FCVAR_CHEAT);
+  for (int i = 0; i < g_iHookedCount; i++) {
+    SetCommandFlags(g_sHookedCmd[i], GetCommandFlags(g_sHookedCmd[i]) | FCVAR_CHEAT);
   }
-  LogAction(-1, -1, "Restored %i commands", g_HookedCount);
+  LogAction(-1, -1, "Restored %i commands", g_iHookedCount);
 }
 
 public void OnClientPostAdminCheck(int client) {
-  if (IsValidClient(client, true)) {
-    char flags[8];
-    nyx_cheats_override.GetString(flags, sizeof(flags));
+  if (!IsValidClient(client, true)) return;
 
-    if (strlen(flags) == 0 || IsClientAdmin(client, ReadFlagString(flags))) {
-      ServerCommand("mp_disable_autokick %i", GetClientUserId(client)); // disabling autokick allows us to use ent_fire so lets do that
-    }
+  if (HasCheatPermissions(client)) {
+    // disabling autokick allows us to use ent_fire so lets do that
+    ServerCommand("mp_disable_autokick %i", GetClientUserId(client));
+  }
 
-    // we have to trick the client into thinking sv_cheats is enabled so host_timescale works...
-    if (host_timescale != null) {
-      if (host_timescale.FloatValue != 1.0) {
-        SendConVarValue(client, sv_cheats, "1");
-      }
+  // we have to trick the client into thinking sv_cheats is enabled so host_timescale works...
+  if (host_timescale != null) {
+    if (host_timescale.FloatValue != 1.0) {
+      SendConVarValue(client, sv_cheats, "1");
     }
   }
+}
+
+/***
+ *        _   __      __  _                
+ *       / | / /___ _/ /_(_)   _____  _____
+ *      /  |/ / __ `/ __/ / | / / _ \/ ___/
+ *     / /|  / /_/ / /_/ /| |/ /  __(__  ) 
+ *    /_/ |_/\__,_/\__/_/ |___/\___/____/  
+ *                                         
+ */
+
+public int Native_FakeClientCommandCheat(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  char cmd[128]; GetNativeString(2, cmd, sizeof(cmd));
+  char args[256]; GetNativeString(3, args, sizeof(args));
+
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  for (int i = 0; i < g_iHookedCount; i++) {
+    if (strcmp(g_sHookedCmd[i], cmd) == 0) {
+      g_bAllowOnce[client] = true;
+      break;
+    }
+  }
+
+  FakeClientCommand(client, "%s %s", cmd, args);
+  return true;
+}
+
+public int Native_HasCheatPermissions(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  char flags[8]; nyx_cheats_override.GetString(flags, sizeof(flags));
+  if (strlen(flags) == 0) return true;
+  if (IsClientAdmin(client, ReadFlagString(flags))) return true;
+
+  return false;
 }
 
 /***
@@ -120,20 +173,18 @@ public Action ConCmd_Cheat(int client, int args) {
   GetCmdArgString(cmdArgs, sizeof(cmdArgs));
   TrimString(cmdArgs);
 
-  char flags[8];
-  nyx_cheats_override.GetString(flags, sizeof(flags));
-
-  if (client == 0 || strlen(flags) == 0 || IsClientAdmin(client, ReadFlagString(flags))) {
-    LogAction(client, -1, "\"%L\" ran cheat command \"%s\" [%s]", client, cmd, cmdArgs);
-    if (!nyx_cheats_silent.BoolValue) {
-      NyxAct(client, "Ran cheat command \"%s\" [%s]", cmd, cmdArgs);
-    }
-
-    return Plugin_Continue;
+  if (!HasCheatPermissions(client) || !g_bAllowOnce[client]) {
+    LogAction(client, -1, "\"%L\" was prevented from running cheat command \"%s\" [%s]", client, cmd, cmdArgs);
+    return Plugin_Handled;
   }
 
-  LogAction(client, -1, "\"%L\" was prevented from running cheat command \"%s\" [%s]", client, cmd, cmdArgs);
-  return Plugin_Handled;
+  g_bAllowOnce[client] = false;
+  LogAction(client, -1, "\"%L\" ran cheat command \"%s\" [%s]", client, cmd, cmdArgs);
+  if (!nyx_cheats_notify.BoolValue) {
+    NyxAct(client, "Ran cheat command \"%s\" [%s]", cmd, cmdArgs);
+  }
+
+  return Plugin_Continue;
 }
 
 /***
@@ -151,17 +202,17 @@ void HookCheatCommands() {
   int flags;
   Handle hCommand = FindFirstConCommand(cmd, sizeof(cmd), isCommand, flags);
   do {
-    if (isCommand && flags & FCVAR_CHEAT && g_HookedCount < MAX_COMMANDS) {
+    if (isCommand && flags & FCVAR_CHEAT && g_iHookedCount < MAX_COMMANDS) {
       RegConsoleCmd(cmd, ConCmd_Cheat);
       SetCommandFlags(cmd, GetCommandFlags(cmd) ^ FCVAR_CHEAT);
-      strcopy(g_HookedCmd[g_HookedCount++], 128, cmd);
+      strcopy(g_sHookedCmd[g_iHookedCount++], 128, cmd);
     }
 
-    if (g_HookedCount >= MAX_COMMANDS) {
+    if (g_iHookedCount >= MAX_COMMANDS) {
       LogError("Failed to hook all cheat commands: MAX_COMMANDS reached");
       return;
     }
   } while (FindNextConCommand(hCommand, cmd, sizeof(cmd), isCommand, flags));
 
-  LogAction(-1, -1, "Hooked %i commands", g_HookedCount);
+  LogAction(-1, -1, "Hooked %i commands", g_iHookedCount);
 }

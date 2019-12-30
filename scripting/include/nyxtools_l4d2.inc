@@ -1,7 +1,7 @@
-#if defined _nyxtools_l4d2_included_
+#if defined _nyxtools_l4d2_included
   #endinput
 #endif
-#define _nyxtools_l4d2_included_
+#define _nyxtools_l4d2_included
 
 #define L4D2_TEAM_UNASSIGNED  0
 #define L4D2_TEAM_SPECTATOR   1
