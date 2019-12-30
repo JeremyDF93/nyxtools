@@ -70,7 +70,7 @@ public void OnPluginStart() {
   LoadTranslations("common.phrases");
 
   RegAdminCmd("nyx_respawn", ConCmd_Respawn, ADMFLAG_SLAY, "Usage: nyx_respawn <#userid|name>");
-  RegAdminCmd("nyx_takeoverbot", ConCmd_TakeOverBot, ADMFLAG_ROOT, "Usage: nyx_takeoverbot <#userid|name>");
+  RegAdminCmd("nyx_takeoverbot", ConCmd_TakeOverBot, ADMFLAG_SLAY, "Usage: nyx_takeoverbot <#userid|name>");
   RegAdminCmd("nyx_changeteam", ConCmd_ChangeTeam, ADMFLAG_SLAY, "Usage: nyx_changeteam <#userid|name> <team>");
   RegAdminCmd("nyx_changeclass", ConCmd_ChangeClass, ADMFLAG_SLAY, "Usage: nyx_changeclass <#userid|name> <class>");
 
