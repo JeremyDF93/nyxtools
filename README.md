@@ -80,5 +80,5 @@ nyx_respawn             admin        Usage: nyx_respawn <#userid|name>
 ```
 [Name]                           [Default]        [Help]
 nyx_cheats_override              n                Override flag required to execute cheat commands
-nyx_cheats_notify                1                Notify admins when a cheat command is ran?
+nyx_cheats_notify                0                Notify admins when a cheat command is ran?
 ```
