@@ -6,10 +6,10 @@
 
 public Plugin myinfo = {
   name = "NyxTools",
-  author = "JeremyDF93",
+  author = NYX_PLUGIN_AUTHOR,
   description = "General set of source engine tools",
   version = NYX_PLUGIN_VERSION,
-  url = "https://praisethemoon.com/"
+  url = NYX_PLUGIN_WEBSITE
 };
 
 /***
