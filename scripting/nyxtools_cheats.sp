@@ -63,7 +63,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 public void OnPluginStart() {
   nyx_cheats_override = CreateConVar("nyx_cheats_override", "n",
       "Override flag required to execute cheat commands");
-  nyx_cheats_notify = CreateConVar("nyx_cheats_notify", "1",
+  nyx_cheats_notify = CreateConVar("nyx_cheats_notify", "0",
       "Notify admins when a cheat command is ran?", _, true, 0.0, true, 1.0);
 
   sv_cheats = FindConVar("sv_cheats");
@@ -226,7 +226,7 @@ public Action ConCmd_Cheat(int client, int args) {
 
   g_bAllowOnce[client] = false;
   LogAction(client, -1, "\"%L\" ran cheat command \"%s\" [%s]", client, cmd, cmdArgs);
-  if (!nyx_cheats_notify.BoolValue) {
+  if (nyx_cheats_notify.BoolValue) {
     NyxAct(client, "Ran cheat command \"%s\" [%s]", cmd, cmdArgs);
   }
 
