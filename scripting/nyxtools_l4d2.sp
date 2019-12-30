@@ -25,6 +25,7 @@ public Plugin myinfo = {
 enum NyxSDK {
   Handle:SDK_RoundRespawn,
   Handle:SDK_TakeOverBot,
+  Handle:SDK_TakeOverZombieBot,
   Handle:SDK_ReplaceWithBot,
   Handle:SDK_SetHumanSpectator,
   Handle:SDK_ChangeTeam,
@@ -58,6 +59,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
   CreateNative("L4D2_RespawnPlayer", Native_RespawnPlayer);
   CreateNative("L4D2_TakeOverBot", Native_TakeOverBot);
+  CreateNative("L4D2_TakeOverZombieBot", Native_TakeOverZombieBot);
   CreateNative("L4D2_ReplaceWithBot", Native_ReplaceWithBot);
   CreateNative("L4D2_SetHumanSpectator", Native_SetHumanSpectator);
   CreateNative("L4D2_ChangeTeam", Native_ChangeTeam);
@@ -85,6 +87,11 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverBot");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_TakeOverBot] = EndPrepSDKCall();
+
+  StartPrepSDKCall(SDKCall_Player);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverZombieBot");
+  PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
+  g_hSDKCall[SDK_TakeOverZombieBot] = EndPrepSDKCall();
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ReplaceWithBot");
@@ -139,6 +146,16 @@ public int Native_TakeOverBot(Handle plugin, int numArgs) {
   }
 
   return SDKCall(g_hSDKCall[SDK_TakeOverBot], client, flag);
+}
+
+public int Native_TakeOverZombieBot(Handle plugin, int numArgs) {
+  int bot = GetNativeCell(1);
+  int client = GetNativeCell(2);
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  return SDKCall(g_hSDKCall[SDK_TakeOverZombieBot], client, bot);
 }
 
 public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
@@ -258,14 +275,13 @@ public Action ConCmd_TakeOverBot(int client, int args) {
     return Plugin_Handled;
   }
 
-  if (IsPlayerInfected(target)) {
-    NyxMsgReply(client, "Can't target the infected team", target);
-    return Plugin_Handled;
-  }
-
   L4D2_ChangeTeam(client, L4D2_TEAM_SPECTATOR);
-  L4D2_SetHumanSpectator(target, client);
-  L4D2_TakeOverBot(client);
+  if (IsPlayerInfected(target)) {
+    L4D2_TakeOverZombieBot(target, client);
+  } else {
+    L4D2_SetHumanSpectator(target, client);
+    L4D2_TakeOverBot(client);
+  }
 
   LogAction(client, target, "\"%L\" took over \"%L\"", client, target);
   NyxAct(client, "Taking over %N", target);
