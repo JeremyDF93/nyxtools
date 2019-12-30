@@ -38,14 +38,11 @@
                                    ````
                                                                               */
 
+#include <nyxtools_version>
 #include <sdktools>
 
 #if !defined NYX_PLUGIN_TAG
   #define NYX_PLUGIN_TAG "Nyx"
-#endif
-
-#if !defined NYX_PLUGIN_VERSION
-  #define NYX_PLUGIN_VERSION "1.0.1"
 #endif
 
 #define INT_MAX 2147483647

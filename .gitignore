@@ -1,4 +1,5 @@
 *.smx
 .vscode
 *.code-workspace
-
+nyxtools_version.inc
+VERSION
