@@ -25,6 +25,7 @@ public Plugin myinfo = {
 enum NyxSDK {
   Handle:SDK_RoundRespawn,
   Handle:SDK_TakeOverBot,
+  Handle:SDK_ReplaceWithBot,
   Handle:SDK_SetHumanSpectator,
   Handle:SDK_ChangeTeam,
   Handle:SDK_SetClass,
@@ -57,6 +58,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
   CreateNative("L4D2_RespawnPlayer", Native_RespawnPlayer);
   CreateNative("L4D2_TakeOverBot", Native_TakeOverBot);
+  CreateNative("L4D2_ReplaceWithBot", Native_ReplaceWithBot);
   CreateNative("L4D2_SetHumanSpectator", Native_SetHumanSpectator);
   CreateNative("L4D2_ChangeTeam", Native_ChangeTeam);
   CreateNative("L4D2_SetInfectedClass", Native_SetInfectedClass);
@@ -83,6 +85,11 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverBot");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_TakeOverBot] = EndPrepSDKCall();
+
+  StartPrepSDKCall(SDKCall_Player);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ReplaceWithBot");
+  PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
+  g_hSDKCall[SDK_ReplaceWithBot] = EndPrepSDKCall();
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "SurvivorBot::SetHumanSpectator");
@@ -132,6 +139,16 @@ public int Native_TakeOverBot(Handle plugin, int numArgs) {
   }
 
   return SDKCall(g_hSDKCall[SDK_TakeOverBot], client, flag);
+}
+
+public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  bool flag = GetNativeCell(2);
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  return SDKCall(g_hSDKCall[SDK_ReplaceWithBot], client, flag);
 }
 
 public int Native_SetHumanSpectator(Handle plugin, int numArgs) {

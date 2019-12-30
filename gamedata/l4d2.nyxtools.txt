@@ -14,6 +14,11 @@
         "library"			"server"
         "linux"				"@_ZN13CTerrorPlayer11TakeOverBotEb"
       }
+      "CTerrorPlayer::ReplaceWithBot"
+      {
+        "library"			"server"
+        "linux"				"@_ZN13CTerrorPlayer14ReplaceWithBotEb"
+      }
       "SurvivorBot::SetHumanSpectator"
       {
         "library"			"server"
@@ -28,6 +33,16 @@
       {
         "library"			"server"
         "linux"				"@_ZN13CTerrorPlayer8SetClassE15ZombieClassType"
+      }
+      "CTerrorPlayer::SetPreSpawnClass"
+      {
+        "library"			"server"
+        "linux"				"@_ZN13CTerrorPlayer16SetPreSpawnClassE15ZombieClassType"
+      }
+      "CTerrorPlayer::SetCharacter"
+      {
+        "library"			"server"
+        "linux"				"@_ZN13CTerrorPlayer12SetCharacterE21SurvivorCharacterType"
       }
       "CBaseAbility::CreateForPlayer"
       {

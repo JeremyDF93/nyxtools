@@ -50,6 +50,7 @@ enum L4D2Team {
 
 native void L4D2_RespawnPlayer(int client);
 native void L4D2_TakeOverBot(int client, bool flag=true);
+native void L4D2_ReplaceWithBot(int client, bool flag=true);
 native void L4D2_SetHumanSpectator(int bot, int client);
 native void L4D2_ChangeTeam(int client, int team);
 native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
@@ -68,6 +69,7 @@ public SharedPlugin:__pl_nyxtools_l4d2 = {
 public __pl_nyxtools_l4d2_SetNTVOptional() {
   MarkNativeAsOptional("L4D2_RespawnPlayer");
   MarkNativeAsOptional("L4D2_TakeOverBot");
+  MarkNativeAsOptional("L4D2_ReplaceWithBot");
   MarkNativeAsOptional("L4D2_SetHumanSpectator");
   MarkNativeAsOptional("L4D2_ChangeTeam");
   MarkNativeAsOptional("L4D2_SetInfectedClass");
