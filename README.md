@@ -5,7 +5,23 @@ Work in progress.
 ## Natives
 ### NyxTools - Cheats
 ```c
+/**
+ * Executes a cheat command on the server without being networked. This bypasses
+ * the sv_cheats cvar without changing it. This ignores the 'nyx_cheats_override'
+ * cvar setting.
+ *
+ * @param client        Index of the client.
+ * @param fmt           Format of the client command.
+ * @param ...           Format parameters
+ * @error               Invalid client index
+ */
 void FakeClientCommandCheat(int client, const char[] fmt, any ...);
+/**
+ * Returns true if the client has access to cheat commands.
+ *
+ * @param client        Index of the client.
+ * @return              True if they hace access to cheats
+ */
 bool HasCheatPermissions(int client);
 ```
 ### NyxTools - L4D2 (Linux Support Only)
@@ -40,6 +56,7 @@ nyx_tele           admin        Usage: nyx_tele <#userid|name> [stack]
 nyx_fakecmdc        admin        Usage: nyx_fakecmdc <#userid|name> <cmd>
 ```
 ### NyxTools - Entities
+These commands are super useful for viewing or setting prop data.
 ```
 [Name]                [Type]       [Help]
 nyx_entfire_aim       admin        Usage: nyx_entfire_aim <input> [value]
@@ -51,6 +68,7 @@ nyx_entprop_player    admin        Usage: nyx_entprop_player <#userid|name> <pro
 nyx_entprop_weapon    admin        Usage: nyx_entprop_weapon <#userid|name> <slot> <prop> [value]
 ```
 ### NyxTools - Events
+This plugin is super small, but usefull for testing events for data without compiling code to view them.
 ```
 [Name]            [Type]       [Help]
 nyx_hookevent     admin        Usage: nyx_hookevent <event> <key> [mode]
