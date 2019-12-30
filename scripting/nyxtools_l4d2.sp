@@ -348,11 +348,20 @@ public Action ConCmd_ChangeClass(int client, int args) {
     return Plugin_Handled;
   }
 
+  bool success;
   for (int i = 0; i < target_count; i++) {
-    L4D2_SetInfectedClass(target_list[i], view_as<L4D2ClassType>(class));
-    LogAction(client, target_list[i], "\"%L\" changed \"%L\" to class \"%s\"", client, target_list[i], classStr);
+    if (IsPlayerInfected(target_list[i])) {
+      success = true;
+      L4D2_SetInfectedClass(target_list[i], view_as<L4D2ClassType>(class));
+      LogAction(client, target_list[i], "\"%L\" changed \"%L\" to class \"%s\"", client, target_list[i], classStr);
+    }
   }
-  NyxAct(client, "Changed %s to class %s", target_name, classStr);
+
+  if (success) {
+    NyxAct(client, "Changed %s to class %s", target_name, classStr);
+  } else {
+    NyxMsgReply(client, "Failed to find a valid target");
+  }
 
   return Plugin_Handled;
 }
