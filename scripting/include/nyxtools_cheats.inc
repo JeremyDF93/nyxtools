@@ -5,7 +5,8 @@
 
 /**
  * Executes a cheat command on the server without being networked. This bypasses
- * the sv_cheats cvar without changing it.
+ * the sv_cheats cvar without changing it. This ignores the 'nyx_cheats_override'
+ * cvar setting.
  *
  * @param client        Index of the client.
  * @param fmt           Format of the client command.
