@@ -249,9 +249,9 @@ public Action ConCmd_EntPropWeapon(int client, int args) {
     int weapon = GetPlayerWeaponSlot(target_list[i], slot);
     if (weapon != -1) {
       if (args == 4) {
-        WriteEntProp(weapon, prop, target_list[i], value);
+        WriteEntProp(weapon, prop, client, value);
       } else {
-        ReadEntProp(weapon, prop, target_list[i]);
+        ReadEntProp(weapon, prop, client);
       }
     }
   }

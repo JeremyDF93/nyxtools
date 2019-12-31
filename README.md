@@ -16,6 +16,7 @@ Work in progress.
  * @error               Invalid client index
  */
 void FakeClientCommandCheat(int client, const char[] fmt, any ...);
+
 /**
  * Returns true if the client has access to cheat commands.
  *

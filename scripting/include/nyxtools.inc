@@ -101,7 +101,19 @@ stock void NyxMsgReply(int client, char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
-  ReplyToCommand(client, "[%s] %s", NYX_PLUGIN_TAG, buffer);
+  ReplySource rs = GetCmdReplySource();
+  if (rs == SM_REPLY_TO_CONSOLE) {
+    NyxMsgConsole(client, buffer);
+  } else {
+    NyxMsgClient(client, buffer);
+  }
+}
+
+stock void NyxMsgConsole(int client, char[] format, any ...) {
+  char buffer[256];
+  VFormat(buffer, sizeof(buffer), format, 3);
+
+  PrintToConsole(client, "[%s] %s", NYX_PLUGIN_TAG, buffer);
 }
 
 stock void NyxMsgClient(int client, char[] format, any ...) {
