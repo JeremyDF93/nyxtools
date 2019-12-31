@@ -77,7 +77,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_changeclass", ConCmd_ChangeClass, ADMFLAG_SLAY, "Usage: nyx_changeclass <#userid|name> <class>");
 
   // game config
-  g_hGameConf = LoadGameConfigFile("l4d2.nyxtools");
+  g_hGameConf = LoadGameConfigFile("nyxtools.l4d2");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CCSPlayer::RoundRespawn");

@@ -69,7 +69,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_removecond", ConCmd_RemoveCond, ADMFLAG_CHEATS, "Usage: nyx_removecond <#userid|name> <cond>");
 
   // game config
-  g_hGameConf = LoadGameConfigFile("tf2.nyxtools");
+  g_hGameConf = LoadGameConfigFile("nyxtools.tf2");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTFPlayer::RemoveAllObjects");
