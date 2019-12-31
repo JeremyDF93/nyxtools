@@ -120,6 +120,7 @@ public int Native_FakeClientCommandCheat(Handle plugin, int numArgs) {
   if (error != SP_ERROR_NONE) {
     return ThrowNativeError(error, "Failed to format native string");
   }
+  TrimString(buffer);
 
   char cmd[128], args[256];
   int len = BreakString(buffer, cmd, sizeof(cmd));
