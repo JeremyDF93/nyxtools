@@ -6,10 +6,10 @@
 
 public Plugin myinfo = {
   name = "NyxTools",
-  author = NYX_PLUGIN_AUTHOR,
+  author = NYXTOOLS_AUTHOR,
   description = "General set of source engine tools",
-  version = NYX_PLUGIN_VERSION,
-  url = NYX_PLUGIN_WEBSITE
+  version = NYXTOOLS_VERSION,
+  url = NYXTOOLS_WEBSITE
 };
 
 /***

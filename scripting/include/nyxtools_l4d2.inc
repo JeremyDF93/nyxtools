@@ -55,16 +55,9 @@ native void L4D2_ReplaceWithBot(int client, bool flag=true);
 native void L4D2_SetHumanSpectator(int bot, int client);
 native void L4D2_ChangeTeam(int client, int team);
 native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
-
-public SharedPlugin:__pl_nyxtools_l4d2 = {
-  name = "nyxtools_l4d2",
-  file = "nyxtools_l4d2.smx",
-#if defined REQUIRE_PLUGIN
-  required = 1,
-#else
-  required = 0,
-#endif
-};
+forward Action L4D2_OnReplaceTank(int old_tank, int new_tank, bool &returned);
+forward Action L4D2_OnIsWeaponAllowedToExist(int weapon, bool &allowed);
+forward Action L4D2_OnIsMeleeWeaponAllowedToExist(const char[] weapon, bool &allowed);
 
 #if !defined REQUIRE_PLUGIN
 public __pl_nyxtools_l4d2_SetNTVOptional() {
@@ -207,3 +200,37 @@ stock void L4D2_TeamToString(int team, char[] str, int maxlength) {
   if (team == L4D2_TEAM_SURVIVOR) strcopy(str, maxlength, "survivor");
   if (team == L4D2_TEAM_INFECTED) strcopy(str, maxlength, "infected");
 }
+
+/***
+ *        __    _ __                         
+ *       / /   (_) /_  _________ ________  __
+ *      / /   / / __ \/ ___/ __ `/ ___/ / / /
+ *     / /___/ / /_/ / /  / /_/ / /  / /_/ / 
+ *    /_____/_/_.___/_/   \__,_/_/   \__, /  
+ *                                  /____/   
+ */
+
+public SharedPlugin:__pl_nyxtools_l4d2 = {
+  name = "nyxtools_l4d2",
+  file = "nyxtools_l4d2.smx",
+#if defined REQUIRE_PLUGIN
+  required = 1,
+#else
+  required = 0,
+#endif
+};
+
+public Extension __ext_nyxtools_l4d2 = {
+  name = "NyxTools - L4D2",
+  file = "nyxtools_l4d2.ext",
+#if defined AUTOLOAD_EXTENSIONS
+  autoload = 1,
+#else
+  autoload = 0,
+#endif
+#if defined REQUIRE_EXTENSIONS
+  required = 1,
+#else
+  required = 0,
+#endif
+};

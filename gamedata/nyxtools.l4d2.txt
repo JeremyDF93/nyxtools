@@ -44,6 +44,21 @@
         "library"			"server"
         "linux"				"@_ZN12CBaseAbility15CreateForPlayerEP13CTerrorPlayer"
       }
+      "CDirectorItemManager::IsMeleeWeaponAllowedToExist"
+      {
+        "library"			"server"
+        "linux"				"@_ZN20CDirectorItemManager27IsMeleeWeaponAllowedToExistEPKc"
+      }
+      "CDirectorItemManager::IsWeaponAllowedToExist"
+      {
+        "library"			"server"
+        "linux"				"@_ZN20CDirectorItemManager22IsWeaponAllowedToExistE10CSWeaponID"
+      }
+      "ZombieManager::ReplaceTank"
+      {
+        "library"			"server"
+        "linux"				"@_ZN13ZombieManager11ReplaceTankEP13CTerrorPlayerS1_"
+      }
     }
   }
 }

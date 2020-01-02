@@ -6,10 +6,10 @@
 
 public Plugin myinfo = {
   name = "NyxTools - Entity",
-  author = NYX_PLUGIN_AUTHOR,
+  author = NYXTOOLS_AUTHOR,
   description = "Entity data editing tools",
-  version = NYX_PLUGIN_VERSION,
-  url = NYX_PLUGIN_WEBSITE
+  version = NYXTOOLS_VERSION,
+  url = NYXTOOLS_WEBSITE
 };
 
 /***

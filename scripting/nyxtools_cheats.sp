@@ -7,10 +7,10 @@
 
 public Plugin myinfo = {
   name = "NyxTools - Cheats",
-  author = NYX_PLUGIN_AUTHOR,
+  author = NYXTOOLS_AUTHOR,
   description = "Allows admins to run cheat commands without setting sv_cheats",
-  version = NYX_PLUGIN_VERSION,
-  url = NYX_PLUGIN_WEBSITE
+  version = NYXTOOLS_VERSION,
+  url = NYXTOOLS_WEBSITE
 };
 
 #define MAX_COMMANDS 512

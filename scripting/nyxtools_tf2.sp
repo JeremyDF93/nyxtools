@@ -7,10 +7,10 @@
 
 public Plugin myinfo = {
   name = "NyxTools - TF2",
-  author = NYX_PLUGIN_AUTHOR,
+  author = NYXTOOLS_AUTHOR,
   description = "General set of TF2 tools",
-  version = NYX_PLUGIN_VERSION,
-  url = NYX_PLUGIN_WEBSITE
+  version = NYXTOOLS_VERSION,
+  url = NYXTOOLS_WEBSITE
 };
 
 /***

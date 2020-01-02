@@ -7,10 +7,10 @@
 
 public Plugin myinfo = {
   name = "NyxTools - L4D2",
-  author = NYX_PLUGIN_AUTHOR,
+  author = NYXTOOLS_AUTHOR,
   description = "General set of L4D2 tools",
-  version = NYX_PLUGIN_VERSION,
-  url = NYX_PLUGIN_WEBSITE
+  version = NYXTOOLS_VERSION,
+  url = NYXTOOLS_WEBSITE
 };
 
 /***
@@ -118,6 +118,10 @@ public void OnPluginStart() {
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   PrepSDKCall_SetReturnInfo(SDKType_CBaseEntity, SDKPass_Pointer);
   g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
+}
+
+public Action L4D2_OnReplaceTank(int old_tank, int new_tank, bool &returned) {
+  NyxMsgDebug("old_tank %N, new_tank: %N, returned: %d", old_tank, new_tank, returned);
 }
 
 /***
