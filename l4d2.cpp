@@ -29,10 +29,16 @@ bool NyxGame::SDK_OnLoad(char *error, size_t maxlength, bool late) {
 	}
 	g_pZombieManager = addr;
 
-  g_pFwdReplaceTank = forwards->CreateForward("L4D2_OnReplaceTank", ET_Event, 2, NULL, Param_Cell, Param_Cell);
-  g_pFwdReplaceWithBot = forwards->CreateForward("L4D2_OnReplaceWithBot", ET_Event, 1, NULL, Param_Cell);
-  g_pFwdIsWeaponAllowedToExist = forwards->CreateForward("L4D2_OnIsWeaponAllowedToExist", ET_Event, 2, NULL, Param_Cell, Param_CellByRef);
-  g_pFwdIsMeleeWeaponAllowedToExist = forwards->CreateForward("L4D2_OnIsMeleeWeaponAllowedToExist", ET_Event, 2, NULL, Param_String, Param_CellByRef);
+  g_pFwdReplaceTank = forwards->CreateForward("L4D2_OnReplaceTank", 
+      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+  g_pFwdTakeOverBot = forwards->CreateForward("L4D2_OnTakeOverBot", 
+      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+  g_pFwdTakeOverZombieBot = forwards->CreateForward("L4D2_OnTakeOverZombieBot", 
+      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+  g_pFwdReplaceWithBot = forwards->CreateForward("L4D2_OnReplaceWithBot", 
+      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+  g_pFwdSetHumanSpectator = forwards->CreateForward("L4D2_OnSetHumanSpectator", 
+      ET_Event, 2, NULL, Param_Cell, Param_Cell);
 
   g_pSM->LogMessage(myself, "Loaded L4D2 Tools");
   return true;
@@ -41,13 +47,19 @@ bool NyxGame::SDK_OnLoad(char *error, size_t maxlength, bool late) {
 void NyxGame::SDK_OnUnload() {
   g_pSM->LogMessage(myself, "Unloaded L4D2 Tools");
   gameconfs->CloseGameConfigFile(g_pGameConf);
+
+  forwards->ReleaseForward(g_pFwdReplaceTank);
+  forwards->ReleaseForward(g_pFwdTakeOverBot);
+  forwards->ReleaseForward(g_pFwdTakeOverZombieBot);
+  forwards->ReleaseForward(g_pFwdReplaceWithBot);
+  forwards->ReleaseForward(g_pFwdSetHumanSpectator);
 }
 
 void NyxGame::OnPluginLoaded(IPlugin *plugin) {
   if (!m_bDetoursEnabled) {
     g_pSM->LogMessage(myself, "Initiating L4D2 Detours");
     m_bDetoursEnabled = true;
-    InitialiseDetours();
+    CreateDetours();
   }
 }
 
@@ -55,6 +67,6 @@ void NyxGame::OnPluginUnloaded(IPlugin *plugin) {
   if (m_bDetoursEnabled) {
     g_pSM->LogMessage(myself, "Disabling L4D2 Detours");
     m_bDetoursEnabled = false;
-    RemoveDetours();
+    DestroyDetours();
   }
 }

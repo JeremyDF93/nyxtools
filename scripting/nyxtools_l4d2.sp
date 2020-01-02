@@ -1,5 +1,7 @@
 #pragma semicolon 1
 #include <sourcemod>
+
+#define NYX_DEBUG 2
 #include <nyxtools>
 #include <nyxtools_l4d2>
 
@@ -120,12 +122,42 @@ public void OnPluginStart() {
   g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
 }
 
-public Action L4D2_OnReplaceTank(int old_tank, int new_tank, bool &returned) {
-  NyxMsgDebug("old_tank %N, new_tank: %N, returned: %d", old_tank, new_tank, returned);
+public Action L4D2_OnReplaceTank(int client_1, int client_2) {
+  if (!IsValidClient(client_1)) return Plugin_Continue;
+  if (!IsValidClient(client_2)) return Plugin_Continue;
+
+  NyxMsgDebug("L4D2_OnTakeOverBot(client_1: %N, client_2: %N)", client_1, client_2);
+  return Plugin_Continue;
 }
 
-public Action L4D2_OnReplaceWithBot(bool flag, bool &returned) {
-  NyxMsgDebug("flag %d, returned: %d", flag, returned);
+public Action L4D2_OnTakeOverBot(int bot, bool flag) {
+  if (!IsValidClient(bot)) return Plugin_Continue;
+
+  NyxMsgDebug("L4D2_OnTakeOverBot(bot: %N, flag: %d)", bot, flag);
+  return Plugin_Continue;
+}
+
+public Action L4D2_OnTakeOverZombieBot(int bot, int client) {
+  if (!IsValidClient(bot)) return Plugin_Continue;
+  if (!IsValidClient(client)) return Plugin_Continue;
+
+  NyxMsgDebug("L4D2_OnTakeOverZombieBot(bot: %N, client: %N)", bot, client);
+  return Plugin_Continue;
+}
+
+public Action L4D2_OnReplaceWithBot(int client, bool flag) {
+  if (!IsValidClient(client)) return Plugin_Continue;
+
+  NyxMsgDebug("L4D2_OnReplaceWithBot(client: %N, flag: %d)", client, flag);
+  return Plugin_Continue;
+}
+
+public Action L4D2_OnSetHumanSpectator(int bot, int client) {
+  if (!IsValidClient(bot)) return Plugin_Continue;
+  if (!IsValidClient(client)) return Plugin_Continue;
+
+  NyxMsgDebug("L4D2_OnSetHumanSpectator(bot: %N, client: %N)", bot, client);
+  return Plugin_Continue;
 }
 
 /***
