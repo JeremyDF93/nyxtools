@@ -1,6 +1,6 @@
 #include "extension.h"
 #if SOURCE_ENGINE == SE_LEFT4DEAD2
-# include "l4d2.h"
+# include "l4d2/l4d2.h"
 #endif
 
 NyxTools g_Plugin;		/**< Global singleton for extension's main interface */

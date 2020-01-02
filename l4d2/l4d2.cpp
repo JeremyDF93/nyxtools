@@ -1,4 +1,4 @@
-#include "l4d2.h"
+#include "l4d2/l4d2.h"
 #include "l4d2/detours.h"
 
 NyxGame g_NyxGame;
