@@ -7,11 +7,12 @@
 
 class CTerrorPlayer;
 
-bool InitialiseDetours();
+void InitialiseDetours();
 void RemoveDetours();
 
-extern IForward *g_replaceTank;
-extern IForward *g_isWeaponAllowedToExistForward;
-extern IForward *g_isMeleeWeaponAllowedToExistForward;
+extern IForward *g_pFwdReplaceTank;
+extern IForward *g_pFwdReplaceWithBot;
+extern IForward *g_pFwdIsWeaponAllowedToExist;
+extern IForward *g_pFwdIsMeleeWeaponAllowedToExist;
 
 #endif //_INCLUDE_NYXTOOLS_DETOURS_H_

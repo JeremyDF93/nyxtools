@@ -7,10 +7,7 @@
  */
 
 #include "smsdk_ext.h"
-
-namespace SourceMod {
-	class ISDKTools;
-}
+#include "util.h"
 
 /**
  * @brief Sample implementation of the SDK Extension.
@@ -91,8 +88,6 @@ public:
 	 */
 	//virtual bool SDK_OnMetamodPauseChange(bool paused, char *error, size_t maxlength);
 #endif
-private:
-	bool m_bDetoursEnabled;
 };
 
 extern IGameConfig *g_pGameConf;

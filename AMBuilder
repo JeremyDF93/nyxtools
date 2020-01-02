@@ -6,7 +6,8 @@ projectName = 'nyxtools'
 # smsdk_ext.cpp will be automatically added later
 sourceFiles = [
   'extension.cpp',
-  'detours.cpp',
+  'l4d2.cpp',
+  'l4d2/detours.cpp',
   'util.cpp',
   'CDetour/detours.cpp',
   'asm/asm.c'

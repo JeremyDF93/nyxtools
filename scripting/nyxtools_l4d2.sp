@@ -124,6 +124,10 @@ public Action L4D2_OnReplaceTank(int old_tank, int new_tank, bool &returned) {
   NyxMsgDebug("old_tank %N, new_tank: %N, returned: %d", old_tank, new_tank, returned);
 }
 
+public Action L4D2_OnReplaceWithBot(bool flag, bool &returned) {
+  NyxMsgDebug("flag %d, returned: %d", flag, returned);
+}
+
 /***
  *        _   __      __  _                
  *       / | / /___ _/ /_(_)   _____  _____

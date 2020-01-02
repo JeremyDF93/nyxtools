@@ -2,8 +2,24 @@
 {
   "left4dead2"
   {
+    "Addresses"
+    {
+      "TheZombieManager"
+      {
+        "linux"
+        {
+          "signature"				"TheZombieManager"
+          "read"		      	"0"
+        }
+      }
+    }
     "Signatures"
     {
+      "TheZombieManager"
+      {
+        "library"     "server"
+        "linux"       "@TheZombieManager"
+      }
       "CCSPlayer::RoundRespawn"
       {
         "library"			"server"
