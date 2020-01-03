@@ -80,6 +80,11 @@
         "library"			"server"
         "linux"				"@_ZN13CTerrorPlayer26WarpGhostToInitialPositionEb"
       }
+      "CTerrorPlayer::BecomeGhost"
+      {
+        "library"			"server"
+        "linux"				"@_ZN13CTerrorPlayer11BecomeGhostEb"
+      }
     }
   }
 }
