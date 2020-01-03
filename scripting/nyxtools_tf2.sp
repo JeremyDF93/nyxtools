@@ -84,10 +84,12 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTFPlayer::RemoveAllObjects");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_RemoveAllObjects] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_RemoveAllObjects] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTFPlayer::RemoveAllObjects");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTFPlayer::GetObjectCount");
   g_hSDKCall[SDK_GetObjectCount] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_GetObjectCount] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTFPlayer::GetObjectCount");
 }
 
 /***

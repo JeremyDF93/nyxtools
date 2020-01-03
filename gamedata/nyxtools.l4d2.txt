@@ -20,7 +20,7 @@
         "library"     "server"
         "linux"       "@TheZombieManager"
       }
-      "CCSPlayer::RoundRespawn"
+      "CTerrorPlayer::RoundRespawn"
       {
         "library"			"server"
         "linux"				"@_ZN13CTerrorPlayer12RoundRespawnEv"

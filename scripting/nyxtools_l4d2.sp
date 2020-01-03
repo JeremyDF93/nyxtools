@@ -87,44 +87,52 @@ public void OnPluginStart() {
   g_hGameConf = LoadGameConfigFile("nyxtools.l4d2");
 
   StartPrepSDKCall(SDKCall_Player);
-  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CCSPlayer::RoundRespawn");
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::RoundRespawn");
   g_hSDKCall[SDK_RoundRespawn] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_RoundRespawn] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::RoundRespawn");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverBot");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_TakeOverBot] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_TakeOverBot] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::TakeOverBot");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverZombieBot");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   g_hSDKCall[SDK_TakeOverZombieBot] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_TakeOverZombieBot] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::TakeOverZombieBot");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ReplaceWithBot");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_ReplaceWithBot] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_ReplaceWithBot] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::ReplaceWithBot");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "SurvivorBot::SetHumanSpectator");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   g_hSDKCall[SDK_SetHumanSpectator] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_SetHumanSpectator] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for SurvivorBot::SetHumanSpectator");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ChangeTeam");
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
   g_hSDKCall[SDK_ChangeTeam] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_ChangeTeam] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::ChangeTeam");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::SetClass");
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
   g_hSDKCall[SDK_SetClass] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_SetClass] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::SetClass");
 
   StartPrepSDKCall(SDKCall_Static);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CBaseAbility::CreateForPlayer");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   PrepSDKCall_SetReturnInfo(SDKType_CBaseEntity, SDKPass_Pointer);
   g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
+  if(g_hSDKCall[SDK_CreateAbility] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CBaseAbility::CreateForPlayer");
 }
 
 /*
