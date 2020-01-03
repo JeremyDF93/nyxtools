@@ -29,6 +29,11 @@
         "library"			"server"
         "linux"				"@_ZN12CTFGameRules20GameModeUsesUpgradesEv"
       }
+      "CServerGameClients::ClientCommandKeyValues"
+      {
+        "library"			"server"
+        "linux"				"@_ZN18CServerGameClients22ClientCommandKeyValuesEP7edict_tP9KeyValues"
+      }
     }
   }
 }

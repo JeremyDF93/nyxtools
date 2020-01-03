@@ -22,7 +22,7 @@
 
 native void TF2_RemoveAllObjects(int client, bool flag=true);
 native int TF2_GetObjectCount(int client);
-native bool TF2_SetUpgradesMode(bool enabled);
+native bool TF2_SetUpgradesMode(bool enabled, bool reviveEnabled);
 
 public SharedPlugin:__pl_nyxtools_tf2 = {
   name = "nyxtools_tf2",

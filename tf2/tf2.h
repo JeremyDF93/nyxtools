@@ -1,14 +1,14 @@
 #ifndef _INCLUDE_NYXTOOLS_TF2_H_
 #define _INCLUDE_NYXTOOLS_TF2_H_
 
+#include <IGameHelpers.h>
+#include <ISDKTools.h>
 #include "extension.h"
-#include "IGameHelpers.h"
-#include "ISDKTools.h"
 
-class NyxGame : public IPluginsListener
+class TF2Tools : public IPluginsListener
 {
 public:
-	NyxGame();
+	TF2Tools();
 public:
 	virtual bool SDK_OnLoad(char *error, size_t maxlength, bool late);
 	virtual void SDK_OnUnload();
@@ -29,11 +29,34 @@ private:
 	bool m_bDetoursEnabled;
 };
 
-extern NyxGame g_NyxGame;
+class variant_t {
+public:
+	union {
+		bool bVal;
+		string_t iszVal;
+		int iVal;
+		float flVal;
+		float vecVal[3];
+		color32 rgbaVal;
+	};
+	
+	CBaseHandle eVal;
+	fieldtype_t fieldType;
+};
+
+struct inputdata_t {
+	CBaseEntity *pActivator;		// The entity that initially caused this chain of output events.
+	CBaseEntity *pCaller;			// The entity that fired this particular output.
+	variant_t value;				// The data parameter for this output.
+	int nOutputID;					// The unique ID of the output that was fired.
+};
+
+extern TF2Tools g_TF2Tools;
 
 extern void *gamerules;
 extern int g_iPlayingMannVsMachineOffs;
 extern bool g_bUpgradesEnabled;
+extern bool g_bReviveEnabled;
 
 CBaseEntity *FindEntityByClassname(const char *classname);
 bool CreateUpgrades();

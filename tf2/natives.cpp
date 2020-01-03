@@ -1,10 +1,12 @@
+#include <stdlib.h>
 #include "extension.h"
 #include "tf2/tf2.h"
-#include "stdlib.h"
 #include "RegNatives.h"
 
 static cell_t TF2_SetUpgradesMode(IPluginContext *pContext, const cell_t *params) {
   bool enable = params[1];
+  g_bReviveEnabled = params[2];
+
   if (enable) {
     if (g_bUpgradesEnabled) {
       return true;

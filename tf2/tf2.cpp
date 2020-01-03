@@ -2,41 +2,20 @@
 #include "tf2/detours.h"
 #include "RegNatives.h"
 
-class variant_t {
-public:
-	union {
-		bool bVal;
-		string_t iszVal;
-		int iVal;
-		float flVal;
-		float vecVal[3];
-		color32 rgbaVal;
-	};
-	
-	CBaseHandle eVal;
-	fieldtype_t fieldType;
-};
-
-struct inputdata_t {
-	CBaseEntity *pActivator;		// The entity that initially caused this chain of output events.
-	CBaseEntity *pCaller;			// The entity that fired this particular output.
-	variant_t value;				// The data parameter for this output.
-	int nOutputID;					// The unique ID of the output that was fired.
-};
-
-NyxGame g_NyxGame;
+TF2Tools g_TF2Tools;
 
 void *gamerules = NULL;
 int g_iPlayingMannVsMachineOffs = -1;
 bool g_bUpgradesEnabled = false;
+bool g_bReviveEnabled = false;
 
 extern sp_nativeinfo_t g_NYXNatives[];
 
-NyxGame::NyxGame() :
+TF2Tools::TF2Tools() :
 m_bDetoursEnabled(false)
 {}
 
-bool NyxGame::SDK_OnLoad(char *error, size_t maxlength, bool late) {
+bool TF2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
   sharesys->AddNatives(myself, g_NYXNatives);
   plsys->AddPluginsListener(this);
 
@@ -54,17 +33,17 @@ bool NyxGame::SDK_OnLoad(char *error, size_t maxlength, bool late) {
   return true;
 }
 
-void NyxGame::SDK_OnAllLoaded() {
+void TF2Tools::SDK_OnAllLoaded() {
   // TODO: Stuff
 }
 
-void NyxGame::SDK_OnUnload() {
+void TF2Tools::SDK_OnUnload() {
   g_RegNatives.UnregisterAll();
   gameconfs->CloseGameConfigFile(g_pGameConf);
   g_pSM->LogMessage(myself, "Unloaded L4D2 Tools");
 }
 
-void NyxGame::OnPluginLoaded(IPlugin *plugin) {
+void TF2Tools::OnPluginLoaded(IPlugin *plugin) {
   if (!m_bDetoursEnabled) {
     g_pSM->LogMessage(myself, "Initiating TF2 Detours");
     m_bDetoursEnabled = true;
@@ -72,7 +51,7 @@ void NyxGame::OnPluginLoaded(IPlugin *plugin) {
   }
 }
 
-void NyxGame::OnPluginUnloaded(IPlugin *plugin) {
+void TF2Tools::OnPluginUnloaded(IPlugin *plugin) {
   if (m_bDetoursEnabled) {
     g_pSM->LogMessage(myself, "Disabling TF2 Detours");
     m_bDetoursEnabled = false;
@@ -80,8 +59,8 @@ void NyxGame::OnPluginUnloaded(IPlugin *plugin) {
   }
 }
 
-void NyxGame::OnCoreMapStart(edict_t *pEdictList, int edictCount, int clientMax) {
-  // TODO: Stuff
+void TF2Tools::OnCoreMapStart(edict_t *pEdictList, int edictCount, int clientMax) {
+  g_bUpgradesEnabled = false;
 }
 
 CBaseEntity *FindEntityByClassname(const char *classname) {

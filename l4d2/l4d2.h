@@ -3,17 +3,17 @@
 
 #include "extension.h"
 
-class NyxGame : public IPluginsListener
+class L4D2Tools : public IPluginsListener
 {
 public:
-	NyxGame();
+	L4D2Tools();
 public:
 	virtual bool SDK_OnLoad(char *error, size_t maxlength, bool late);
 	virtual void SDK_OnUnload();
 	virtual void SDK_OnAllLoaded();
 	//virtual void SDK_OnPauseChange(bool paused);
 	//virtual bool QueryRunning(char *error, size_t maxlength);
-	virtual void OnCoreMapStart(edict_t *pEdictList, int edictCount, int clientMax);
+	//virtual void OnCoreMapStart(edict_t *pEdictList, int edictCount, int clientMax);
 public: //IPluginsListener
 	virtual void OnPluginLoaded(IPlugin *plugin);
 	virtual void OnPluginUnloaded(IPlugin *plugin);
@@ -27,7 +27,7 @@ private:
 	bool m_bDetoursEnabled;
 };
 
-extern NyxGame g_NyxGame;
+extern L4D2Tools g_L4D2Tools;
 
 extern void *g_pZombieManager;
 

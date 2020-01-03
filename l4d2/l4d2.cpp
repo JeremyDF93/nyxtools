@@ -1,15 +1,15 @@
 #include "l4d2/l4d2.h"
 #include "l4d2/detours.h"
 
-NyxGame g_NyxGame;
+L4D2Tools g_L4D2Tools;
 
 void *g_pZombieManager = NULL;
 
-NyxGame::NyxGame() :
+L4D2Tools::L4D2Tools() :
 m_bDetoursEnabled(false)
 {}
 
-bool NyxGame::SDK_OnLoad(char *error, size_t maxlength, bool late) {
+bool L4D2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
   plsys->AddPluginsListener(this);
 
   char conf_error[255] = "";
@@ -44,7 +44,7 @@ bool NyxGame::SDK_OnLoad(char *error, size_t maxlength, bool late) {
   return true;
 }
 
-void NyxGame::SDK_OnUnload() {
+void L4D2Tools::SDK_OnUnload() {
   g_pSM->LogMessage(myself, "Unloaded L4D2 Tools");
   gameconfs->CloseGameConfigFile(g_pGameConf);
 
@@ -55,11 +55,11 @@ void NyxGame::SDK_OnUnload() {
   forwards->ReleaseForward(g_pFwdSetHumanSpectator);
 }
 
-void NyxGame::SDK_OnAllLoaded() {
+void L4D2Tools::SDK_OnAllLoaded() {
   // TODO: stuff
 }
 
-void NyxGame::OnPluginLoaded(IPlugin *plugin) {
+void L4D2Tools::OnPluginLoaded(IPlugin *plugin) {
   if (!m_bDetoursEnabled) {
     g_pSM->LogMessage(myself, "Initiating L4D2 Detours");
     m_bDetoursEnabled = true;
@@ -67,7 +67,7 @@ void NyxGame::OnPluginLoaded(IPlugin *plugin) {
   }
 }
 
-void NyxGame::OnPluginUnloaded(IPlugin *plugin) {
+void L4D2Tools::OnPluginUnloaded(IPlugin *plugin) {
   if (m_bDetoursEnabled) {
     g_pSM->LogMessage(myself, "Disabling L4D2 Detours");
     m_bDetoursEnabled = false;

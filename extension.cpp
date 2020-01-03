@@ -1,9 +1,9 @@
+#include <ISDKTools.h>
 #include "extension.h"
-#include "ISDKTools.h"
-#if SOURCE_ENGINE == SE_LEFT4DEAD2
-# include "l4d2/l4d2.h"
-#elif SOURCE_ENGINE == SE_TF2
+#if SOURCE_ENGINE == SE_TF2
 # include "tf2/tf2.h"
+#elif SOURCE_ENGINE == SE_LEFT4DEAD2
+# include "l4d2/l4d2.h"
 #endif
 
 NyxTools g_Plugin;		/**< Global singleton for extension's main interface */
@@ -19,19 +19,31 @@ bool NyxTools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
   sharesys->RegisterLibrary(myself, "NyxTools");
   plsys->AddPluginsListener(this);
 
-  g_NyxGame.SDK_OnLoad(error, maxlength, late);
+#if SOURCE_ENGINE == SE_TF2
+  g_TF2Tools.SDK_OnLoad(error, maxlength, late);
+#elif SOURCE_ENGINE == SE_LEFT4DEAD2
+  g_L4D2Tools.SDK_OnLoad(error, maxlength, late);
+#endif
 
   return true;
 }
 
 void NyxTools::SDK_OnUnload() {
-  g_NyxGame.SDK_OnUnload();
+#if SOURCE_ENGINE == SE_TF2
+  g_TF2Tools.SDK_OnUnload();
+#elif SOURCE_ENGINE == SE_LEFT4DEAD2
+  g_L4D2Tools.SDK_OnUnload();
+#endif
 }
 
 void NyxTools::SDK_OnAllLoaded() {
   SM_GET_LATE_IFACE(SDKTOOLS, g_pSDKTools);
 
-  g_NyxGame.SDK_OnAllLoaded();
+#if SOURCE_ENGINE == SE_TF2
+  g_TF2Tools.SDK_OnAllLoaded();
+#elif SOURCE_ENGINE == SE_LEFT4DEAD2
+  g_L4D2Tools.SDK_OnAllLoaded();
+#endif
 }
 
 void NyxTools::OnPluginLoaded(IPlugin *plugin) {
@@ -50,6 +62,6 @@ bool NyxTools::SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool
 
 void NyxTools::OnCoreMapStart(edict_t *pEdictList, int edictCount, int clientMax) {
 #if SOURCE_ENGINE == SE_TF2
-  g_NyxGame.OnCoreMapStart(pEdictList, edictCount, clientMax);
+  g_TF2Tools.OnCoreMapStart(pEdictList, edictCount, clientMax);
 #endif
 }

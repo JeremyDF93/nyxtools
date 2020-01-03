@@ -6,11 +6,11 @@
  * @brief Sample extension code header.
  */
 
-#include "smsdk_ext.h"
+#include <smsdk_ext.h>
+#include <itoolentity.h>
+#include <IBinTools.h>
+#include <ISDKTools.h>
 #include "util.h"
-#include "itoolentity.h"
-#include "IBinTools.h"
-#include "ISDKTools.h"
 
 namespace SourceMod {
 	class ISDKTools;
