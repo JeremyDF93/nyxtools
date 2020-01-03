@@ -51,6 +51,7 @@ enum L4D2Team {
 native void L4D2_RespawnPlayer(int client);
 native void L4D2_WarpGhostToInitialPosition(int client, bool flag=true);
 native void L4D2_BecomeGhost(int client, bool flag=true);
+native void L4D2_CanBecomeGhost(int client, bool flag=true);
 native void L4D2_TakeOverBot(int client, bool flag=true);
 native void L4D2_TakeOverZombieBot(int bot, int client);
 native void L4D2_ReplaceWithBot(int client, bool flag=true);
