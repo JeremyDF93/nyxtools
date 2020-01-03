@@ -327,7 +327,7 @@ class ExtensionConfig(object):
       os.path.join(mms_path, 'sourcehook'),
     ]
 
-    defines = ['SE_' + sdk.define + '=' + sdk.code]
+    defines = ['SE_' + PossibleSDKs[i].define + '=' + PossibleSDKs[i].code for i in PossibleSDKs]
     compiler.defines += defines
 
     paths = [

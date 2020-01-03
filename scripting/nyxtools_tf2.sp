@@ -361,7 +361,8 @@ public Action ConCmd_RemoveCond(int client, int args) {
 
 public Action ConCmd_MvMTest(int client, int args) {
   bool enable = GetCmdBool(1);
-  bool result = TF2_SetUpgradesMode(enable);
+  bool revives = GetCmdBool(1);
+  bool result = TF2_SetUpgradesMode(enable, revives);
   NyxMsgReply(client, "TF2_SetUpgradesMode(%d) returned: %d", enable, result);
   return Plugin_Handled;
 }
