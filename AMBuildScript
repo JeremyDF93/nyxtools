@@ -224,6 +224,8 @@ class ExtensionConfig(object):
       cxx.cflags += ['-Wno-sometimes-uninitialized']
       if cxx.version >= cxx.version >= 'apple-clang-3.0' or 'clang-2.9':
         cxx.cxxflags += ['-Wno-null-dereference']
+      if cxx.version >= 'clang-3.9':
+        cxx.cxxflags += ['-Wno-expansion-to-defined']
 
     if have_gcc:
       cxx.cflags += ['-mfpmath=sse']

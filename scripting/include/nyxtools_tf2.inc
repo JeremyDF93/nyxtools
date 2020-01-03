@@ -22,6 +22,7 @@
 
 native void TF2_RemoveAllObjects(int client, bool flag=true);
 native int TF2_GetObjectCount(int client);
+native bool TF2_SetUpgradesMode(bool enabled);
 
 public SharedPlugin:__pl_nyxtools_tf2 = {
   name = "nyxtools_tf2",
@@ -215,3 +216,37 @@ stock TFClassType TF2_StringToClass(char[] str) {
 
   return TFClass_Unknown;
 }
+
+/***
+ *        __    _ __                         
+ *       / /   (_) /_  _________ ________  __
+ *      / /   / / __ \/ ___/ __ `/ ___/ / / /
+ *     / /___/ / /_/ / /  / /_/ / /  / /_/ / 
+ *    /_____/_/_.___/_/   \__,_/_/   \__, /  
+ *                                  /____/   
+ */
+
+public SharedPlugin:__pl_nyxtools_tf2 = {
+  name = "nyxtools_tf2",
+  file = "nyxtools_tf2.smx",
+#if defined REQUIRE_PLUGIN
+  required = 1,
+#else
+  required = 0,
+#endif
+};
+
+public Extension __ext_nyxtools_tf2 = {
+  name = "NyxTools",
+  file = "nyxtools.ext",
+#if defined AUTOLOAD_EXTENSIONS
+  autoload = 1,
+#else
+  autoload = 0,
+#endif
+#if defined REQUIRE_EXTENSIONS
+  required = 1,
+#else
+  required = 0,
+#endif
+};

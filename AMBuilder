@@ -6,11 +6,10 @@ projectName = 'nyxtools'
 # smsdk_ext.cpp will be automatically added later
 sourceFiles = [
   'extension.cpp',
-  'l4d2/l4d2.cpp',
-  'l4d2/detours.cpp',
   'util.cpp',
   'CDetour/detours.cpp',
-  'asm/asm.c'
+  'asm/asm.c',
+  'RegNatives.cpp',
 ]
 
 ###############
@@ -28,9 +27,26 @@ else:
 
 project.compiler.sourcedeps += Extension.generated_headers
 project.sources += sourceFiles
-  
+
+sources = project.sources
+
 for sdk_name in Extension.sdks:
   sdk = Extension.sdks[sdk_name]
+  
+  copy = sources.copy()
+  if sdk_name == 'l4d2':
+    copy += [
+      'l4d2/l4d2.cpp',
+      'l4d2/detours.cpp',
+    ]
+
+  if sdk_name == 'tf2':
+    copy += [
+      'tf2/tf2.cpp',
+      'tf2/detours.cpp',
+      'tf2/natives.cpp',
+    ]
+  project.sources = copy
   
   binary = Extension.HL2Config(project, projectName + '.ext.' + sdk.ext, sdk)
 

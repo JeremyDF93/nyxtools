@@ -21,7 +21,7 @@ DETOUR_DECL_MEMBER2(ReplaceTank, bool, CTerrorPlayer *, param_1, CTerrorPlayer *
 
   int client_1 = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_1));
 	int client_2 = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_2));
-  g_pSM->LogMessage(myself, "ReplaceTank(%d, %d)", client_1, client_2);
+  //g_pSM->LogMessage(myself, "ReplaceTank(%d, %d)", client_1, client_2);
 
   cell_t result = Pl_Continue;
   g_pFwdReplaceTank->PushCell(client_1);
@@ -42,7 +42,7 @@ DETOUR_DECL_MEMBER1(TakeOverBot, bool, bool, param_1) {
   }
 
   int client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(this));
-  g_pSM->LogMessage(myself, "CTerrorPlayer(%d)::TakeOverBot(%d)", client, param_1);
+  //g_pSM->LogMessage(myself, "CTerrorPlayer(%d)::TakeOverBot(%d)", client, param_1);
 
   cell_t result = Pl_Continue;
   g_pFwdTakeOverBot->PushCell(client);
@@ -65,7 +65,7 @@ DETOUR_DECL_MEMBER1(TakeOverZombieBot, void, CTerrorPlayer *, param_1) {
 
   int bot = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(this));
   int client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_1));
-  g_pSM->LogMessage(myself, "CTerrorPlayer(%d)::TakeOverZombieBot(%d)", bot, client);
+  //g_pSM->LogMessage(myself, "CTerrorPlayer(%d)::TakeOverZombieBot(%d)", bot, client);
 
   cell_t result = Pl_Continue;
   g_pFwdTakeOverZombieBot->PushCell(bot);
@@ -87,7 +87,7 @@ DETOUR_DECL_MEMBER1(ReplaceWithBot, bool, bool, param_1) {
   }
 
   int client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(this));
-  g_pSM->LogMessage(myself, "CTerrorPlayer(%d)::ReplaceWithBot(%d)", client, param_1);
+  //g_pSM->LogMessage(myself, "CTerrorPlayer(%d)::ReplaceWithBot(%d)", client, param_1);
 
   cell_t result = Pl_Continue;
   g_pFwdReplaceWithBot->PushCell(client);
@@ -109,7 +109,7 @@ DETOUR_DECL_MEMBER1(SetHumanSpectator, bool, CTerrorPlayer *, param_1) {
 
   int bot = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(this));
   int client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_1));
-  g_pSM->LogMessage(myself, "SurvivorBot(%d)::SetHumanSpectator(%d)", bot, client);
+  //g_pSM->LogMessage(myself, "SurvivorBot(%d)::SetHumanSpectator(%d)", bot, client);
 
   cell_t result = Pl_Continue;
   g_pFwdSetHumanSpectator->PushCell(bot);

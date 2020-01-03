@@ -1,5 +1,6 @@
 #pragma semicolon 1
 #include <sourcemod>
+#define NYX_DEBUG 2
 #include <nyxtools>
 #include <nyxtools_tf2>
 
@@ -67,6 +68,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_regen", ConCmd_Regenerate, ADMFLAG_SLAY, "Usage: nyx_regen <#userid|name>");
   RegAdminCmd("nyx_addcond", ConCmd_AddCond, ADMFLAG_CHEATS, "Usage: nyx_addcond <#userid|name> <cond>");
   RegAdminCmd("nyx_removecond", ConCmd_RemoveCond, ADMFLAG_CHEATS, "Usage: nyx_removecond <#userid|name> <cond>");
+  RegAdminCmd("nyx_mvm", ConCmd_MvMTest, ADMFLAG_CHEATS);
 
   // game config
   g_hGameConf = LoadGameConfigFile("nyxtools.tf2");
@@ -354,5 +356,12 @@ public Action ConCmd_RemoveCond(int client, int args) {
   }
   NyxAct(client, "Regenerated %s", target_name);
 
+  return Plugin_Handled;
+}
+
+public Action ConCmd_MvMTest(int client, int args) {
+  bool enable = GetCmdBool(1);
+  bool result = TF2_SetUpgradesMode(enable);
+  NyxMsgReply(client, "TF2_SetUpgradesMode(%d) returned: %d", enable, result);
   return Plugin_Handled;
 }

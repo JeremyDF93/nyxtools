@@ -1,7 +1,9 @@
-#ifndef _INCLUDE_NYXTOOLS_L4D2_H_
-#define _INCLUDE_NYXTOOLS_L4D2_H_
+#ifndef _INCLUDE_NYXTOOLS_TF2_H_
+#define _INCLUDE_NYXTOOLS_TF2_H_
 
 #include "extension.h"
+#include "IGameHelpers.h"
+#include "ISDKTools.h"
 
 class NyxGame : public IPluginsListener
 {
@@ -29,6 +31,12 @@ private:
 
 extern NyxGame g_NyxGame;
 
-extern void *g_pZombieManager;
+extern void *gamerules;
+extern int g_iPlayingMannVsMachineOffs;
+extern bool g_bUpgradesEnabled;
 
-#endif // _INCLUDE_NYXTOOLS_L4D2_H_
+CBaseEntity *FindEntityByClassname(const char *classname);
+bool CreateUpgrades();
+void DestroyUpgrades();
+
+#endif // _INCLUDE_NYXTOOLS_TF2_H_

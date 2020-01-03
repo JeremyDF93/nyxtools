@@ -55,6 +55,10 @@ void NyxGame::SDK_OnUnload() {
   forwards->ReleaseForward(g_pFwdSetHumanSpectator);
 }
 
+void NyxGame::SDK_OnAllLoaded() {
+  // TODO: stuff
+}
+
 void NyxGame::OnPluginLoaded(IPlugin *plugin) {
   if (!m_bDetoursEnabled) {
     g_pSM->LogMessage(myself, "Initiating L4D2 Detours");
