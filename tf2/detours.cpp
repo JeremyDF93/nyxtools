@@ -11,7 +11,7 @@ IForward *g_pFwdEventKilled = NULL;
 class CTakeDamageInfo;
 
 DETOUR_DECL_MEMBER1(EventKilled, void, CTakeDamageInfo const&, info) {
-  if (!g_bUpgradesEnabled && !g_bReviveEnabled) {
+  if (!g_bUpgradesEnabled || !g_bReviveEnabled) {
     DETOUR_MEMBER_CALL(EventKilled)(info);
     return;
   }
@@ -81,7 +81,7 @@ void CreateDetours() {
     g_pSM->LogError(myself, "Failed to get signature for CTFGameRules::GameModeUsesUpgrades");
   }
   
-  Detour_ClientCommandKeyValues = DETOUR_CREATE_MEMBER(ClientCommandKeyValues, "CServerGameClients::GameModeUsesUpgrades");
+  Detour_ClientCommandKeyValues = DETOUR_CREATE_MEMBER(ClientCommandKeyValues, "CServerGameClients::ClientCommandKeyValues");
 	if (Detour_ClientCommandKeyValues != NULL) {
 		Detour_ClientCommandKeyValues->EnableDetour();
 	} else {

@@ -68,7 +68,9 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_regen", ConCmd_Regenerate, ADMFLAG_SLAY, "Usage: nyx_regen <#userid|name>");
   RegAdminCmd("nyx_addcond", ConCmd_AddCond, ADMFLAG_CHEATS, "Usage: nyx_addcond <#userid|name> <cond>");
   RegAdminCmd("nyx_removecond", ConCmd_RemoveCond, ADMFLAG_CHEATS, "Usage: nyx_removecond <#userid|name> <cond>");
-  RegAdminCmd("nyx_mvm", ConCmd_MvMTest, ADMFLAG_CHEATS);
+  RegAdminCmd("nyx_upgrades", ConCmd_Upgrades, ADMFLAG_CHEATS);
+
+  HookEvent("post_inventory_application", Event_PostInventoryApplication);
 
   // game config
   g_hGameConf = LoadGameConfigFile("nyxtools.tf2");
@@ -110,6 +112,26 @@ public int Native_GetObjectCount(Handle plugin, int numArgs) {
   }
 
   return SDKCall(g_hSDKCall[SDK_GetObjectCount], client);
+}
+
+/***
+ *        ______                 __      
+ *       / ____/   _____  ____  / /______
+ *      / __/ | | / / _ \/ __ \/ __/ ___/
+ *     / /___ | |/ /  __/ / / / /_(__  ) 
+ *    /_____/ |___/\___/_/ /_/\__/____/  
+ *                                       
+ */
+
+public Action Event_PostInventoryApplication(Event event, const char[] name, bool dontBroadcast) {
+  if (!TF2_IsUpgradesEnabled()) return Plugin_Continue;
+  
+  int client = GetClientOfUserId(event.GetInt("userid"));
+  if (!GetEntProp(client, Prop_Send, "m_bInUpgradeZone")) {
+    SetEntProp(client, Prop_Send, "m_bInUpgradeZone", 1);
+  }
+
+  return Plugin_Continue;
 }
 
 /***
@@ -359,10 +381,21 @@ public Action ConCmd_RemoveCond(int client, int args) {
   return Plugin_Handled;
 }
 
-public Action ConCmd_MvMTest(int client, int args) {
+/***
+ *       ______                                          __    
+ *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /____
+ *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  / ___/
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  ) 
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/  
+ *                                                             
+ */
+
+public Action ConCmd_Upgrades(int client, int args) {
   bool enable = GetCmdBool(1);
   bool revives = GetCmdBool(2);
   bool result = TF2_SetUpgradesMode(enable, revives);
-  NyxMsgReply(client, "TF2_SetUpgradesMode(%d) returned: %d", enable, result);
+  NyxMsgReply(client, "Upgrades are %s", enable && result ? "enabled" : "disabled");
+  NyxMsgReply(client, "Revives are %s", revives ? "enabled" : "disabled");
+
   return Plugin_Handled;
 }
