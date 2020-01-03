@@ -75,6 +75,11 @@
         "library"			"server"
         "linux"				"@_ZN13ZombieManager11ReplaceTankEP13CTerrorPlayerS1_"
       }
+      "CTerrorPlayer::WarpGhostToInitialPosition"
+      {
+        "library"			"server"
+        "linux"				"@_ZN13CTerrorPlayer26WarpGhostToInitialPositionEb"
+      }
     }
   }
 }

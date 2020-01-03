@@ -32,7 +32,8 @@ enum NyxSDK {
   Handle:SDK_SetHumanSpectator,
   Handle:SDK_ChangeTeam,
   Handle:SDK_SetClass,
-  Handle:SDK_CreateAbility
+  Handle:SDK_CreateAbility,
+  Handle:SDK_WarpGhostToInitialPosition
 }
 
 /***
@@ -65,6 +66,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   RegPluginLibrary("nyxtools_l4d2");
 
   CreateNative("L4D2_RespawnPlayer", Native_RespawnPlayer);
+  CreateNative("L4D2_WarpGhostToInitialPosition", Native_WarpGhostToInitialPosition);
   CreateNative("L4D2_TakeOverBot", Native_TakeOverBot);
   CreateNative("L4D2_TakeOverZombieBot", Native_TakeOverZombieBot);
   CreateNative("L4D2_ReplaceWithBot", Native_ReplaceWithBot);
@@ -90,6 +92,12 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::RoundRespawn");
   g_hSDKCall[SDK_RoundRespawn] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_RoundRespawn] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::RoundRespawn");
+  
+  StartPrepSDKCall(SDKCall_Player);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::WarpGhostToInitialPosition");
+  PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
+  g_hSDKCall[SDK_WarpGhostToInitialPosition] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_WarpGhostToInitialPosition] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpGhostToInitialPosition");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverBot");
@@ -191,6 +199,16 @@ public int Native_RespawnPlayer(Handle plugin, int numArgs) {
   }
 
   return SDKCall(g_hSDKCall[SDK_RoundRespawn], client);
+}
+
+public int Native_WarpGhostToInitialPosition(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  bool flag = GetNativeCell(2);
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  return SDKCall(g_hSDKCall[SDK_WarpGhostToInitialPosition], client, flag);
 }
 
 public int Native_TakeOverBot(Handle plugin, int numArgs) {
