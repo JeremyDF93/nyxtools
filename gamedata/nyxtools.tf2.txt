@@ -6,33 +6,33 @@
     {
       "CTFPlayer::GetObjectCount"
       {
-        "library"			"server"
-        "linux"				"@_ZNK9CTFPlayer14GetObjectCountEv"
+        "library"      "server"
+        "linux"        "@_ZNK9CTFPlayer14GetObjectCountEv"
       }
       "CTFPlayer::RemoveAllObjects"
       {
-        "library"			"server"
-        "linux"				"@_ZN9CTFPlayer16RemoveAllObjectsEb"
+        "library"      "server"
+        "linux"        "@_ZN9CTFPlayer16RemoveAllObjectsEb"
       }
       "CTFPlayer::Event_Killed"
       {
-        "library"			"server"
-        "linux"				"@_ZN9CTFPlayer12Event_KilledERK15CTakeDamageInfo"
+        "library"      "server"
+        "linux"        "@_ZN9CTFPlayer12Event_KilledERK15CTakeDamageInfo"
       }
       "CPopulationManager::CycleMission"
       {
-        "library"			"server"
-        "linux"				"@_ZN18CPopulationManager12CycleMissionEv"
+        "library"      "server"
+        "linux"        "@_ZN18CPopulationManager12CycleMissionEv"
       }
       "CTFGameRules::GameModeUsesUpgrades"
       {
-        "library"			"server"
-        "linux"				"@_ZN12CTFGameRules20GameModeUsesUpgradesEv"
+        "library"      "server"
+        "linux"        "@_ZN12CTFGameRules20GameModeUsesUpgradesEv"
       }
       "CServerGameClients::ClientCommandKeyValues"
       {
-        "library"			"server"
-        "linux"				"@_ZN18CServerGameClients22ClientCommandKeyValuesEP7edict_tP9KeyValues"
+        "library"      "server"
+        "linux"        "@_ZN18CServerGameClients22ClientCommandKeyValuesEP7edict_tP9KeyValues"
       }
     }
   }

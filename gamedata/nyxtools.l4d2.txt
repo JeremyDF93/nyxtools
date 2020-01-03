@@ -8,8 +8,8 @@
       {
         "linux"
         {
-          "signature"				"TheZombieManager"
-          "read"		      	"0"
+          "signature"        "TheZombieManager"
+          "read"            "0"
         }
       }
     }
@@ -22,88 +22,88 @@
       }
       "CTerrorPlayer::RoundRespawn"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer12RoundRespawnEv"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer12RoundRespawnEv"
       }
       "CTerrorPlayer::TakeOverBot"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer11TakeOverBotEb"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer11TakeOverBotEb"
       }
       "CTerrorPlayer::TakeOverZombieBot"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer17TakeOverZombieBotEPS_"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer17TakeOverZombieBotEPS_"
       }
       "CTerrorPlayer::ReplaceWithBot"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer14ReplaceWithBotEb"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer14ReplaceWithBotEb"
       }
       "SurvivorBot::SetHumanSpectator"
       {
-        "library"			"server"
-        "linux"				"@_ZN11SurvivorBot17SetHumanSpectatorEP13CTerrorPlayer"
+        "library"      "server"
+        "linux"        "@_ZN11SurvivorBot17SetHumanSpectatorEP13CTerrorPlayer"
       }
       "CTerrorPlayer::ChangeTeam"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer10ChangeTeamEi"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer10ChangeTeamEi"
       }
       "CTerrorPlayer::SetClass"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer8SetClassE15ZombieClassType"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer8SetClassE15ZombieClassType"
       }
       "CBaseAbility::CreateForPlayer"
       {
-        "library"			"server"
-        "linux"				"@_ZN12CBaseAbility15CreateForPlayerEP13CTerrorPlayer"
+        "library"      "server"
+        "linux"        "@_ZN12CBaseAbility15CreateForPlayerEP13CTerrorPlayer"
       }
       "CDirectorItemManager::IsMeleeWeaponAllowedToExist"
       {
-        "library"			"server"
-        "linux"				"@_ZN20CDirectorItemManager27IsMeleeWeaponAllowedToExistEPKc"
+        "library"      "server"
+        "linux"        "@_ZN20CDirectorItemManager27IsMeleeWeaponAllowedToExistEPKc"
       }
       "CDirectorItemManager::IsWeaponAllowedToExist"
       {
-        "library"			"server"
-        "linux"				"@_ZN20CDirectorItemManager22IsWeaponAllowedToExistE10CSWeaponID"
+        "library"      "server"
+        "linux"        "@_ZN20CDirectorItemManager22IsWeaponAllowedToExistE10CSWeaponID"
       }
       "ZombieManager::ReplaceTank"
       {
-        "library"			"server"
-        "linux"				"@_ZN13ZombieManager11ReplaceTankEP13CTerrorPlayerS1_"
+        "library"      "server"
+        "linux"        "@_ZN13ZombieManager11ReplaceTankEP13CTerrorPlayerS1_"
       }
       "CTerrorPlayer::WarpGhostToInitialPosition"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer26WarpGhostToInitialPositionEb"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer26WarpGhostToInitialPositionEb"
       }
       "CTerrorPlayer::BecomeGhost"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer11BecomeGhostEb"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer11BecomeGhostEb"
       }
       "CTerrorPlayer::CanBecomeGhost"
       {
-        "library"			"server"
-        "linux"				"@_ZN13CTerrorPlayer14CanBecomeGhostEb"
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer14CanBecomeGhostEb"
       }
       "CTerrorGameRules::IsMissionFinalMap"
       {
-        "library"			"server"
-        "linux"				"@_ZN16CTerrorGameRules17IsMissionFinalMapEv"
+        "library"      "server"
+        "linux"        "@_ZN16CTerrorGameRules17IsMissionFinalMapEv"
       }
       "CDirector::OnFirstSurvivorLeftSafeArea"
       {
-        "library"			"server"
-        "linux"				"@_ZN9CDirector27OnFirstSurvivorLeftSafeAreaEP13CTerrorPlayer"
+        "library"      "server"
+        "linux"        "@_ZN9CDirector27OnFirstSurvivorLeftSafeAreaEP13CTerrorPlayer"
       }
       "CDirectorVersusMode::EndVersusModeRound"
       {
-        "library"			"server"
-        "linux"				"@_ZN19CDirectorVersusMode18EndVersusModeRoundEb"
+        "library"      "server"
+        "linux"        "@_ZN19CDirectorVersusMode18EndVersusModeRoundEb"
       }
     }
   }
