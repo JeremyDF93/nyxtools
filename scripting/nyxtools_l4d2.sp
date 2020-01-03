@@ -85,6 +85,10 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart() {
   LoadTranslations("common.phrases");
+  LoadTranslations("nyxtools.phrases");
+
+  AddMultiTargetFilter("@survivors", MultiTargetFilter_Survivors, "survivors", true);  
+  AddMultiTargetFilter("@infected", MultiTargetFilter_Infected, "infected", true);  
 
   RegAdminCmd("nyx_respawn", ConCmd_Respawn, ADMFLAG_SLAY, "Usage: nyx_respawn <#userid|name>");
   RegAdminCmd("nyx_takeoverbot", ConCmd_TakeOverBot, ADMFLAG_SLAY, "Usage: nyx_takeoverbot <#userid|name>");
@@ -346,6 +350,33 @@ public int Native_SetInfectedClass(Handle plugin, int numArgs) {
 
 public int Native_IsMissionFinalMap(Handle plugin, int numArgs) {
   return SDKCall(g_hSDKCall[SDK_IsMissionFinalMap]);
+}
+
+/***
+ *        __  ___      ____  _ ______                      __  _______ ____           
+ *       /  |/  /_  __/ / /_(_)_  __/___ __________ ____  / /_/ ____(_) / /____  _____
+ *      / /|_/ / / / / / __/ / / / / __ `/ ___/ __ `/ _ \/ __/ /_  / / / __/ _ \/ ___/
+ *     / /  / / /_/ / / /_/ / / / / /_/ / /  / /_/ /  __/ /_/ __/ / / / /_/  __/ /    
+ *    /_/  /_/\__,_/_/\__/_/ /_/  \__,_/_/   \__, /\___/\__/_/   /_/_/\__/\___/_/     
+ *                                          /____/                                    
+ */
+
+public bool MultiTargetFilter_Survivors(const char[] pattern, Handle clients) {
+  for (int i = 1; i <= MaxClients; i++) {
+    if (!IsPlayerSurvivor(i)) continue;
+    PushArrayCell(clients, i);
+  }
+
+  return true;
+}
+
+public bool MultiTargetFilter_Infected(const char[] pattern, Handle clients) {
+  for (int i = 1; i <= MaxClients; i++) {
+    if (!IsPlayerInfected(i)) continue;
+    PushArrayCell(clients, i);
+  }
+
+  return true;
 }
 
 /***
