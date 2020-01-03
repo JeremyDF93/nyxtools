@@ -63,13 +63,13 @@ DETOUR_DECL_MEMBER1(TakeOverZombieBot, void, CTerrorPlayer *, param_1) {
     return;
   }
 
-  int bot = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(this));
-  int client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_1));
+  int client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(this));
+  int bot = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_1));
   //g_pSM->LogMessage(myself, "CTerrorPlayer(%d)::TakeOverZombieBot(%d)", bot, client);
 
   cell_t result = Pl_Continue;
-  g_pFwdTakeOverZombieBot->PushCell(bot);
   g_pFwdTakeOverZombieBot->PushCell(client);
+  g_pFwdTakeOverZombieBot->PushCell(bot);
   g_pFwdTakeOverZombieBot->Execute(&result);
 
   if (result == Pl_Continue) {

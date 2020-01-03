@@ -26,7 +26,7 @@ static cell_t TF2_IsUpgradesEnabled(IPluginContext *pContext, const cell_t *para
 }
 
 sp_nativeinfo_t g_NYXNatives[] = {
-	{"TF2_SetUpgradesMode",			  TF2_SetUpgradesMode},
-	{"TF2_IsUpgradesEnabled",			TF2_IsUpgradesEnabled},
-	{NULL,							          NULL}
+  {"TF2_SetUpgradesMode",       TF2_SetUpgradesMode},
+  {"TF2_IsUpgradesEnabled",     TF2_IsUpgradesEnabled},
+  {NULL,                        NULL}
 };

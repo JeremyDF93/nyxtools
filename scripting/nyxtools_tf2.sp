@@ -68,9 +68,9 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_regen", ConCmd_Regenerate, ADMFLAG_SLAY, "Usage: nyx_regen <#userid|name>");
   RegAdminCmd("nyx_addcond", ConCmd_AddCond, ADMFLAG_CHEATS, "Usage: nyx_addcond <#userid|name> <cond>");
   RegAdminCmd("nyx_removecond", ConCmd_RemoveCond, ADMFLAG_CHEATS, "Usage: nyx_removecond <#userid|name> <cond>");
-  RegAdminCmd("nyx_upgrades", ConCmd_Upgrades, ADMFLAG_CHEATS);
+  //RegAdminCmd("nyx_upgrades", ConCmd_Upgrades, ADMFLAG_CHEATS);
 
-  HookEvent("post_inventory_application", Event_PostInventoryApplication);
+  //HookEvent("post_inventory_application", Event_PostInventoryApplication);
 
   // game config
   g_hGameConf = LoadGameConfigFile("nyxtools.tf2");
