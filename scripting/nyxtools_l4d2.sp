@@ -57,6 +57,11 @@ Handle g_hSDKCall[NyxSDK];
  */
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
+  EngineVersion engine = GetEngineVersion();
+  if (engine != Engine_Left4Dead2) {
+    strcopy(error, err_max, "nyxtools_l4d2 is incompatible with this game");
+    return APLRes_SilentFailure;
+  }
   RegPluginLibrary("nyxtools_l4d2");
 
   CreateNative("L4D2_RespawnPlayer", Native_RespawnPlayer);

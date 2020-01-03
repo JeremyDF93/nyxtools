@@ -50,6 +50,11 @@ Handle g_hSDKCall[NyxSDK];
  */
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
+  EngineVersion engine = GetEngineVersion();
+  if (engine != Engine_TF2) {
+    strcopy(error, err_max, "nyxtools_tf2 is incompatible with this game");
+    return APLRes_SilentFailure;
+  }
   RegPluginLibrary("nyxtools_tf2");
 
   CreateNative("TF2_RemoveAllObjects", Native_RemoveAllObjects);
