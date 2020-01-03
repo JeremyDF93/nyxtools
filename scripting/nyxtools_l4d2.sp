@@ -35,7 +35,8 @@ enum NyxSDK {
   Handle:SDK_CreateAbility,
   Handle:SDK_WarpGhostToInitialPosition,
   Handle:SDK_BecomeGhost,
-  Handle:SDK_CanBecomeGhost
+  Handle:SDK_CanBecomeGhost,
+  Handle:SDK_IsMissionFinalMap,
 }
 
 /***
@@ -77,6 +78,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   CreateNative("L4D2_SetHumanSpectator", Native_SetHumanSpectator);
   CreateNative("L4D2_ChangeTeam", Native_ChangeTeam);
   CreateNative("L4D2_SetInfectedClass", Native_SetInfectedClass);
+  CreateNative("L4D2_IsMissionFinalMap", Native_IsMissionFinalMap);
 
   return APLRes_Success;
 }
@@ -156,7 +158,12 @@ public void OnPluginStart() {
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   PrepSDKCall_SetReturnInfo(SDKType_CBaseEntity, SDKPass_Pointer);
   g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
-  if(g_hSDKCall[SDK_CreateAbility] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CBaseAbility::CreateForPlayer");
+  if (g_hSDKCall[SDK_CreateAbility] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CBaseAbility::CreateForPlayer");
+
+  StartPrepSDKCall(SDKCall_GameRules);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorGameRules::IsMissionFinalMap");
+  g_hSDKCall[SDK_IsMissionFinalMap] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_IsMissionFinalMap] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorGameRules::IsMissionFinalMap");
 }
 
 /*
@@ -335,6 +342,10 @@ public int Native_SetInfectedClass(Handle plugin, int numArgs) {
   SetEntProp(client, Prop_Send, "m_customAbility", GetEntData(ent, offs));
 
   return true;
+}
+
+public int Native_IsMissionFinalMap(Handle plugin, int numArgs) {
+  return SDKCall(g_hSDKCall[SDK_IsMissionFinalMap]);
 }
 
 /***
