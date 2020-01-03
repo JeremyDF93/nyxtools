@@ -95,6 +95,16 @@
         "library"			"server"
         "linux"				"@_ZN16CTerrorGameRules17IsMissionFinalMapEv"
       }
+      "CDirector::OnFirstSurvivorLeftSafeArea"
+      {
+        "library"			"server"
+        "linux"				"@_ZN9CDirector27OnFirstSurvivorLeftSafeAreaEP13CTerrorPlayer"
+      }
+      "CDirectorVersusMode::EndVersusModeRound"
+      {
+        "library"			"server"
+        "linux"				"@_ZN19CDirectorVersusMode18EndVersusModeRoundEb"
+      }
     }
   }
 }

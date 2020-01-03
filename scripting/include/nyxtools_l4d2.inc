@@ -64,6 +64,8 @@ forward Action L4D2_OnTakeOverBot(int bot, bool flag);
 forward Action L4D2_OnTakeOverZombieBot(int client, int bot);
 forward Action L4D2_OnReplaceWithBot(int client, bool flag);
 forward Action L4D2_OnSetHumanSpectator(int bot, int client);
+forward Action L4D2_OnFirstSurvivorLeftSafeArea(int client);
+forward Action L4D2_OnEndVersusModeRound(bool flag);
 
 #if !defined REQUIRE_PLUGIN
 public __pl_nyxtools_l4d2_SetNTVOptional() {

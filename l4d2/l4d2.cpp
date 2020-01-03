@@ -39,6 +39,10 @@ bool L4D2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
       ET_Event, 2, NULL, Param_Cell, Param_Cell);
   g_pFwdSetHumanSpectator = forwards->CreateForward("L4D2_OnSetHumanSpectator", 
       ET_Event, 2, NULL, Param_Cell, Param_Cell);
+  g_pFwdOnFirstSurvivorLeftSafeArea = forwards->CreateForward("L4D2_OnFirstSurvivorLeftSafeArea", 
+      ET_Event, 1, NULL, Param_Cell);
+  g_pFwdEndVersusModeRound = forwards->CreateForward("L4D2_OnEndVersusModeRound", 
+      ET_Event, 1, NULL, Param_Cell);
 
   g_pSM->LogMessage(myself, "Loaded L4D2 Tools");
   return true;
@@ -53,6 +57,8 @@ void L4D2Tools::SDK_OnUnload() {
   forwards->ReleaseForward(g_pFwdTakeOverZombieBot);
   forwards->ReleaseForward(g_pFwdReplaceWithBot);
   forwards->ReleaseForward(g_pFwdSetHumanSpectator);
+  forwards->ReleaseForward(g_pFwdOnFirstSurvivorLeftSafeArea);
+  forwards->ReleaseForward(g_pFwdEndVersusModeRound);
 }
 
 void L4D2Tools::SDK_OnAllLoaded() {
