@@ -6,14 +6,14 @@
 # include "l4d2/l4d2.h"
 #endif
 
-NyxTools g_Plugin;		/**< Global singleton for extension's main interface */
+NyxTools g_Plugin;
 SMEXT_LINK(&g_Plugin);
 
-IBinTools *g_pBinTools = NULL;
-IGameConfig *g_pGameConf = NULL;
-IServerGameEnts *gameents = NULL;
-IServerTools *servertools = NULL;
-ISDKTools *g_pSDKTools = NULL;
+IBinTools *g_pBinTools = nullptr;
+IGameConfig *g_pGameConf = nullptr;
+IServerGameEnts *gameents = nullptr;
+IServerTools *servertools = nullptr;
+ISDKTools *g_pSDKTools = nullptr;
 
 bool NyxTools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
   sharesys->RegisterLibrary(myself, "NyxTools");
