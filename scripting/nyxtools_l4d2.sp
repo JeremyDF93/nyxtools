@@ -164,8 +164,9 @@ public void OnPluginStart() {
   g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_CreateAbility] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CBaseAbility::CreateForPlayer");
 
-  StartPrepSDKCall(SDKCall_GameRules);
+  StartPrepSDKCall(SDKCall_Static);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorGameRules::IsMissionFinalMap");
+  PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
   g_hSDKCall[SDK_IsMissionFinalMap] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_IsMissionFinalMap] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorGameRules::IsMissionFinalMap");
 }
