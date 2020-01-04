@@ -228,4 +228,6 @@ void DestroyDetours() {
   Detour_TakeOverZombieBot->Destroy();
   Detour_ReplaceWithBot->Destroy();
   Detour_SetHumanSpectator->Destroy();
+  Detour_OnFirstSurvivorLeftSafeArea->Destroy();
+  Detour_EndVersusModeRound->Destroy();
 }
