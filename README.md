@@ -27,13 +27,24 @@ bool HasCheatPermissions(int client);
 ```
 ### NyxTools - L4D2 (Linux Support Only)
 ```c
-void L4D2_RespawnPlayer(int client);
-void L4D2_TakeOverBot(int client, bool flag=true);
-void L4D2_TakeOverZombieBot(int bot, int client);
-void L4D2_ReplaceWithBot(int client, bool flag=true);
-void L4D2_SetHumanSpectator(int bot, int client);
-void L4D2_ChangeTeam(int client, int team);
-void L4D2_SetInfectedClass(int client, L4D2ClassType class);
+native void L4D2_RespawnPlayer(int client);
+native void L4D2_WarpGhostToInitialPosition(int client, bool flag=true);
+native void L4D2_BecomeGhost(int client, bool flag=true);
+native bool L4D2_CanBecomeGhost(int client, bool flag=true);
+native void L4D2_TakeOverBot(int client, bool flag=true);
+native void L4D2_TakeOverZombieBot(int bot, int client);
+native void L4D2_ReplaceWithBot(int client, bool flag=true);
+native void L4D2_SetHumanSpectator(int bot, int client);
+native void L4D2_ChangeTeam(int client, int team);
+native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
+native bool L4D2_IsMissionFinalMap();
+forward Action L4D2_OnReplaceTank(int client_1, int client_2);
+forward Action L4D2_OnTakeOverBot(int bot, bool flag);
+forward Action L4D2_OnTakeOverZombieBot(int client, int bot);
+forward Action L4D2_OnReplaceWithBot(int client, bool flag);
+forward Action L4D2_OnSetHumanSpectator(int bot, int client);
+forward Action L4D2_OnFirstSurvivorLeftSafeArea(int client);
+forward Action L4D2_OnEndVersusModeRound(bool flag);
 ```
 ### NyxTools - TF2 (Linux Support Only)
 ```c
