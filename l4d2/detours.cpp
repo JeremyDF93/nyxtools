@@ -1,20 +1,20 @@
 #include "detours.h"
 
-CDetour *Detour_ReplaceTank = NULL;
-CDetour *Detour_TakeOverBot = NULL;
-CDetour *Detour_TakeOverZombieBot = NULL;
-CDetour *Detour_ReplaceWithBot = NULL;
-CDetour *Detour_SetHumanSpectator = NULL;
-CDetour *Detour_OnFirstSurvivorLeftSafeArea = NULL;
-CDetour *Detour_EndVersusModeRound = NULL;
+CDetour *Detour_ReplaceTank = nullptr;
+CDetour *Detour_TakeOverBot = nullptr;
+CDetour *Detour_TakeOverZombieBot = nullptr;
+CDetour *Detour_ReplaceWithBot = nullptr;
+CDetour *Detour_SetHumanSpectator = nullptr;
+CDetour *Detour_OnFirstSurvivorLeftSafeArea = nullptr;
+CDetour *Detour_EndVersusModeRound = nullptr;
 
-IForward *g_pFwdReplaceTank = NULL;
-IForward *g_pFwdTakeOverBot = NULL;
-IForward *g_pFwdTakeOverZombieBot = NULL;
-IForward *g_pFwdReplaceWithBot = NULL;
-IForward *g_pFwdSetHumanSpectator = NULL;
-IForward *g_pFwdOnFirstSurvivorLeftSafeArea = NULL;
-IForward *g_pFwdEndVersusModeRound = NULL;
+IForward *g_pFwdReplaceTank = nullptr;
+IForward *g_pFwdTakeOverBot = nullptr;
+IForward *g_pFwdTakeOverZombieBot = nullptr;
+IForward *g_pFwdReplaceWithBot = nullptr;
+IForward *g_pFwdSetHumanSpectator = nullptr;
+IForward *g_pFwdOnFirstSurvivorLeftSafeArea = nullptr;
+IForward *g_pFwdEndVersusModeRound = nullptr;
 
 // Is return void?
 DETOUR_DECL_MEMBER2(ReplaceTank, bool, CTerrorPlayer *, param_1, CTerrorPlayer *, param_2) {
@@ -80,8 +80,7 @@ DETOUR_DECL_MEMBER1(TakeOverZombieBot, void, CTerrorPlayer *, param_1) {
     DETOUR_MEMBER_CALL(TakeOverZombieBot)(param_1);
   }
 
-  return;
-}
+  }
 
 // Not a void
 DETOUR_DECL_MEMBER1(ReplaceWithBot, bool, bool, param_1) {
@@ -148,8 +147,7 @@ DETOUR_DECL_MEMBER1(OnFirstSurvivorLeftSafeArea, void, CTerrorPlayer *, param_1)
     return;
   }
 
-  return;
-}
+  }
 
 DETOUR_DECL_MEMBER1(EndVersusModeRound, void, bool, param_1) {
   if (!g_pFwdEndVersusModeRound) {
@@ -168,54 +166,53 @@ DETOUR_DECL_MEMBER1(EndVersusModeRound, void, bool, param_1) {
     return;
   }
 
-  return;
-}
+  }
 
 void CreateDetours() {
   Detour_ReplaceTank = DETOUR_CREATE_MEMBER(ReplaceTank, "ZombieManager::ReplaceTank");
-	if (Detour_ReplaceTank != NULL) {
+	if (Detour_ReplaceTank != nullptr) {
 		Detour_ReplaceTank->EnableDetour();
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for ZombieManager::ReplaceTank");
   }
 
   Detour_TakeOverBot = DETOUR_CREATE_MEMBER(TakeOverBot, "CTerrorPlayer::TakeOverBot");
-	if (Detour_TakeOverBot != NULL) {
+	if (Detour_TakeOverBot != nullptr) {
 		Detour_TakeOverBot->EnableDetour();
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::TakeOverBot");
   }
   
   Detour_TakeOverZombieBot = DETOUR_CREATE_MEMBER(TakeOverZombieBot, "CTerrorPlayer::TakeOverZombieBot");
-	if (Detour_TakeOverZombieBot != NULL) {
+	if (Detour_TakeOverZombieBot != nullptr) {
 		Detour_TakeOverZombieBot->EnableDetour();
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::TakeOverZombieBot");
   }
   
   Detour_ReplaceWithBot = DETOUR_CREATE_MEMBER(ReplaceWithBot, "CTerrorPlayer::ReplaceWithBot");
-	if (Detour_ReplaceWithBot != NULL) {
+	if (Detour_ReplaceWithBot != nullptr) {
 		Detour_ReplaceWithBot->EnableDetour();
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::ReplaceWithBot");
   }
   
   Detour_SetHumanSpectator = DETOUR_CREATE_MEMBER(SetHumanSpectator, "SurvivorBot::SetHumanSpectator");
-	if (Detour_SetHumanSpectator != NULL) {
+	if (Detour_SetHumanSpectator != nullptr) {
 		Detour_SetHumanSpectator->EnableDetour();
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::SetHumanSpectator");
   }
   
   Detour_OnFirstSurvivorLeftSafeArea = DETOUR_CREATE_MEMBER(OnFirstSurvivorLeftSafeArea, "CDirector::OnFirstSurvivorLeftSafeArea");
-	if (Detour_OnFirstSurvivorLeftSafeArea != NULL) {
+	if (Detour_OnFirstSurvivorLeftSafeArea != nullptr) {
 		Detour_OnFirstSurvivorLeftSafeArea->EnableDetour();
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for CDirector::OnFirstSurvivorLeftSafeArea");
   }
   
   Detour_EndVersusModeRound = DETOUR_CREATE_MEMBER(EndVersusModeRound, "CDirectorVersusMode::EndVersusModeRound");
-	if (Detour_EndVersusModeRound != NULL) {
+	if (Detour_EndVersusModeRound != nullptr) {
 		Detour_EndVersusModeRound->EnableDetour();
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for CDirectorVersusMode::EndVersusModeRound");

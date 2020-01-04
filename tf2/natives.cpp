@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include "extension.h"
 #include "tf2/tf2.h"
-#include "RegNatives.h"
 
 static cell_t TF2_SetUpgradesMode(IPluginContext *pContext, const cell_t *params) {
-  bool enable = params[1];
-  g_bReviveEnabled = params[2];
+  bool enable = (bool) params[1];
+  g_bReviveEnabled = (bool) params[2];
 
   if (enable) {
     if (g_bUpgradesEnabled) {
@@ -28,5 +27,5 @@ static cell_t TF2_IsUpgradesEnabled(IPluginContext *pContext, const cell_t *para
 sp_nativeinfo_t g_NYXNatives[] = {
   {"TF2_SetUpgradesMode",       TF2_SetUpgradesMode},
   {"TF2_IsUpgradesEnabled",     TF2_IsUpgradesEnabled},
-  {NULL,                        NULL}
+  {nullptr,                        nullptr}
 };

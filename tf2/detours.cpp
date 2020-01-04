@@ -1,12 +1,12 @@
 #include "detours.h"
 #include "tf2/tf2.h"
 
-CDetour *Detour_EventKilled = NULL;
-CDetour *Detour_CycleMission = NULL;
-CDetour *Detour_GameModeUsesUpgrades = NULL;
-CDetour *Detour_ClientCommandKeyValues = NULL;
+CDetour *Detour_EventKilled = nullptr;
+CDetour *Detour_CycleMission = nullptr;
+CDetour *Detour_GameModeUsesUpgrades = nullptr;
+CDetour *Detour_ClientCommandKeyValues = nullptr;
 
-IForward *g_pFwdEventKilled = NULL;
+IForward *g_pFwdEventKilled = nullptr;
 
 class CTakeDamageInfo;
 
@@ -18,11 +18,9 @@ DETOUR_DECL_MEMBER1(EventKilled, void, CTakeDamageInfo const&, info) {
 
   bool &m_bPlayingMannVsMachine = *(bool *)((intptr_t)gamerules + g_iPlayingMannVsMachineOffs);
   bool orig = m_bPlayingMannVsMachine;
-  m_bPlayingMannVsMachine = 1;
+  m_bPlayingMannVsMachine = true;
   DETOUR_MEMBER_CALL(EventKilled)(info);
   m_bPlayingMannVsMachine = orig;
-
-  return;
 }
 
 DETOUR_DECL_MEMBER0(CycleMission, void) {
@@ -32,7 +30,6 @@ DETOUR_DECL_MEMBER0(CycleMission, void) {
   }
 
   g_pSM->LogMessage(myself, "Blocking CPopulationManager::CycleMission");
-  return;
 }
 
 DETOUR_DECL_MEMBER0(GameModeUsesUpgrades, bool) {
@@ -52,39 +49,37 @@ DETOUR_DECL_MEMBER2(ClientCommandKeyValues, void, edict_t *, pEntity, KeyValues 
 
   bool &m_bPlayingMannVsMachine = *(bool *)((intptr_t)gamerules + g_iPlayingMannVsMachineOffs);
   bool orig = m_bPlayingMannVsMachine;
-  m_bPlayingMannVsMachine = 1;
+  m_bPlayingMannVsMachine = true;
   DETOUR_MEMBER_CALL(ClientCommandKeyValues)(pEntity, pCommand);
   m_bPlayingMannVsMachine = orig;
-
-  return;
 }
 
 void CreateDetours() {
   Detour_EventKilled = DETOUR_CREATE_MEMBER(EventKilled, "CTFPlayer::Event_Killed");
-	if (Detour_EventKilled != NULL) {
-		Detour_EventKilled->EnableDetour();
-	} else {
+    if (Detour_EventKilled != nullptr) {
+      Detour_EventKilled->EnableDetour();
+    } else {
     g_pSM->LogError(myself, "Failed to get signature for CTFPlayer::Event_Killed");
   }
 
   Detour_CycleMission = DETOUR_CREATE_MEMBER(CycleMission, "CPopulationManager::CycleMission");
-	if (Detour_CycleMission != NULL) {
-		Detour_CycleMission->EnableDetour();
-	} else {
+    if (Detour_CycleMission != nullptr) {
+      Detour_CycleMission->EnableDetour();
+    } else {
     g_pSM->LogError(myself, "Failed to get signature for CPopulationManager::CycleMission");
   }
-  
+
   Detour_GameModeUsesUpgrades = DETOUR_CREATE_MEMBER(GameModeUsesUpgrades, "CTFGameRules::GameModeUsesUpgrades");
-	if (Detour_GameModeUsesUpgrades != NULL) {
-		Detour_GameModeUsesUpgrades->EnableDetour();
-	} else {
+    if (Detour_GameModeUsesUpgrades != nullptr) {
+      Detour_GameModeUsesUpgrades->EnableDetour();
+    } else {
     g_pSM->LogError(myself, "Failed to get signature for CTFGameRules::GameModeUsesUpgrades");
   }
-  
+
   Detour_ClientCommandKeyValues = DETOUR_CREATE_MEMBER(ClientCommandKeyValues, "CServerGameClients::ClientCommandKeyValues");
-	if (Detour_ClientCommandKeyValues != NULL) {
-		Detour_ClientCommandKeyValues->EnableDetour();
-	} else {
+    if (Detour_ClientCommandKeyValues != nullptr) {
+      Detour_ClientCommandKeyValues->EnableDetour();
+    } else {
     g_pSM->LogError(myself, "Failed to get signature for CServerGameClients::ClientCommandKeyValues");
   }
 }

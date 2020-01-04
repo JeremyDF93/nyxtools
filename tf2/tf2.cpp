@@ -4,7 +4,7 @@
 
 TF2Tools g_TF2Tools;
 
-void *gamerules = NULL;
+void *gamerules = nullptr;
 int g_iPlayingMannVsMachineOffs = -1;
 bool g_bUpgradesEnabled = false;
 bool g_bReviveEnabled = false;
@@ -72,7 +72,7 @@ CBaseEntity *FindEntityByClassname(const char *classname) {
     pEntity = (CBaseEntity *)servertools->NextEntity(pEntity);
   }
 
-  return NULL;
+  return nullptr;
 }
 
 bool CreateUpgrades() {
@@ -122,7 +122,7 @@ void DestroyUpgrades() {
   pEntity = FindEntityByClassname("info_populator");
   if (pEntity) {
     datamap_t *pMap = gamehelpers->GetDataMap(pEntity);
-    
+
     sm_datatable_info_t info;
     if (gamehelpers->FindDataMapInfo(pMap, "InputKill", &info)) {
       g_pSM->LogMessage(myself, "Removing 'info_populator'");

@@ -3,7 +3,7 @@
 
 L4D2Tools g_L4D2Tools;
 
-void *g_pZombieManager = NULL;
+void *g_pZombieManager = nullptr;
 
 L4D2Tools::L4D2Tools() :
 m_bDetoursEnabled(false)
@@ -22,7 +22,7 @@ bool L4D2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
 
   CDetourManager::Init(g_pSM->GetScriptingEngine(), g_pGameConf);
 
-  char *addr = NULL;
+  char *addr = nullptr;
   if(!g_pGameConf->GetAddress("TheZombieManager", (void **)&addr)) {
 		g_pSM->LogError(myself, "Failed to get address for TheZombieManager");
 		return false;
@@ -30,19 +30,19 @@ bool L4D2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
 	g_pZombieManager = addr;
 
   g_pFwdReplaceTank = forwards->CreateForward("L4D2_OnReplaceTank", 
-      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+      ET_Event, 2, nullptr, Param_Cell, Param_Cell);
   g_pFwdTakeOverBot = forwards->CreateForward("L4D2_OnTakeOverBot", 
-      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+      ET_Event, 2, nullptr, Param_Cell, Param_Cell);
   g_pFwdTakeOverZombieBot = forwards->CreateForward("L4D2_OnTakeOverZombieBot", 
-      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+      ET_Event, 2, nullptr, Param_Cell, Param_Cell);
   g_pFwdReplaceWithBot = forwards->CreateForward("L4D2_OnReplaceWithBot", 
-      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+      ET_Event, 2, nullptr, Param_Cell, Param_Cell);
   g_pFwdSetHumanSpectator = forwards->CreateForward("L4D2_OnSetHumanSpectator", 
-      ET_Event, 2, NULL, Param_Cell, Param_Cell);
+      ET_Event, 2, nullptr, Param_Cell, Param_Cell);
   g_pFwdOnFirstSurvivorLeftSafeArea = forwards->CreateForward("L4D2_OnFirstSurvivorLeftSafeArea", 
-      ET_Event, 1, NULL, Param_Cell);
+      ET_Event, 1, nullptr, Param_Cell);
   g_pFwdEndVersusModeRound = forwards->CreateForward("L4D2_OnEndVersusModeRound", 
-      ET_Event, 1, NULL, Param_Cell);
+      ET_Event, 1, nullptr, Param_Cell);
 
   g_pSM->LogMessage(myself, "Loaded L4D2 Tools");
   return true;
