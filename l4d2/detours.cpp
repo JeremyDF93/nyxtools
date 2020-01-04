@@ -134,8 +134,10 @@ DETOUR_DECL_MEMBER1(OnFirstSurvivorLeftSafeArea, void, CTerrorPlayer *, param_1)
     return;
   }
 
-  int client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_1));
+  int client = 0;
+  if (param_1) client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_1));
   g_pSM->LogMessage(myself, "OnFirstSurvivorLeftSafeArea(%d)", client);
+
 
   cell_t result = Pl_Continue;
   g_pFwdOnFirstSurvivorLeftSafeArea->PushCell(client);
