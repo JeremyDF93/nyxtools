@@ -118,6 +118,7 @@ public void OnPluginStart() {
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::CanBecomeGhost");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
+  PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
   g_hSDKCall[SDK_CanBecomeGhost] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_CanBecomeGhost] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::CanBecomeGhost");
 
