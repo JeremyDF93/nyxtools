@@ -15,7 +15,10 @@ IServerGameEnts *gameents = nullptr;
 IServerTools *servertools = nullptr;
 ISDKTools *g_pSDKTools = nullptr;
 
+CGlobalVars *gpGlobals = nullptr;
+
 bool NyxTools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
+  sharesys->AddDependency(myself, "sdktools.ext", false, true);
   sharesys->RegisterLibrary(myself, "NyxTools");
   plsys->AddPluginsListener(this);
 
@@ -55,7 +58,10 @@ void NyxTools::OnPluginUnloaded(IPlugin *plugin) {
 }
 
 bool NyxTools::SDK_OnMetamodLoad(ISmmAPI *ismm, char *error, size_t maxlen, bool late) {
+  GET_V_IFACE_CURRENT(GetEngineFactory, engine, IVEngineServer, INTERFACEVERSION_VENGINESERVER);
   GET_V_IFACE_ANY(GetServerFactory, servertools, IServerTools, VSERVERTOOLS_INTERFACE_VERSION);
+
+  gpGlobals = ismm->GetCGlobals();
 
   return true;
 }

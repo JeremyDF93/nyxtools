@@ -59,6 +59,7 @@ native void L4D2_SetHumanSpectator(int bot, int client);
 native void L4D2_ChangeTeam(int client, int team);
 native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
 native bool L4D2_IsMissionFinalMap();
+native bool L4D2_GetRandomPZSpawnPosition(L4D2ClassType class, int tries=5, int client, float[3] vector);
 forward Action L4D2_OnReplaceTank(int client_1, int client_2);
 forward Action L4D2_OnTakeOverBot(int bot, bool flag);
 forward Action L4D2_OnTakeOverZombieBot(int client, int bot);

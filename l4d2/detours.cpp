@@ -7,6 +7,8 @@ CDetour *Detour_ReplaceWithBot = nullptr;
 CDetour *Detour_SetHumanSpectator = nullptr;
 CDetour *Detour_OnFirstSurvivorLeftSafeArea = nullptr;
 CDetour *Detour_EndVersusModeRound = nullptr;
+CDetour *Detour_GetRandomPZSpawnPosition = nullptr;
+CDetour *Detour_StackTrace = nullptr;
 
 IForward *g_pFwdReplaceTank = nullptr;
 IForward *g_pFwdTakeOverBot = nullptr;
@@ -79,8 +81,7 @@ DETOUR_DECL_MEMBER1(TakeOverZombieBot, void, CTerrorPlayer *, param_1) {
   if (result == Pl_Continue) {
     DETOUR_MEMBER_CALL(TakeOverZombieBot)(param_1);
   }
-
-  }
+}
 
 // Not a void
 DETOUR_DECL_MEMBER1(ReplaceWithBot, bool, bool, param_1) {
@@ -146,8 +147,7 @@ DETOUR_DECL_MEMBER1(OnFirstSurvivorLeftSafeArea, void, CTerrorPlayer *, param_1)
     DETOUR_MEMBER_CALL(OnFirstSurvivorLeftSafeArea)(param_1);
     return;
   }
-
-  }
+}
 
 DETOUR_DECL_MEMBER1(EndVersusModeRound, void, bool, param_1) {
   if (!g_pFwdEndVersusModeRound) {
@@ -165,8 +165,19 @@ DETOUR_DECL_MEMBER1(EndVersusModeRound, void, bool, param_1) {
     DETOUR_MEMBER_CALL(EndVersusModeRound)(param_1);
     return;
   }
+}
 
-  }
+DETOUR_DECL_MEMBER4(GetRandomPZSpawnPosition, bool, ZombieClassType, param_1, int, param_2, CTerrorPlayer *, param_3, Vector *, param_4) {
+  //int client = 0;
+  //if (param_3) client = gamehelpers->EntityToBCompatRef(reinterpret_cast<CBaseEntity *>(param_3));
+  g_pSM->LogMessage(myself, "%d::GetRandomPZSpawnPosition(ZombieClassType: %d, int: %d, CTerrorPlayer: %d, Vector: (%f, %f, %f))", this, param_1, param_2, param_3, param_4->x, param_4->y, param_4->z);
+  return DETOUR_MEMBER_CALL(GetRandomPZSpawnPosition)(param_1, param_2, param_3, param_4);
+}
+
+// Crash everthing on purpose!
+DETOUR_DECL_MEMBER0(StackTrace, void) {
+  DETOUR_MEMBER_CALL(StackTrace)();
+}
 
 void CreateDetours() {
   Detour_ReplaceTank = DETOUR_CREATE_MEMBER(ReplaceTank, "ZombieManager::ReplaceTank");
@@ -217,14 +228,30 @@ void CreateDetours() {
 	} else {
     g_pSM->LogError(myself, "Failed to get signature for CDirectorVersusMode::EndVersusModeRound");
   }
+  
+  Detour_GetRandomPZSpawnPosition = DETOUR_CREATE_MEMBER(GetRandomPZSpawnPosition, "ZombieManager::GetRandomPZSpawnPosition");
+	if (Detour_GetRandomPZSpawnPosition != nullptr) {
+		Detour_GetRandomPZSpawnPosition->EnableDetour();
+	} else {
+    g_pSM->LogError(myself, "Failed to get signature for ZombieManager::GetRandomPZSpawnPosition");
+  }
+  
+  Detour_StackTrace = DETOUR_CREATE_MEMBER(StackTrace, "StackTrace");
+	if (Detour_StackTrace != nullptr) {
+		Detour_StackTrace->EnableDetour();
+	} else {
+    g_pSM->LogError(myself, "Failed to get signature for StackTrace");
+  }
 }
 
 void DestroyDetours() {
-  Detour_ReplaceTank->Destroy();
-  Detour_TakeOverBot->Destroy();
-  Detour_TakeOverZombieBot->Destroy();
-  Detour_ReplaceWithBot->Destroy();
-  Detour_SetHumanSpectator->Destroy();
-  Detour_OnFirstSurvivorLeftSafeArea->Destroy();
-  Detour_EndVersusModeRound->Destroy();
+  if (Detour_ReplaceTank) Detour_ReplaceTank->Destroy();
+  if (Detour_TakeOverBot) Detour_TakeOverBot->Destroy();
+  if (Detour_TakeOverZombieBot) Detour_TakeOverZombieBot->Destroy();
+  if (Detour_ReplaceWithBot) Detour_ReplaceWithBot->Destroy();
+  if (Detour_SetHumanSpectator) Detour_SetHumanSpectator->Destroy();
+  if (Detour_OnFirstSurvivorLeftSafeArea) Detour_OnFirstSurvivorLeftSafeArea->Destroy();
+  if (Detour_EndVersusModeRound) Detour_EndVersusModeRound->Destroy();
+  if (Detour_GetRandomPZSpawnPosition) Detour_GetRandomPZSpawnPosition->Destroy();
+  if (Detour_StackTrace) Detour_StackTrace->Destroy();
 }

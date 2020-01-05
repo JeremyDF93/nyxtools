@@ -6,6 +6,7 @@
 #include "CDetour/detours.h"
 
 class CTerrorPlayer;
+typedef int ZombieClassType;
 
 void CreateDetours();
 void DestroyDetours();

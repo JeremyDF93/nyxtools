@@ -139,6 +139,7 @@ public int Native_FakeClientCommandCheat(Handle plugin, int numArgs) {
 
 public int Native_HasCheatPermissions(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
+  if (client == 0) return true;
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }

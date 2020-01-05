@@ -37,6 +37,7 @@ enum NyxSDK {
   Handle:SDK_BecomeGhost,
   Handle:SDK_CanBecomeGhost,
   Handle:SDK_IsMissionFinalMap,
+  Handle:SDK_GetRandomPZSpawnPosition,
 }
 
 /***
@@ -50,6 +51,8 @@ enum NyxSDK {
 
 Handle g_hGameConf;
 Handle g_hSDKCall[NyxSDK];
+
+Address g_pZombieManager;
 
 /***
  *        ____  __            _          ____      __            ____              
@@ -79,6 +82,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   CreateNative("L4D2_ChangeTeam", Native_ChangeTeam);
   CreateNative("L4D2_SetInfectedClass", Native_SetInfectedClass);
   CreateNative("L4D2_IsMissionFinalMap", Native_IsMissionFinalMap);
+  CreateNative("L4D2_GetRandomPZSpawnPosition", Native_GetRandomPZSpawnPosition);
 
   return APLRes_Success;
 }
@@ -94,6 +98,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_takeoverbot", ConCmd_TakeOverBot, ADMFLAG_SLAY, "Usage: nyx_takeoverbot <#userid|name>");
   RegAdminCmd("nyx_changeteam", ConCmd_ChangeTeam, ADMFLAG_SLAY, "Usage: nyx_changeteam <#userid|name> <team>");
   RegAdminCmd("nyx_changeclass", ConCmd_ChangeClass, ADMFLAG_SLAY, "Usage: nyx_changeclass <#userid|name> <class>");
+  RegAdminCmd("nyx_debug", ConCmd_Debug, ADMFLAG_ROOT);
 
   // game config
   g_hGameConf = LoadGameConfigFile("nyxtools.l4d2");
@@ -117,8 +122,8 @@ public void OnPluginStart() {
   
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::CanBecomeGhost");
-  PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
+  PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_CanBecomeGhost] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_CanBecomeGhost] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::CanBecomeGhost");
 
@@ -170,6 +175,19 @@ public void OnPluginStart() {
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
   g_hSDKCall[SDK_IsMissionFinalMap] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_IsMissionFinalMap] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorGameRules::IsMissionFinalMap");
+
+  g_pZombieManager = GameConfGetAddress(g_hGameConf, "TheZombieManager");
+  if (g_pZombieManager == Address_Null) SetFailState("Failed to get address for TheZombieManager");
+
+  StartPrepSDKCall(SDKCall_Raw);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "ZombieManager::GetRandomPZSpawnPosition");
+  PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
+  PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+  PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+  PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
+  PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_Pointer, _, VENCODE_FLAG_COPYBACK);
+  g_hSDKCall[SDK_GetRandomPZSpawnPosition] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_GetRandomPZSpawnPosition] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for ZombieManager::GetRandomPZSpawnPosition");
 }
 
 /*
@@ -352,6 +370,20 @@ public int Native_SetInfectedClass(Handle plugin, int numArgs) {
 
 public int Native_IsMissionFinalMap(Handle plugin, int numArgs) {
   return SDKCall(g_hSDKCall[SDK_IsMissionFinalMap]);
+}
+
+public int Native_GetRandomPZSpawnPosition(Handle plugin, int numArgs) {
+  L4D2ClassType type = view_as<L4D2ClassType>(GetNativeCell(1));
+  int tries = GetNativeCell(2);
+  int client = GetNativeCell(3);
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+  float vector[3]; GetNativeArray(4, vector, sizeof(vector));
+
+  bool ref = SDKCall(g_hSDKCall[SDK_GetRandomPZSpawnPosition], g_pZombieManager, type, tries, client, vector);
+  SetNativeArray(4, vector, sizeof(vector));
+  return ref;
 }
 
 /***
@@ -537,6 +569,16 @@ public Action ConCmd_ChangeClass(int client, int args) {
     NyxAct(client, "Changed %s to class %s", target_name, classStr);
   } else {
     NyxMsgReply(client, "Failed to find a valid target");
+  }
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_Debug(int client, int args) {
+  float vector[3];
+  bool found = L4D2_GetRandomPZSpawnPosition(L4D2_GetClientClass(client), 5, client, vector);
+  if (found) {
+    TeleportEntity(client, vector, NULL_VECTOR, NULL_VECTOR);
   }
 
   return Plugin_Handled;

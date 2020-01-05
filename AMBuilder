@@ -38,6 +38,7 @@ for sdk_name in Extension.sdks:
     copy += [
       'l4d2/l4d2.cpp',
       'l4d2/detours.cpp',
+      'l4d2/natives.cpp',
     ]
 
   if sdk_name == 'tf2':

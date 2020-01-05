@@ -105,6 +105,16 @@
         "library"      "server"
         "linux"        "@_ZN19CDirectorVersusMode18EndVersusModeRoundEb"
       }
+      "ZombieManager::GetRandomPZSpawnPosition"
+      {
+        "library"      "server"
+        "linux"        "@_ZNK13ZombieManager24GetRandomPZSpawnPositionE15ZombieClassTypeiP13CTerrorPlayerP6Vector"
+      }
+      "StackTrace"
+      {
+        "library"      "server"
+        "linux"        "@null"
+      }
     }
   }
 }

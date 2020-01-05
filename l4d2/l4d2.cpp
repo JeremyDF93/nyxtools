@@ -1,15 +1,19 @@
 #include "l4d2/l4d2.h"
 #include "l4d2/detours.h"
+#include "RegNatives.h"
 
 L4D2Tools g_L4D2Tools;
 
 void *g_pZombieManager = nullptr;
+
+extern sp_nativeinfo_t g_NYXNatives[];
 
 L4D2Tools::L4D2Tools() :
 m_bDetoursEnabled(false)
 {}
 
 bool L4D2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
+  sharesys->AddNatives(myself, g_NYXNatives);
   plsys->AddPluginsListener(this);
 
   char conf_error[255] = "";
@@ -49,7 +53,7 @@ bool L4D2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
 }
 
 void L4D2Tools::SDK_OnUnload() {
-  g_pSM->LogMessage(myself, "Unloaded L4D2 Tools");
+  g_RegNatives.UnregisterAll();
   gameconfs->CloseGameConfigFile(g_pGameConf);
 
   forwards->ReleaseForward(g_pFwdReplaceTank);
@@ -59,6 +63,8 @@ void L4D2Tools::SDK_OnUnload() {
   forwards->ReleaseForward(g_pFwdSetHumanSpectator);
   forwards->ReleaseForward(g_pFwdOnFirstSurvivorLeftSafeArea);
   forwards->ReleaseForward(g_pFwdEndVersusModeRound);
+
+  g_pSM->LogMessage(myself, "Unloaded L4D2 Tools");
 }
 
 void L4D2Tools::SDK_OnAllLoaded() {

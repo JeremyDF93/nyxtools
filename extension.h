@@ -38,10 +38,12 @@ public:
 #endif
 };
 
-extern IBinTools *g_pBinTools;
-extern IGameConfig *g_pGameConf;
 extern IServerGameEnts *gameents;
 extern IServerTools *servertools;
+extern IBinTools *g_pBinTools;
+extern IGameConfig *g_pGameConf;
 extern ISDKTools *g_pSDKTools;
+
+extern CGlobalVars *gpGlobals;
 
 #endif // _INCLUDE_SOURCEMOD_EXTENSION_PROPER_H_
