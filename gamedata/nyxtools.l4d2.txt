@@ -9,17 +9,79 @@
         "linux"
         {
           "signature"        "TheZombieManager"
-          "read"            "0"
+          "read"             "0"
+        }
+      }
+      "TheDirector"
+      {
+        "linux"
+        {
+          "signature"        "TheDirector"
+          "read"             "0"
         }
       }
     }
     "Signatures"
     {
+/***
+ *     _____                   __    _      __  ___                                 
+ *    /__  /  ____  ____ ___  / /_  (_)__  /  |/  /___ _____  ____ _____ ____  _____
+ *      / /  / __ \/ __ `__ \/ __ \/ / _ \/ /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/
+ *     / /__/ /_/ / / / / / / /_/ / /  __/ /  / / /_/ / / / / /_/ / /_/ /  __/ /    
+ *    /____/\____/_/ /_/ /_/_.___/_/\___/_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/     
+ *                                                               /____/             
+ */
       "TheZombieManager"
       {
         "library"     "server"
         "linux"       "@TheZombieManager"
       }
+      "ZombieManager::ReplaceTank"
+      {
+        "library"      "server"
+        "linux"        "@_ZN13ZombieManager11ReplaceTankEP13CTerrorPlayerS1_"
+      }
+      "ZombieManager::GetRandomPZSpawnPosition"
+      {
+        "library"      "server"
+        "linux"        "@_ZNK13ZombieManager24GetRandomPZSpawnPositionE15ZombieClassTypeiP13CTerrorPlayerP6Vector"
+      }
+/***
+ *       __________  _                __            
+ *      / ____/ __ \(_)_______  _____/ /_____  _____
+ *     / /   / / / / / ___/ _ \/ ___/ __/ __ \/ ___/
+ *    / /___/ /_/ / / /  /  __/ /__/ /_/ /_/ / /    
+ *    \____/_____/_/_/   \___/\___/\__/\____/_/     
+ *                                                  
+ */
+      "TheDirector"
+      {
+        "library"     "server"
+        "linux"       "@TheDirector"
+      }
+      "CDirector::OnFirstSurvivorLeftSafeArea"
+      {
+        "library"      "server"
+        "linux"        "@_ZN9CDirector27OnFirstSurvivorLeftSafeAreaEP13CTerrorPlayer"
+      }
+      "CDirector::IsMissionStartMap"
+      {
+        "library"      "server"
+        "linux"        "@_ZNK9CDirector17IsMissionStartMapEv"
+      }
+      "CDirector::IsClassAllowed"
+      {
+        "library"      "server"
+        "linux"        "@_ZNK9CDirector14IsClassAllowedE15ZombieClassType"
+      }
+/***
+ *       ____________                          ____  __                     
+ *      / ____/_  __/__  ______________  _____/ __ \/ /___ ___  _____  _____
+ *     / /     / / / _ \/ ___/ ___/ __ \/ ___/ /_/ / / __ `/ / / / _ \/ ___/
+ *    / /___  / / /  __/ /  / /  / /_/ / /  / ____/ / /_/ / /_/ /  __/ /    
+ *    \____/ /_/  \___/_/  /_/   \____/_/  /_/   /_/\__,_/\__, /\___/_/     
+ *                                                       /____/             
+ */
       "CTerrorPlayer::RoundRespawn"
       {
         "library"      "server"
@@ -40,11 +102,6 @@
         "library"      "server"
         "linux"        "@_ZN13CTerrorPlayer14ReplaceWithBotEb"
       }
-      "SurvivorBot::SetHumanSpectator"
-      {
-        "library"      "server"
-        "linux"        "@_ZN11SurvivorBot17SetHumanSpectatorEP13CTerrorPlayer"
-      }
       "CTerrorPlayer::ChangeTeam"
       {
         "library"      "server"
@@ -54,26 +111,6 @@
       {
         "library"      "server"
         "linux"        "@_ZN13CTerrorPlayer8SetClassE15ZombieClassType"
-      }
-      "CBaseAbility::CreateForPlayer"
-      {
-        "library"      "server"
-        "linux"        "@_ZN12CBaseAbility15CreateForPlayerEP13CTerrorPlayer"
-      }
-      "CDirectorItemManager::IsMeleeWeaponAllowedToExist"
-      {
-        "library"      "server"
-        "linux"        "@_ZN20CDirectorItemManager27IsMeleeWeaponAllowedToExistEPKc"
-      }
-      "CDirectorItemManager::IsWeaponAllowedToExist"
-      {
-        "library"      "server"
-        "linux"        "@_ZN20CDirectorItemManager22IsWeaponAllowedToExistE10CSWeaponID"
-      }
-      "ZombieManager::ReplaceTank"
-      {
-        "library"      "server"
-        "linux"        "@_ZN13ZombieManager11ReplaceTankEP13CTerrorPlayerS1_"
       }
       "CTerrorPlayer::WarpGhostToInitialPosition"
       {
@@ -90,25 +127,51 @@
         "library"      "server"
         "linux"        "@_ZN13CTerrorPlayer14CanBecomeGhostEb"
       }
+/***
+ *       __________  _                __            ______                 __  ___                                 
+ *      / ____/ __ \(_)_______  _____/ /_____  ____/  _/ /____  ____ ___  /  |/  /___ _____  ____ _____ ____  _____
+ *     / /   / / / / / ___/ _ \/ ___/ __/ __ \/ ___/ // __/ _ \/ __ `__ \/ /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/
+ *    / /___/ /_/ / / /  /  __/ /__/ /_/ /_/ / / _/ // /_/  __/ / / / / / /  / / /_/ / / / / /_/ / /_/ /  __/ /    
+ *    \____/_____/_/_/   \___/\___/\__/\____/_/ /___/\__/\___/_/ /_/ /_/_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/     
+ *                                                                                              /____/             
+ */
+      "CDirectorItemManager::IsMeleeWeaponAllowedToExist"
+      {
+        "library"      "server"
+        "linux"        "@_ZN20CDirectorItemManager27IsMeleeWeaponAllowedToExistEPKc"
+      }
+      "CDirectorItemManager::IsWeaponAllowedToExist"
+      {
+        "library"      "server"
+        "linux"        "@_ZN20CDirectorItemManager22IsWeaponAllowedToExistE10CSWeaponID"
+      }
+/***
+ *        __  ____          
+ *       /  |/  (_)_________
+ *      / /|_/ / / ___/ ___/
+ *     / /  / / (__  ) /__  
+ *    /_/  /_/_/____/\___/  
+ *                          
+ */
       "CTerrorGameRules::IsMissionFinalMap"
       {
         "library"      "server"
         "linux"        "@_ZN16CTerrorGameRules17IsMissionFinalMapEv"
-      }
-      "CDirector::OnFirstSurvivorLeftSafeArea"
-      {
-        "library"      "server"
-        "linux"        "@_ZN9CDirector27OnFirstSurvivorLeftSafeAreaEP13CTerrorPlayer"
       }
       "CDirectorVersusMode::EndVersusModeRound"
       {
         "library"      "server"
         "linux"        "@_ZN19CDirectorVersusMode18EndVersusModeRoundEb"
       }
-      "ZombieManager::GetRandomPZSpawnPosition"
+      "SurvivorBot::SetHumanSpectator"
       {
         "library"      "server"
-        "linux"        "@_ZNK13ZombieManager24GetRandomPZSpawnPositionE15ZombieClassTypeiP13CTerrorPlayerP6Vector"
+        "linux"        "@_ZN11SurvivorBot17SetHumanSpectatorEP13CTerrorPlayer"
+      }
+      "CBaseAbility::CreateForPlayer"
+      {
+        "library"      "server"
+        "linux"        "@_ZN12CBaseAbility15CreateForPlayerEP13CTerrorPlayer"
       }
       "StackTrace"
       {

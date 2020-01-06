@@ -33,6 +33,7 @@ enum L4D2ClassType {
 };
 
 enum L4D2Team {
+  L4D2Team_Unknown = -1,
   L4D2Team_Unassigned = L4D2_TEAM_UNASSIGNED,
   L4D2Team_Spectator = L4D2_TEAM_SPECTATOR,
   L4D2Team_Survivor = L4D2_TEAM_SURVIVOR,
@@ -53,12 +54,14 @@ native void L4D2_WarpGhostToInitialPosition(int client, bool flag=true);
 native void L4D2_BecomeGhost(int client, bool flag=true);
 native bool L4D2_CanBecomeGhost(int client, bool flag=true);
 native void L4D2_TakeOverBot(int client, bool flag=true);
-native void L4D2_TakeOverZombieBot(int bot, int client);
+native void L4D2_TakeOverZombieBot(int client, int bot);
 native void L4D2_ReplaceWithBot(int client, bool flag=true);
 native void L4D2_SetHumanSpectator(int bot, int client);
-native void L4D2_ChangeTeam(int client, int team);
+native void L4D2_ChangeTeam(int client, L4D2Team team);
 native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
 native bool L4D2_IsMissionFinalMap();
+native bool L4D2_IsMissionStartMap();
+native bool L4D2_IsClassAllowed(L4D2ClassType class);
 native bool L4D2_GetRandomPZSpawnPosition(L4D2ClassType class, int tries=5, int client, float[3] vector);
 forward Action L4D2_OnReplaceTank(int client_1, int client_2);
 forward Action L4D2_OnTakeOverBot(int bot, bool flag);
@@ -71,12 +74,19 @@ forward Action L4D2_OnEndVersusModeRound(bool flag);
 #if !defined REQUIRE_PLUGIN
 public __pl_nyxtools_l4d2_SetNTVOptional() {
   MarkNativeAsOptional("L4D2_RespawnPlayer");
+  MarkNativeAsOptional("L4D2_WarpGhostToInitialPosition");
+  MarkNativeAsOptional("L4D2_BecomeGhost");
+  MarkNativeAsOptional("L4D2_CanBecomeGhost");
   MarkNativeAsOptional("L4D2_TakeOverBot");
   MarkNativeAsOptional("L4D2_TakeOverZombieBot");
   MarkNativeAsOptional("L4D2_ReplaceWithBot");
   MarkNativeAsOptional("L4D2_SetHumanSpectator");
   MarkNativeAsOptional("L4D2_ChangeTeam");
   MarkNativeAsOptional("L4D2_SetInfectedClass");
+  MarkNativeAsOptional("L4D2_IsMissionFinalMap");
+  MarkNativeAsOptional("L4D2_IsMissionStartMap");
+  MarkNativeAsOptional("L4D2_IsClassAllowed");
+  MarkNativeAsOptional("L4D2_GetRandomPZSpawnPosition");
 }
 #endif
 
@@ -188,26 +198,36 @@ stock L4D2ClassType L4D2_GetClientClass(int client) {
   return view_as<L4D2ClassType>(GetEntProp(client, Prop_Send, "m_zombieClass"));
 }
 
+stock L4D2ClassType L4D2_GetClassFromInt(int class) {
+  if (class < 1 || class > 9) return L4D2Class_Unknown;
+  return view_as<L4D2ClassType>(class);
+}
+
+stock L4D2Team L4D2_GetTeamFromInt(int team) {
+  if (team < 0 || team > 3) return L4D2Team_Unknown;
+  return view_as<L4D2Team>(team);
+}
+
 stock L4D2Team L4D2_GetClientTeam(int client) {
   return view_as<L4D2Team>(GetClientTeam(client));
 }
 
-stock int L4D2_StringToTeam(char[] str) {
-  if (strcmp(str, "unassigned", false) == 0) return L4D2_TEAM_UNASSIGNED;
-  if (strcmp(str, "spectate", false) == 0) return L4D2_TEAM_SPECTATOR;
-  if (strcmp(str, "survivor", false) == 0) return L4D2_TEAM_SURVIVOR;
-  if (strcmp(str, "infected", false) == 0) return L4D2_TEAM_INFECTED;
+stock L4D2Team L4D2_StringToTeam(char[] str) {
+  if (strcmp(str, "unassigned", false) == 0) return L4D2Team_Unassigned;
+  if (strncmp(str, "spectator", 4, false) == 0) return L4D2Team_Spectator;
+  if (strcmp(str, "survivor", false) == 0) return L4D2Team_Survivor;
+  if (strcmp(str, "infected", false) == 0) return L4D2Team_Infected;
 
-  return -1;
+  return L4D2Team_Unknown;
 }
 
-stock void L4D2_TeamToString(int team, char[] str, int maxlength) {
+stock void L4D2_TeamToString(L4D2Team team, char[] str, int maxlength) {
   strcopy(str, maxlength, "unknown");
 
-  if (team == L4D2_TEAM_UNASSIGNED) strcopy(str, maxlength, "unassigned");
-  if (team == L4D2_TEAM_SPECTATOR) strcopy(str, maxlength, "spectate");
-  if (team == L4D2_TEAM_SURVIVOR) strcopy(str, maxlength, "survivor");
-  if (team == L4D2_TEAM_INFECTED) strcopy(str, maxlength, "infected");
+  if (team == L4D2Team_Unassigned) strcopy(str, maxlength, "unassigned");
+  if (team == L4D2Team_Spectator) strcopy(str, maxlength, "spectator");
+  if (team == L4D2Team_Survivor) strcopy(str, maxlength, "survivor");
+  if (team == L4D2Team_Infected) strcopy(str, maxlength, "infected");
 }
 
 /***
