@@ -257,6 +257,7 @@ public void OnPluginStart() {
 
 public int Native_RespawnPlayer(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
+  
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
@@ -267,6 +268,7 @@ public int Native_RespawnPlayer(Handle plugin, int numArgs) {
 public int Native_WarpGhostToInitialPosition(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
   bool flag = GetNativeCell(2);
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
@@ -277,6 +279,7 @@ public int Native_WarpGhostToInitialPosition(Handle plugin, int numArgs) {
 public int Native_BecomeGhost(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
   bool flag = GetNativeCell(2);
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
@@ -287,6 +290,7 @@ public int Native_BecomeGhost(Handle plugin, int numArgs) {
 public int Native_CanBecomeGhost(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
   bool flag = GetNativeCell(2);
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
@@ -297,6 +301,7 @@ public int Native_CanBecomeGhost(Handle plugin, int numArgs) {
 public int Native_TakeOverBot(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
   bool flag = GetNativeCell(2);
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
@@ -307,12 +312,12 @@ public int Native_TakeOverBot(Handle plugin, int numArgs) {
 public int Native_TakeOverZombieBot(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
   int bot = GetNativeCell(2);
-  if (!IsValidClient(bot) || !IsFakeClient(bot)) {
-    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
-  }
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
-  } else 
+  } else if (!IsValidClient(bot) || !IsFakeClient(bot)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
+  }
 
   return SDKCall(g_hSDKCall[SDK_TakeOverZombieBot], client, bot);
 }
@@ -320,6 +325,7 @@ public int Native_TakeOverZombieBot(Handle plugin, int numArgs) {
 public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
   bool flag = GetNativeCell(2);
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
@@ -330,10 +336,10 @@ public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
 public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
   int bot = GetNativeCell(1);
   int client = GetNativeCell(2);
+
   if (!IsValidClient(bot) || !IsFakeClient(bot)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
-  }
-  if (!IsValidClient(client)) {
+  } else if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
@@ -342,12 +348,11 @@ public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
 
 public int Native_ChangeTeam(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
+  L4D2Team team = L4D2_GetTeamFromInt(GetNativeCell(2));
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
-  }
-  
-  L4D2Team team = L4D2_GetTeamFromInt(GetNativeCell(2));
-  if (team == L4D2Team_Unknown) {
+  } else if (team == L4D2Team_Unknown) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid team index (%d)", client);
   }
 
@@ -394,15 +399,15 @@ public int Native_IsMissionFinalMap(Handle plugin, int numArgs) {
 
 public int Native_GetRandomPZSpawnPosition(Handle plugin, int numArgs) {
   L4D2ClassType class = L4D2_GetClassFromInt(GetNativeCell(1));
-  if (class == L4D2Class_Unknown) {
-    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid or class index (%d)", class);
-  }
   int tries = GetNativeCell(2);
   int client = GetNativeCell(3);
-  if (!IsValidClient(client)) {
+  float vector[3]; GetNativeArray(4, vector, sizeof(vector));
+
+  if (class == L4D2Class_Unknown) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid or class index (%d)", class);
+  } else if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
-  float vector[3]; GetNativeArray(4, vector, sizeof(vector));
 
   bool ref = SDKCall(g_hSDKCall[SDK_GetRandomPZSpawnPosition], g_pZombieManager, class, tries, client, vector);
   SetNativeArray(4, vector, sizeof(vector));
@@ -415,9 +420,11 @@ public int Native_IsMissionStartMap(Handle plugin, int numArgs) {
 
 public int Native_IsClassAllowed(Handle plugin, int numArgs) {
   L4D2ClassType class = view_as<L4D2ClassType>(GetNativeCell(1));
+
   if (class == L4D2Class_Unknown) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid or class index (%d)", class);
   }
+
   return SDKCall(g_hSDKCall[SDK_IsClassAllowed], g_pTheDirector, class);
 }
 
