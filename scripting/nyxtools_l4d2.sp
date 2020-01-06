@@ -257,7 +257,7 @@ public void OnPluginStart() {
 
 public int Native_RespawnPlayer(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
-  
+
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
@@ -419,7 +419,7 @@ public int Native_IsMissionStartMap(Handle plugin, int numArgs) {
 }
 
 public int Native_IsClassAllowed(Handle plugin, int numArgs) {
-  L4D2ClassType class = view_as<L4D2ClassType>(GetNativeCell(1));
+  L4D2ClassType class = L4D2_GetClassFromInt(GetNativeCell(1));
 
   if (class == L4D2Class_Unknown) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid or class index (%d)", class);
