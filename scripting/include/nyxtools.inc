@@ -311,6 +311,7 @@ stock int GetClientAimTargetEx(int client, int mask = MASK_ALL) {
 }
 
 stock int FindClosestPlayer(int client, bool filterTeam=true, float distMin=0.0, float distMax=0.0) {
+  int team = GetClientTeam(client);
   float pos[3]; GetClientEyePosition(client, pos);
 
   int target;
@@ -318,7 +319,7 @@ stock int FindClosestPlayer(int client, bool filterTeam=true, float distMin=0.0,
     if (!IsValidClient(i)) continue;
     if (!IsPlayerAlive(i)) continue;
     if (filterTeam) {
-      if (GetClientTeam(i) != GetClientTeam(client)) continue;
+      if (GetClientTeam(i) != team) continue;
     }
 
     float targetPos[3]; GetClientEyePosition(i, targetPos);
