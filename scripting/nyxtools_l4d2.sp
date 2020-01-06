@@ -40,6 +40,8 @@ enum NyxSDK {
   Handle:SDK_GetRandomPZSpawnPosition,
   Handle:SDK_IsMissionStartMap,
   Handle:SDK_IsClassAllowed,
+  Handle:SDK_FindNearbySpawnSpot,
+  Handle:SDK_WarpToValidPositionIfStuck,
 }
 
 /***
@@ -87,6 +89,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   CreateNative("L4D2_IsMissionFinalMap", Native_IsMissionFinalMap);
   CreateNative("L4D2_IsClassAllowed", Native_IsClassAllowed);
   CreateNative("L4D2_GetRandomPZSpawnPosition", Native_GetRandomPZSpawnPosition);
+  CreateNative("L4D2_FindNearbySpawnSpot", Native_FindNearbySpawnSpot);
+  CreateNative("L4D2_WarpToValidPositionIfStuck", Native_WarpToValidPositionIfStuck);
 
   return APLRes_Success;
 }
@@ -215,7 +219,14 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::SetClass");
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
   g_hSDKCall[SDK_SetClass] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_SetClass] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::SetClass");
+  if (g_hSDKCall[SDK_SetClass] == INVALID_HANDLE)
+      SetFailState("Failed to create SDKCall for CTerrorPlayer::SetClass");
+      
+  StartPrepSDKCall(SDKCall_Player);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::WarpToValidPositionIfStuck");
+  g_hSDKCall[SDK_WarpToValidPositionIfStuck] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_WarpToValidPositionIfStuck] == INVALID_HANDLE)
+      SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpToValidPositionIfStuck");
 
  /***
   *        __  ____          
@@ -230,20 +241,37 @@ public void OnPluginStart() {
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "SurvivorBot::SetHumanSpectator");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   g_hSDKCall[SDK_SetHumanSpectator] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_SetHumanSpectator] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for SurvivorBot::SetHumanSpectator");
+  if (g_hSDKCall[SDK_SetHumanSpectator] == INVALID_HANDLE)
+      SetFailState("Failed to create SDKCall for SurvivorBot::SetHumanSpectator");
 
   StartPrepSDKCall(SDKCall_Static);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CBaseAbility::CreateForPlayer");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   PrepSDKCall_SetReturnInfo(SDKType_CBaseEntity, SDKPass_Pointer);
   g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_CreateAbility] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CBaseAbility::CreateForPlayer");
+  if (g_hSDKCall[SDK_CreateAbility] == INVALID_HANDLE)
+      SetFailState("Failed to create SDKCall for CBaseAbility::CreateForPlayer");
 
   StartPrepSDKCall(SDKCall_Static);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorGameRules::IsMissionFinalMap");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
   g_hSDKCall[SDK_IsMissionFinalMap] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_IsMissionFinalMap] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorGameRules::IsMissionFinalMap");
+  if (g_hSDKCall[SDK_IsMissionFinalMap] == INVALID_HANDLE)
+      SetFailState("Failed to create SDKCall for CTerrorGameRules::IsMissionFinalMap");
+  StartPrepSDKCall(SDKCall_Static);
+
+  /* FindNearbySpawnSpot(CTerrorPlayer*, Vector*, int, bool, float) */
+  StartPrepSDKCall(SDKCall_Static);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "FindNearbySpawnSpot");
+  PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
+  PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
+  PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_Pointer, _, VENCODE_FLAG_COPYBACK);
+  PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+  PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
+  PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
+  g_hSDKCall[SDK_FindNearbySpawnSpot] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_FindNearbySpawnSpot] == INVALID_HANDLE)
+      SetFailState("Failed to create SDKCall for FindNearbySpawnSpot");
 }
 
 /***
@@ -390,7 +418,7 @@ public int Native_SetInfectedClass(Handle plugin, int numArgs) {
   int offs = FindDataMapInfo(ent, "m_angRotation") + 12; // the offset we want is 12 bytes after 'm_angRotation'
   SetEntProp(client, Prop_Send, "m_customAbility", GetEntData(ent, offs));
 
-  return true;
+  return 0;
 }
 
 public int Native_IsMissionFinalMap(Handle plugin, int numArgs) {
@@ -409,9 +437,27 @@ public int Native_GetRandomPZSpawnPosition(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  bool ref = SDKCall(g_hSDKCall[SDK_GetRandomPZSpawnPosition], g_pZombieManager, class, tries, client, vector);
+  bool retVal = SDKCall(g_hSDKCall[SDK_GetRandomPZSpawnPosition], g_pZombieManager, class, tries, client, vector);
   SetNativeArray(4, vector, sizeof(vector));
-  return ref;
+  return retVal;
+}
+
+public int Native_FindNearbySpawnSpot(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  float vector[3]; GetNativeArray(2, vector, sizeof(vector));
+  L4D2Team team = L4D2_GetTeamFromInt(GetNativeCell(3));
+  bool flag = GetNativeCell(4);
+  float radius = GetNativeCell(5);
+
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  } else if (team == L4D2Team_Unknown) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid team index (%d)", client);
+  }
+
+  bool retVal = SDKCall(g_hSDKCall[SDK_FindNearbySpawnSpot], client, vector, team, flag, radius);
+  SetNativeArray(2, vector, sizeof(vector));
+  return retVal;
 }
 
 public int Native_IsMissionStartMap(Handle plugin, int numArgs) {
@@ -426,6 +472,16 @@ public int Native_IsClassAllowed(Handle plugin, int numArgs) {
   }
 
   return SDKCall(g_hSDKCall[SDK_IsClassAllowed], g_pTheDirector, class);
+}
+
+public int Native_WarpToValidPositionIfStuck(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  return SDKCall(g_hSDKCall[SDK_WarpToValidPositionIfStuck], client);
 }
 
 /***
@@ -485,12 +541,39 @@ public Action ConCmd_Respawn(int client, int args) {
   }
 
   for (int i = 0; i < target_count; i++) {
-    L4D2_RespawnPlayer(target_list[i]);
+    if (IsPlayerSurvivor(target_list[i])) {
+      L4D2_RespawnPlayer(target_list[i]);
+      int player = FindClosestPlayer(target_list[i]);
+      if (IsValidClient(player)) {
+        float pos[3]; GetClientEyePosition(player, pos);
+        bool found = L4D2_FindNearbySpawnSpot(player, pos, L4D2Team_Unassigned, true, 250.0);
+        if (found) {
+          TeleportEntity(target_list[i], pos, NULL_VECTOR, NULL_VECTOR);
+        }
+      }
+    } else if (IsPlayerInfected(target_list[i])) {
+      if (IsPlayerGhost(target_list[i])) {
+        L4D2_RespawnPlayer(target_list[i]);
+        SetEntProp(client, Prop_Send, "m_lifeState", 2);
+      }
+      SetEntProp(target_list[i], Prop_Send, "m_iPlayerState", 6);
+      L4D2_BecomeGhost(target_list[i]);
+    }
+    L4D2_WarpToValidPositionIfStuck(target_list[i]);
+
     LogAction(client, target_list[i], "\"%L\" respawned \"%L\"", client, target_list[i]);
   }
   NyxAct(client, "Respawned %s", target_name);
 
   return Plugin_Handled;
+
+/*
+  float vector[3]; GetClientEyePosition(client, vector);
+  bool retVal = L4D2_FindNearbySpawnSpot(client, vector, L4D2Team_Unassigned, true, 100.0);
+  if (retVal) {
+    TeleportEntity(client, vector, NULL_VECTOR, NULL_VECTOR);
+  }
+  */
 }
 
 public Action ConCmd_TakeOverBot(int client, int args) {
@@ -617,8 +700,13 @@ public Action ConCmd_ChangeClass(int client, int args) {
 }
 
 public Action ConCmd_Debug(int client, int args) {
-  L4D2ClassType class = view_as<L4D2ClassType>(GetCmdInt(1));
-  NyxMsgDebug("allowed: %d", L4D2_IsClassAllowed(class));
+  float vector[3]; GetClientEyePosition(client, vector);
+  bool retVal = L4D2_FindNearbySpawnSpot(client, vector, L4D2Team_Unassigned, true, 100.0);
+  if (retVal) {
+    TeleportEntity(client, vector, NULL_VECTOR, NULL_VECTOR);
+  }
+  L4D2_WarpToValidPositionIfStuck(client);
+  NyxMsgDebug("retVal: %d", retVal);
 
   return Plugin_Handled;
 }

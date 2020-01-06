@@ -127,6 +127,11 @@
         "library"      "server"
         "linux"        "@_ZN13CTerrorPlayer14CanBecomeGhostEb"
       }
+      "CTerrorPlayer::WarpToValidPositionIfStuck"
+      {
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer26WarpToValidPositionIfStuckEv"
+      }
 /***
  *       __________  _                __            ______                 __  ___                                 
  *      / ____/ __ \(_)_______  _____/ /_____  ____/  _/ /____  ____ ___  /  |/  /___ _____  ____ _____ ____  _____
@@ -172,6 +177,11 @@
       {
         "library"      "server"
         "linux"        "@_ZN12CBaseAbility15CreateForPlayerEP13CTerrorPlayer"
+      }
+      "FindNearbySpawnSpot"
+      {
+        "library"      "server"
+        "linux"        "@_Z19FindNearbySpawnSpotP13CTerrorPlayerP6Vectoribf"
       }
       "StackTrace"
       {

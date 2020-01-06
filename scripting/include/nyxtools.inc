@@ -310,8 +310,45 @@ stock int GetClientAimTargetEx(int client, int mask = MASK_ALL) {
   return -1;
 }
 
+stock int FindClosestPlayer(int client, bool filterTeam=true, float distMin=0.0, float distMax=0.0) {
+  float pos[3]; GetClientEyePosition(client, pos);
+
+  int target;
+  for (int i = 1; i <= MaxClients; i++) {
+    if (!IsValidClient(i)) continue;
+    if (!IsPlayerAlive(i)) continue;
+    if (filterTeam) {
+      if (GetClientTeam(i) != GetClientTeam(client)) continue;
+    }
+
+    float targetPos[3]; GetClientEyePosition(i, targetPos);
+    float targetDist = GetVectorDistance(pos, targetPos);
+
+    Handle trace = TR_TraceRayFilterEx(pos, targetPos, 
+        CONTENTS_EMPTY, RayType_EndPoint, TraceEntityFilter_SelfPlayers, client);
+    if (TR_GetFraction(trace) == 1.0) {
+      if (targetDist > distMin && (targetDist < distMax || distMax == 0.0)) {
+        distMax = targetDist;
+        target = i;
+      }
+    }
+
+    CloseHandle(trace);
+  }
+
+  return target;
+}
+
 public bool TraceEntityFilter_Players(int entity, int contentsMask) {
   return entity > MaxClients;
+}
+
+public bool TraceEntityFilter_SelfPlayers(int entity, int contentsMask, any data) {
+  if (entity == data) {
+    return false;
+  }
+
+  return entity > MaxClients || !entity;
 }
 
 /***
