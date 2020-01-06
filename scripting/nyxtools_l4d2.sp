@@ -566,14 +566,6 @@ public Action ConCmd_Respawn(int client, int args) {
   NyxAct(client, "Respawned %s", target_name);
 
   return Plugin_Handled;
-
-/*
-  float vector[3]; GetClientEyePosition(client, vector);
-  bool retVal = L4D2_FindNearbySpawnSpot(client, vector, L4D2Team_Unassigned, true, 100.0);
-  if (retVal) {
-    TeleportEntity(client, vector, NULL_VECTOR, NULL_VECTOR);
-  }
-  */
 }
 
 public Action ConCmd_TakeOverBot(int client, int args) {
