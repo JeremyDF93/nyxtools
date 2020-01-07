@@ -87,6 +87,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   CreateNative("L4D2_ChangeTeam", Native_ChangeTeam);
   CreateNative("L4D2_SetInfectedClass", Native_SetInfectedClass);
   CreateNative("L4D2_IsMissionFinalMap", Native_IsMissionFinalMap);
+  CreateNative("L4D2_IsMissionStartMap", Native_IsMissionStartMap);
   CreateNative("L4D2_IsClassAllowed", Native_IsClassAllowed);
   CreateNative("L4D2_GetRandomPZSpawnPosition", Native_GetRandomPZSpawnPosition);
   CreateNative("L4D2_FindNearbySpawnSpot", Native_FindNearbySpawnSpot);

@@ -335,8 +335,6 @@ stock int FindClosestPlayer(int client, bool filterTeam=true, float distMin=0.0,
       distMax = targetDist;
       target = i;
     }
-
-    CloseHandle(trace);
   }
 
   return target;
