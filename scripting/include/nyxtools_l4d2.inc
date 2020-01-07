@@ -89,6 +89,8 @@ public __pl_nyxtools_l4d2_SetNTVOptional() {
   MarkNativeAsOptional("L4D2_IsMissionStartMap");
   MarkNativeAsOptional("L4D2_IsClassAllowed");
   MarkNativeAsOptional("L4D2_GetRandomPZSpawnPosition");
+  MarkNativeAsOptional("L4D2_FindNearbySpawnSpot");
+  MarkNativeAsOptional("L4D2_WarpToValidPositionIfStuck");
 }
 #endif
 
