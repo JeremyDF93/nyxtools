@@ -283,7 +283,7 @@ stock bool GetClientAimPos(int client, float vec[3], int mask = MASK_ALL) {
   GetClientEyePosition(client, origin);
   GetClientEyeAngles(client, angles);
 
-  Handle trace = TR_TraceRayFilterEx(origin, angles, mask, RayType_Infinite, TraceEntityFilter_Players);
+  Handle trace = TR_TraceRayFilterEx(origin, angles, mask, RayType_Infinite, TraceEntityFilter_Self, client);
   if (TR_DidHit(trace)) {
     TR_GetEndPosition(vec, trace);
     CloseHandle(trace);
@@ -294,12 +294,18 @@ stock bool GetClientAimPos(int client, float vec[3], int mask = MASK_ALL) {
   return false;
 }
 
-stock int GetClientAimTargetEx(int client, int mask = MASK_ALL) {
+stock int GetClientAimTargetEx(int client, bool only_clients, int mask = MASK_ALL) {
   float origin[3], angles[3];
   GetClientEyePosition(client, origin);
   GetClientEyeAngles(client, angles);
 
-  Handle trace = TR_TraceRayFilterEx(origin, angles, mask, RayType_Infinite, TraceEntityFilter_Players);
+  Handle trace;
+  if (only_clients) {
+    trace = TR_TraceRayFilterEx(origin, angles, mask, RayType_Infinite, TraceEntityFilter_Self);
+  } else {
+    trace = TR_TraceRayEx(origin, angles, mask, RayType_Infinite);
+  }
+
   if (TR_DidHit(trace)) {
     int ent = TR_GetEntityIndex(trace);
     CloseHandle(trace);
@@ -325,13 +331,9 @@ stock int FindClosestPlayer(int client, bool filterTeam=true, float distMin=0.0,
     float targetPos[3]; GetClientEyePosition(i, targetPos);
     float targetDist = GetVectorDistance(pos, targetPos);
 
-    Handle trace = TR_TraceRayFilterEx(pos, targetPos, 
-        CONTENTS_EMPTY, RayType_EndPoint, TraceEntityFilter_SelfPlayers, client);
-    if (TR_GetFraction(trace) == 1.0) {
-      if (targetDist > distMin && (targetDist < distMax || distMax == 0.0)) {
-        distMax = targetDist;
-        target = i;
-      }
+    if (targetDist > distMin && (targetDist < distMax || distMax == 0.0)) {
+      distMax = targetDist;
+      target = i;
     }
 
     CloseHandle(trace);
@@ -341,7 +343,7 @@ stock int FindClosestPlayer(int client, bool filterTeam=true, float distMin=0.0,
 }
 
 public bool TraceEntityFilter_Players(int entity, int contentsMask) {
-  return entity > MaxClients;
+  return entity > MaxClients || !entity;
 }
 
 public bool TraceEntityFilter_SelfPlayers(int entity, int contentsMask, any data) {
@@ -350,6 +352,14 @@ public bool TraceEntityFilter_SelfPlayers(int entity, int contentsMask, any data
   }
 
   return entity > MaxClients || !entity;
+}
+
+public bool TraceEntityFilter_Self(int entity, int contentsMask, any data) {
+  if (entity == data) {
+    return false;
+  }
+
+  return true;
 }
 
 /***
