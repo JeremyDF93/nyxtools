@@ -47,6 +47,8 @@ bool L4D2Tools::SDK_OnLoad(char *error, size_t maxlength, bool late) {
       ET_Event, 1, nullptr, Param_Cell);
   g_pFwdEndVersusModeRound = forwards->CreateForward("L4D2_OnEndVersusModeRound", 
       ET_Event, 1, nullptr, Param_Cell);
+  g_pFwdOnSwapTeams = forwards->CreateForward("L4D2_OnSwapTeams", 
+      ET_Event, 0, nullptr);
 
   g_pSM->LogMessage(myself, "Loaded L4D2 Tools");
   return true;
@@ -63,6 +65,7 @@ void L4D2Tools::SDK_OnUnload() {
   forwards->ReleaseForward(g_pFwdSetHumanSpectator);
   forwards->ReleaseForward(g_pFwdOnFirstSurvivorLeftSafeArea);
   forwards->ReleaseForward(g_pFwdEndVersusModeRound);
+  forwards->ReleaseForward(g_pFwdOnSwapTeams);
 
   g_pSM->LogMessage(myself, "Unloaded L4D2 Tools");
 }

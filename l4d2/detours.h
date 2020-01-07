@@ -18,5 +18,6 @@ extern IForward *g_pFwdReplaceWithBot;
 extern IForward *g_pFwdSetHumanSpectator;
 extern IForward *g_pFwdOnFirstSurvivorLeftSafeArea;
 extern IForward *g_pFwdEndVersusModeRound;
+extern IForward *g_pFwdOnSwapTeams;
 
 #endif //_INCLUDE_NYXTOOLS_DETOURS_H_

@@ -7,6 +7,7 @@ CDetour *Detour_ReplaceWithBot = nullptr;
 CDetour *Detour_SetHumanSpectator = nullptr;
 CDetour *Detour_OnFirstSurvivorLeftSafeArea = nullptr;
 CDetour *Detour_EndVersusModeRound = nullptr;
+CDetour *Detour_SwapTeams = nullptr;
 CDetour *Detour_GetRandomPZSpawnPosition = nullptr;
 CDetour *Detour_StackTrace = nullptr;
 
@@ -17,6 +18,7 @@ IForward *g_pFwdReplaceWithBot = nullptr;
 IForward *g_pFwdSetHumanSpectator = nullptr;
 IForward *g_pFwdOnFirstSurvivorLeftSafeArea = nullptr;
 IForward *g_pFwdEndVersusModeRound = nullptr;
+IForward *g_pFwdOnSwapTeams = nullptr;
 
 // Is return void?
 DETOUR_DECL_MEMBER2(ReplaceTank, bool, CTerrorPlayer *, param_1, CTerrorPlayer *, param_2) {
@@ -149,6 +151,20 @@ DETOUR_DECL_MEMBER1(OnFirstSurvivorLeftSafeArea, void, CTerrorPlayer *, param_1)
   }
 }
 
+DETOUR_DECL_MEMBER0(SwapTeams, void) {
+  g_pSM->LogMessage(myself, "SwapTeams()");
+
+  cell_t result = Pl_Continue;
+  g_pFwdOnSwapTeams->Execute(&result);
+
+  if (result == Pl_Continue) {
+    DETOUR_MEMBER_CALL(SwapTeams)();
+    return;
+  }
+
+  return;
+}
+
 DETOUR_DECL_MEMBER1(EndVersusModeRound, void, bool, param_1) {
   if (!g_pFwdEndVersusModeRound) {
     g_pSM->LogMessage(myself, "EndVersusModeRound forward is invalid");
@@ -229,6 +245,13 @@ void CreateDetours() {
     g_pSM->LogError(myself, "Failed to get signature for CDirectorVersusMode::EndVersusModeRound");
   }
   
+  Detour_SwapTeams = DETOUR_CREATE_MEMBER(SwapTeams, "CDirector::SwapTeams");
+  if (Detour_SwapTeams != nullptr) {
+    Detour_SwapTeams->EnableDetour();
+  } else {
+    g_pSM->LogError(myself, "Failed to get signature for CDirector::SwapTeams");
+  }
+  
   /*
   Detour_GetRandomPZSpawnPosition = DETOUR_CREATE_MEMBER(GetRandomPZSpawnPosition, "ZombieManager::GetRandomPZSpawnPosition");
   if (Detour_GetRandomPZSpawnPosition != nullptr) {
@@ -256,6 +279,7 @@ void DestroyDetours() {
   if (Detour_SetHumanSpectator) Detour_SetHumanSpectator->Destroy();
   if (Detour_OnFirstSurvivorLeftSafeArea) Detour_OnFirstSurvivorLeftSafeArea->Destroy();
   if (Detour_EndVersusModeRound) Detour_EndVersusModeRound->Destroy();
+  if (Detour_SwapTeams) Detour_SwapTeams->Destroy();
   if (Detour_GetRandomPZSpawnPosition) Detour_GetRandomPZSpawnPosition->Destroy();
   if (Detour_StackTrace) Detour_StackTrace->Destroy();
 }

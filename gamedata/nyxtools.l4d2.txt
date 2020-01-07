@@ -74,6 +74,11 @@
         "library"      "server"
         "linux"        "@_ZNK9CDirector14IsClassAllowedE15ZombieClassType"
       }
+      "CDirector::SwapTeams"
+      {
+        "library"      "server"
+        "linux"        "@_ZN9CDirector9SwapTeamsEv"
+      }
 /***
  *       ____________                          ____  __                     
  *      / ____/_  __/__  ______________  _____/ __ \/ /___ ___  _____  _____

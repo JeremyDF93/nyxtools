@@ -72,6 +72,7 @@ forward Action L4D2_OnReplaceWithBot(int client, bool flag);
 forward Action L4D2_OnSetHumanSpectator(int bot, int client);
 forward Action L4D2_OnFirstSurvivorLeftSafeArea(int client);
 forward Action L4D2_OnEndVersusModeRound(bool flag);
+forward Action L4D2_OnSwapTeams();
 
 #if !defined REQUIRE_PLUGIN
 public __pl_nyxtools_l4d2_SetNTVOptional() {
