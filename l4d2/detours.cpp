@@ -180,8 +180,6 @@ DETOUR_DECL_MEMBER0(SwapTeams, void) {
     DETOUR_MEMBER_CALL(SwapTeams)();
     return;
   }
-
-  return;
 }
 
 DETOUR_DECL_MEMBER1(EndVersusModeRound, void, bool, param_1) {
