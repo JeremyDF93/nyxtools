@@ -294,6 +294,23 @@ stock bool GetClientAimPos(int client, float vec[3], int mask = MASK_ALL) {
   return false;
 }
 
+stock bool GetClientAimPosEx(int client, float vec[3], float normal[3], int mask = MASK_ALL) {
+  float origin[3], angles[3];
+  GetClientEyePosition(client, origin);
+  GetClientEyeAngles(client, angles);
+
+  Handle trace = TR_TraceRayFilterEx(origin, angles, mask, RayType_Infinite, TraceEntityFilter_Self, client);
+  if (TR_DidHit(trace)) {
+    TR_GetEndPosition(vec, trace);
+    TR_GetPlaneNormal(trace, normal);
+    CloseHandle(trace);
+    return true;
+  }
+
+  CloseHandle(trace);
+  return false;
+}
+
 stock int GetClientAimTargetEx(int client, bool only_clients=true, int mask = MASK_ALL) {
   float origin[3], angles[3];
   GetClientEyePosition(client, origin);
@@ -416,7 +433,7 @@ stock any MathMax(any x, any y) {
  *                                         
  */
 
-stock void CopyVectors(float vector[3], float copy[3]) {
+stock void CopyVectors(const float vector[3], float copy[3]) {
   copy[0] = vector[0];
   copy[1] = vector[1];
   copy[2] = vector[2];
@@ -434,6 +451,20 @@ stock bool StringToVector(const char[] str, float vector[3]) {
   }
 
   return false;
+}
+
+stock void MatrixToAngles(const float fwd[3], const float left[3], const float up[3], float angles[3]) {
+  float xyDist = SquareRoot(fwd[0] * fwd[0] + fwd[1] * fwd[1]);
+  
+  if (xyDist > 0.001) {
+    angles[1] = RadToDeg(ArcTangent2(fwd[1], fwd[0]));
+    angles[0] = RadToDeg(ArcTangent2(-fwd[2], xyDist));
+    angles[2] = RadToDeg(ArcTangent2(left[2], up[2]));
+  } else {
+    angles[1] = RadToDeg(ArcTangent2(-left[0], left[1]));
+    angles[0] = RadToDeg(ArcTangent2(-fwd[2], xyDist));
+    angles[2] = 0.0;
+  }
 }
 
 /***

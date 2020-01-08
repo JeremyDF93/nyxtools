@@ -31,6 +31,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_entprop_player", ConCmd_EntPropPlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <prop> [value]");
   RegAdminCmd("nyx_entfire_player", ConCmd_EntFirePlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <input> [value]");
   RegAdminCmd("nyx_entprop_weapon", ConCmd_EntPropWeapon, ADMFLAG_ROOT, "nyx_entprop_weapon <#userid|name> <slot> <prop> [value]");
+  RegAdminCmd("nyx_saferemove", ConCmd_SafeRemove, ADMFLAG_ROOT, "nyx_saferemove [classname]");
 }
 
 /***
@@ -48,7 +49,7 @@ public Action ConCmd_EntPropClass(int client, int args) {
     return Plugin_Handled;
   }
 
-  char classname[32], prop[32], value[32];
+  char classname[64], prop[32], value[32];
   GetCmdArg(1, classname, sizeof(classname));
   GetCmdArg(2, prop, sizeof(prop));
   GetCmdArg(3, value, sizeof(value));
@@ -139,7 +140,7 @@ public Action ConCmd_EntFireAim(int client, int args) {
     }
     AcceptEntityInput(ent, input);
 
-    char classname[32];
+    char classname[64];
     GetEntityClassname(ent, classname, sizeof(classname));
 
     LogAction(client, -1, "\"%L\" ran ent fire \"%s\" \"%s\" on \"%s\"", client, input, value, classname);
@@ -253,6 +254,27 @@ public Action ConCmd_EntPropWeapon(int client, int args) {
       } else {
         ReadEntProp(weapon, prop, client);
       }
+    }
+  }
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_SafeRemove(int client, int args) {
+  int ent = -1;
+  if (args == 1) {
+    char classname[64];
+    GetCmdArg(1, classname, sizeof(classname));
+
+    while ((ent = FindEntityByClassname(ent, classname)) != -1) {
+      if (ent > MaxClients) {
+        AcceptEntityInput(ent, "Kill");
+      }
+    }
+  } else {
+    ent = GetClientAimTargetEx(client, false);
+    if (ent > MaxClients) {
+      AcceptEntityInput(ent, "Kill");
     }
   }
 
