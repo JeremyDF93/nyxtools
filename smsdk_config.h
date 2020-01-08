@@ -8,17 +8,17 @@
 
 #if defined NYX_GENERATED_BUILD
 #include <nyxtools_version_auto.h>
-#define SMEXT_CONF_VERSION		  NYXTOOLS_VERSION_STRING
+#define SMEXT_CONF_VERSION      NYXTOOLS_VERSION_STRING
 #else
-#define SMEXT_CONF_VERSION		  "1.0.0"
+#define SMEXT_CONF_VERSION       "1.0.0"
 #endif
-#define SMEXT_CONF_NAME			    "NyxTools"
-#define SMEXT_CONF_DESCRIPTION	"A general set of source engine tools"
-#define SMEXT_CONF_AUTHOR		    "Kiwi, JeremyDF93"
-#define SMEXT_CONF_URL			    "http://praisethemoon.com/"
-#define SMEXT_CONF_LOGTAG		    "NYX"
-#define SMEXT_CONF_LICENSE		  "GPL"
-#define SMEXT_CONF_DATESTRING	  __DATE__
+#define SMEXT_CONF_NAME          "NyxTools"
+#define SMEXT_CONF_DESCRIPTION   "A general set of source engine tools"
+#define SMEXT_CONF_AUTHOR        "Kiwi, JeremyDF93"
+#define SMEXT_CONF_URL           "http://praisethemoon.com/"
+#define SMEXT_CONF_LOGTAG        "NYX"
+#define SMEXT_CONF_LICENSE       "GPL"
+#define SMEXT_CONF_DATESTRING    __DATE__
 
 /** 
  * @brief Exposes plugin's main interface.
@@ -29,7 +29,7 @@
  * @brief Sets whether or not this plugin required Metamod.
  * NOTE: Uncomment to enable, comment to disable.
  */
-#define SMEXT_CONF_METAMOD		
+#define SMEXT_CONF_METAMOD
 
 /** Enable interfaces you want to use here by uncommenting lines */
 #define SMEXT_ENABLE_FORWARDSYS
