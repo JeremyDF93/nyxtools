@@ -104,7 +104,7 @@ public Action ConCmd_EntPropAim(int client, int args) {
   GetCmdArg(1, prop, sizeof(prop));
   GetCmdArg(2, value, sizeof(value));
 
-  int ent = GetClientAimTargetEx(client);
+  int ent = GetClientAimTargetEx(client, false);
   if (ent > 0) {
     if (args == 2) {
       WriteEntProp(ent, prop, client, value);
@@ -132,7 +132,7 @@ public Action ConCmd_EntFireAim(int client, int args) {
   strcopy(value, sizeof(value), buffer[len]);
   StripQuotes(value);
 
-  int ent = GetClientAimTargetEx(client);
+  int ent = GetClientAimTargetEx(client, false);
   if (ent > 0) {
     if (args > 1) {
       SetVariantString(value);

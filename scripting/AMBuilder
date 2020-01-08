@@ -7,7 +7,7 @@ files = [
   'nyxtools_ent.sp',
   'nyxtools_event.sp',
   'nyxtools_l4d2.sp',
-  'nyxtools_tf2.sp'
+  'nyxtools_tf2.sp',
 ]
 
 spcomp_argv = [

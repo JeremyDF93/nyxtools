@@ -14,7 +14,7 @@
 #endif
 #define SMEXT_CONF_NAME			    "NyxTools"
 #define SMEXT_CONF_DESCRIPTION	"A general set of source engine tools"
-#define SMEXT_CONF_AUTHOR		    "JeremyDF93"
+#define SMEXT_CONF_AUTHOR		    "Kiwi, JeremyDF93"
 #define SMEXT_CONF_URL			    "http://praisethemoon.com/"
 #define SMEXT_CONF_LOGTAG		    "NYX"
 #define SMEXT_CONF_LICENSE		  "GPL"
