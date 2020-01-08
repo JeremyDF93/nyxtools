@@ -206,6 +206,8 @@ stock int RegenerateProps() {
     g_hProps.PushArray(aProp);
   }
 
+  CloseHandle(props);
+
   return g_hProps.Length;
 }
 
