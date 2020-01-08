@@ -72,7 +72,7 @@ public void OnPluginStart() {
     HookConVarChange(host_timescale, ConVarChanged_HostTimescale);
   }
 
-  RegAdminCmd("nyx_fakecmdc", ConCmd_FakeCmdCheat, ADMFLAG_CHEATS, "nyx_fakecmdc <#userid|name> <cmd>");
+  RegAdminCmd("nyx_cheatcmd", ConCmd_CheatCmd, ADMFLAG_CHEATS, "nyx_cheatcmd <#userid|name> <cmd> [args]");
 
   HookCheatCommands();
 }
@@ -126,10 +126,15 @@ public int Native_ExecuteCheatCommand(Handle plugin, int numArgs) {
   int len = BreakString(buffer, cmd, sizeof(cmd));
   strcopy(args, sizeof(args), buffer[len]);
 
-  g_bAllowOnce[client] = true;
-  FakeClientCommandEx(client, "%s %s", cmd, args);
-  g_bAllowOnce[client] = false;
-  return 0;
+  for (int i = 0; i < g_iHookedCount; i++) {
+    if (strcmp(g_sHookedCmd[i], cmd) == 0) {
+      g_bAllowOnce[client] = true;
+      FakeClientCommandEx(client, "%s %s", cmd, args);
+      return true;
+    }
+  }
+
+  return false;
 }
 
 public int Native_HasCheatPermissions(Handle plugin, int numArgs) {
@@ -173,9 +178,9 @@ public void ConVarChanged_HostTimescale(ConVar convar, const char[] oldValue, co
  *                                                             
  */
 
-public Action ConCmd_FakeCmdCheat(int client, int args) {
+public Action ConCmd_CheatCmd(int client, int args) {
   if (args < 2) {
-    NyxMsgReply(client, "Usage: nyx_fakecmdc <#userid|name> <cmd>");
+    NyxMsgReply(client, "Usage: nyx_cheatcmd <#userid|name> <cmd> [args]");
     return Plugin_Handled;
   }
 
@@ -202,10 +207,10 @@ public Action ConCmd_FakeCmdCheat(int client, int args) {
   for (int i = 0; i < target_count; i++) {
     if (IsValidClient(target_list[i])) {
       ExecuteCheatCommand(target_list[i], "%s %s", cmd, cmdArgs);
-      LogAction(client, target_list[i], "\"%L\" ran fake command \"%s\" [%s] on \"%L\"", client, cmd, cmdArgs, target_list[i]);
+      LogAction(client, target_list[i], "\"%L\" ran cheat command \"%s\" [%s] on \"%L\"", client, cmd, cmdArgs, target_list[i]);
     }
   }
-  NyxAct(client, "Ran fake command '%s' [%s] on %s", cmd, cmdArgs, target_name);
+  NyxAct(client, "Ran cheat command '%s' [%s] on %s", cmd, cmdArgs, target_name);
 
   return Plugin_Handled;
 }
@@ -221,6 +226,8 @@ public Action ConCmd_Cheat(int client, int args) {
     return Plugin_Handled;
   }
 
+  g_bAllowOnce[client] = false;
+  
   LogAction(client, -1, "\"%L\" ran cheat command \"%s\" [%s]", client, cmd, cmdArgs);
   if (nyx_cheats_notify.BoolValue) {
     NyxAct(client, "Ran cheat command \"%s\" [%s]", cmd, cmdArgs);
