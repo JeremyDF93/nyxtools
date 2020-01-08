@@ -12,7 +12,8 @@ folder_list = [
   'addons/sourcemod/scripting/include',
   'addons/sourcemod/gamedata',
   #'addons/sourcemod/configs',
-  'addons/sourcemod/plugins'
+  'addons/sourcemod/plugins',
+  'addons/sourcemod/translations',
 ]
 
 # Create the distribution folder hierarchy.
@@ -58,6 +59,13 @@ CopyFiles('gamedata', 'addons/sourcemod/gamedata',
   [
     'nyxtools.l4d2.txt',
     'nyxtools.tf2.txt'
+  ]
+)
+
+# Translation files
+CopyFiles('translations', 'addons/sourcemod/translations',
+  [
+    'nyxtools.phrases.txt',
   ]
 )
 
