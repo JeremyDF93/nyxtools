@@ -65,17 +65,17 @@ def output_version_headers():
 #ifndef _NYXTOOLS_AUTO_VERSION_INFORMATION_H_
 #define _NYXTOOLS_AUTO_VERSION_INFORMATION_H_
 
-#define NYXTOOLS_BUILD_TAG		\"{0}\"
-#define NYXTOOLS_BUILD_CSET		\"{1}\"
-#define NYXTOOLS_BUILD_MAJOR		\"{2}\"
-#define NYXTOOLS_BUILD_MINOR		\"{3}\"
-#define NYXTOOLS_BUILD_RELEASE	\"{4}\"
+#define NYXTOOLS_BUILD_TAG            \"{0}\"
+#define NYXTOOLS_BUILD_CSET           \"{1}\"
+#define NYXTOOLS_BUILD_MAJOR          \"{2}\"
+#define NYXTOOLS_BUILD_MINOR          \"{3}\"
+#define NYXTOOLS_BUILD_RELEASE        \"{4}\"
 #define NYXTOOLS_BUILD_LOCAL_REV      \"{6}\"
 
 #define NYXTOOLS_BUILD_UNIQUEID       NYXTOOLS_BUILD_LOCAL_REV \":\" NYXTOOLS_BUILD_CSET
 
-#define NYXTOOLS_VERSION_STRING	\"{5}\"
-#define NYXTOOLS_VERSION_FILE		{2},{3},{4},{6}
+#define NYXTOOLS_VERSION_STRING       \"{5}\"
+#define NYXTOOLS_VERSION_FILE         {2},{3},{4},{6}
 
 #endif /* _NYXTOOLS_AUTO_VERSION_INFORMATION_H_ */
     """.format(tag, shorthash, major, minor, release, fullstring, count))
@@ -87,14 +87,14 @@ def output_version_headers():
 #endif
 #define _nyx_auto_version_included
 
-#define NYXTOOLS_V_TAG		\"{0}\"
-#define NYXTOOLS_V_CSET	\"{1}\"
-#define NYXTOOLS_V_MAJOR	{2}
-#define NYXTOOLS_V_MINOR	{3}
-#define NYXTOOLS_V_RELEASE	{4}
-#define NYXTOOLS_V_REV		{6}
+#define NYXTOOLS_V_TAG      \"{0}\"
+#define NYXTOOLS_V_CSET     \"{1}\"
+#define NYXTOOLS_V_MAJOR    {2}
+#define NYXTOOLS_V_MINOR    {3}
+#define NYXTOOLS_V_RELEASE  {4}
+#define NYXTOOLS_V_REV      {6}
 
-#define NYXTOOLS_VERSION	\"{5}\"
+#define NYXTOOLS_VERSION    \"{5}\"
     """.format(tag, shorthash, major, minor, release, fullstring, count))
 
 output_version_headers()
