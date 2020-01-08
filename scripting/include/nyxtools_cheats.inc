@@ -5,15 +5,14 @@
 
 /**
  * Executes a cheat command on the server without being networked. This bypasses
- * the sv_cheats cvar without changing it. This ignores the 'nyx_cheats_override'
- * cvar setting.
+ * the sv_cheats cvar without changing it.
  *
  * @param client        Index of the client.
  * @param fmt           Format of the client command.
  * @param ...           Format parameters
  * @error               Invalid client index
  */
-native void FakeClientCommandCheat(int client, const char[] fmt, any ...);
+native void ExecuteCheatCommand(int client, const char[] fmt, any ...);
 
 /**
  * Returns true if the client has access to cheat commands.

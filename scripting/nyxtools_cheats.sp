@@ -54,7 +54,7 @@ bool g_bAllowOnce[MAXPLAYERS + 1];
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
   RegPluginLibrary("nyxtools_cheats");
 
-  CreateNative("FakeClientCommandCheat", Native_FakeClientCommandCheat);
+  CreateNative("ExecuteCheatCommand", Native_ExecuteCheatCommand);
   CreateNative("HasCheatPermissions", Native_HasCheatPermissions);
 
   return APLRes_Success;
@@ -109,7 +109,7 @@ public void OnClientPostAdminCheck(int client) {
  *                                         
  */
 
-public int Native_FakeClientCommandCheat(Handle plugin, int numArgs) {
+public int Native_ExecuteCheatCommand(Handle plugin, int numArgs) {
   int client = GetNativeCell(1);
   if (!IsValidClient(client)) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
@@ -126,15 +126,10 @@ public int Native_FakeClientCommandCheat(Handle plugin, int numArgs) {
   int len = BreakString(buffer, cmd, sizeof(cmd));
   strcopy(args, sizeof(args), buffer[len]);
 
-  for (int i = 0; i < g_iHookedCount; i++) {
-    if (strcmp(g_sHookedCmd[i], cmd) == 0) {
-      g_bAllowOnce[client] = true;
-      break;
-    }
-  }
-
-  FakeClientCommand(client, "%s %s", cmd, args);
-  return true;
+  g_bAllowOnce[client] = true;
+  FakeClientCommandEx(client, "%s %s", cmd, args);
+  g_bAllowOnce[client] = false;
+  return 0;
 }
 
 public int Native_HasCheatPermissions(Handle plugin, int numArgs) {
@@ -206,7 +201,7 @@ public Action ConCmd_FakeCmdCheat(int client, int args) {
 
   for (int i = 0; i < target_count; i++) {
     if (IsValidClient(target_list[i])) {
-      FakeClientCommandCheat(target_list[i], "%s %s", cmd, cmdArgs);
+      ExecuteCheatCommand(target_list[i], "%s %s", cmd, cmdArgs);
       LogAction(client, target_list[i], "\"%L\" ran fake command \"%s\" [%s] on \"%L\"", client, cmd, cmdArgs, target_list[i]);
     }
   }
@@ -226,7 +221,6 @@ public Action ConCmd_Cheat(int client, int args) {
     return Plugin_Handled;
   }
 
-  g_bAllowOnce[client] = false;
   LogAction(client, -1, "\"%L\" ran cheat command \"%s\" [%s]", client, cmd, cmdArgs);
   if (nyx_cheats_notify.BoolValue) {
     NyxAct(client, "Ran cheat command \"%s\" [%s]", cmd, cmdArgs);
