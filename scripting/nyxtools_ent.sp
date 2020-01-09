@@ -31,7 +31,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_entprop_player", ConCmd_EntPropPlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <prop> [value]");
   RegAdminCmd("nyx_entfire_player", ConCmd_EntFirePlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <input> [value]");
   RegAdminCmd("nyx_entprop_weapon", ConCmd_EntPropWeapon, ADMFLAG_ROOT, "nyx_entprop_weapon <#userid|name> <slot> <prop> [value]");
-  RegAdminCmd("nyx_saferemove", ConCmd_SafeRemove, ADMFLAG_ROOT, "nyx_saferemove [classname]");
+  RegAdminCmd("nyx_entremove", ConCmd_EntRemove, ADMFLAG_ROOT, "nyx_entremove [classname]");
 }
 
 /***
@@ -260,7 +260,7 @@ public Action ConCmd_EntPropWeapon(int client, int args) {
   return Plugin_Handled;
 }
 
-public Action ConCmd_SafeRemove(int client, int args) {
+public Action ConCmd_EntRemove(int client, int args) {
   int ent = -1;
   if (args == 1) {
     char classname[64];
