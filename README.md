@@ -4,6 +4,7 @@ A collection of plugins to help make development easier and reduce repetitivenes
 Work in progress.
 ## Stocks
 ```c
+// TF2
 stock bool IsClientPlaying(int client);
 stock int GetPlayerCount(bool playing = false);
 stock void TF2_ChangeClientTeamEx(int client, int team, bool respawn = true);
@@ -15,6 +16,7 @@ stock int TF2_StringToTeam(char[] str);
 stock void TF2_TeamToString(int team, char[] str, int maxlength);
 stock void TF2_ClassToString(TFClassType class, char[] str, int maxlength);
 stock TFClassType TF2_StringToClass(char[] str);
+// NyxTools
 stock bool IsValidClient(int client, bool filterBots = false, bool filterReplay = true, bool filterSourceTV = true);
 stock bool IsClientAdmin(int client, int flags = ADMFLAG_GENERIC);
 stock void NyxMsg(char[] format, any ...);
@@ -45,6 +47,7 @@ stock void CopyVectors(const float vector[3], float copy[3]);
 stock bool StringToVector(const char[] str, float vector[3]);
 stock void MatrixToAngles(const float fwd[3], const float left[3], const float up[3], float angles[3]);
 stock void ShowURLPanel(int client, const char[] title, const char[] url, bool show = true);
+// L4D2
 stock bool IsPlayerSurvivor(int client);
 stock bool IsPlayerInfected(int client);
 stock bool IsPlayerGhost(int client);
@@ -63,6 +66,7 @@ stock void L4D2_TeamToString(L4D2Team team, char[] str, int maxlength);
 ```
 ## Forwards
 ```c
+// L4D2
 forward Action L4D2_OnReplaceTank(int client_1, int client_2);
 forward Action L4D2_OnTakeOverBot(int bot, bool flag);
 forward Action L4D2_OnTakeOverZombieBot(int client, int bot);
@@ -74,10 +78,12 @@ forward Action L4D2_OnSwapTeams();
 ```
 ## Natives
 ```c
+// TF2
 native void TF2_RemoveAllObjects(int client, bool flag=true);
 native int TF2_GetObjectCount(int client);
 native bool TF2_SetUpgradesMode(bool enabled, bool reviveEnabled);
 native bool TF2_IsUpgradesEnabled();
+// L4D2
 native void L4D2_RespawnPlayer(int client);
 native void L4D2_WarpGhostToInitialPosition(int client, bool flag=true);
 native void L4D2_BecomeGhost(int client, bool flag=true);
@@ -94,11 +100,13 @@ native bool L4D2_IsClassAllowed(L4D2ClassType class);
 native bool L4D2_GetRandomPZSpawnPosition(L4D2ClassType class, int tries=5, int client, float[3] vector);
 native bool L4D2_FindNearbySpawnSpot(int client, float[3] vector, L4D2Team team, bool flag, float radius);
 native void L4D2_WarpToValidPositionIfStuck(int client);
+// Cheats
 native bool ExecuteCheatCommand(int client, const char[] fmt, any ...);
 native bool HasCheatPermissions(int client);
 ```
 ## Misc
 ```c
+// NyxTools
 public bool TraceEntityFilter_PlayersOnly(int entity, int contentsMask);
 public bool TraceEntityFilter_Players(int entity, int contentsMask);
 public bool TraceEntityFilter_PlayersOnlyEx(int entity, int contentsMask, any self);
