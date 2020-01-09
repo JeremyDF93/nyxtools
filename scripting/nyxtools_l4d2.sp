@@ -42,6 +42,7 @@ enum NyxSDK {
   Handle:SDK_IsClassAllowed,
   Handle:SDK_FindNearbySpawnSpot,
   Handle:SDK_WarpToValidPositionIfStuck,
+  Handle:SDK_ScriptStaggerPlayer,
 }
 
 /***
@@ -92,6 +93,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
   CreateNative("L4D2_GetRandomPZSpawnPosition", Native_GetRandomPZSpawnPosition);
   CreateNative("L4D2_FindNearbySpawnSpot", Native_FindNearbySpawnSpot);
   CreateNative("L4D2_WarpToValidPositionIfStuck", Native_WarpToValidPositionIfStuck);
+  CreateNative("L4D2_ScriptStaggerPlayer", Native_ScriptStaggerPlayer);
 
   return APLRes_Success;
 }
@@ -228,6 +230,13 @@ public void OnPluginStart() {
   g_hSDKCall[SDK_WarpToValidPositionIfStuck] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_WarpToValidPositionIfStuck] == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpToValidPositionIfStuck");
+  
+  StartPrepSDKCall(SDKCall_Player);
+  PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ScriptStaggerPlayer");
+  PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_Pointer);
+  g_hSDKCall[SDK_ScriptStaggerPlayer] = EndPrepSDKCall();
+  if (g_hSDKCall[SDK_ScriptStaggerPlayer] == INVALID_HANDLE)
+      SetFailState("Failed to create SDKCall for CTerrorPlayer::ScriptStaggerPlayer");
 
  /***
   *        __  ____          
@@ -485,6 +494,17 @@ public int Native_WarpToValidPositionIfStuck(Handle plugin, int numArgs) {
   return SDKCall(g_hSDKCall[SDK_WarpToValidPositionIfStuck], client);
 }
 
+public int Native_ScriptStaggerPlayer(Handle plugin, int numArgs) {
+  int client = GetNativeCell(1);
+  float vector[3]; GetNativeArray(2, vector, sizeof(vector));
+
+  if (!IsValidClient(client)) {
+    return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
+  }
+
+  return SDKCall(g_hSDKCall[SDK_ScriptStaggerPlayer], client, vector);
+}
+
 /***
  *        __  ___      ____  _ ______                      __  _______ ____           
  *       /  |/  /_  __/ / /_(_)_  __/___ __________ ____  / /_/ ____(_) / /____  _____
@@ -693,6 +713,7 @@ public Action ConCmd_ChangeClass(int client, int args) {
 }
 
 public Action ConCmd_Debug(int client, int args) {
+  /*
   float vector[3]; GetClientEyePosition(client, vector);
   bool retVal = L4D2_FindNearbySpawnSpot(client, vector, L4D2Team_Unassigned, true, 100.0);
   if (retVal) {
@@ -700,6 +721,9 @@ public Action ConCmd_Debug(int client, int args) {
   }
   L4D2_WarpToValidPositionIfStuck(client);
   NyxMsgDebug("retVal: %d", retVal);
+  */
+  float vector[3];
+  L4D2_ScriptStaggerPlayer(client, vector);
 
   return Plugin_Handled;
 }

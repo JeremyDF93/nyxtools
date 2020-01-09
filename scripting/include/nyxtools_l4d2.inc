@@ -65,6 +65,7 @@ native bool L4D2_IsClassAllowed(L4D2ClassType class);
 native bool L4D2_GetRandomPZSpawnPosition(L4D2ClassType class, int tries=5, int client, float[3] vector);
 native bool L4D2_FindNearbySpawnSpot(int client, float[3] vector, L4D2Team team, bool flag, float radius);
 native void L4D2_WarpToValidPositionIfStuck(int client);
+native void L4D2_ScriptStaggerPlayer(int client, float[3] vector);
 forward Action L4D2_OnReplaceTank(int client_1, int client_2);
 forward Action L4D2_OnTakeOverBot(int bot, bool flag);
 forward Action L4D2_OnTakeOverZombieBot(int client, int bot);

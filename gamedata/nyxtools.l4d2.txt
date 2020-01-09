@@ -137,6 +137,11 @@
         "library"      "server"
         "linux"        "@_ZN13CTerrorPlayer26WarpToValidPositionIfStuckEv"
       }
+      "CTerrorPlayer::ScriptStaggerPlayer"
+      {
+        "library"      "server"
+        "linux"        "@_ZN13CTerrorPlayer19ScriptStaggerPlayerE6Vector"
+      }
 /***
  *       __________  _                __            ______                 __  ___                                 
  *      / ____/ __ \(_)_______  _____/ /_____  ____/  _/ /____  ____ ___  /  |/  /___ _____  ____ _____ ____  _____
