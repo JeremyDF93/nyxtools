@@ -72,6 +72,31 @@ forward Action L4D2_OnFirstSurvivorLeftSafeArea(int client);
 forward Action L4D2_OnEndVersusModeRound(bool flag);
 forward Action L4D2_OnSwapTeams();
 ```
+## Natives
+```c
+native void TF2_RemoveAllObjects(int client, bool flag=true);
+native int TF2_GetObjectCount(int client);
+native bool TF2_SetUpgradesMode(bool enabled, bool reviveEnabled);
+native bool TF2_IsUpgradesEnabled();
+native void L4D2_RespawnPlayer(int client);
+native void L4D2_WarpGhostToInitialPosition(int client, bool flag=true);
+native void L4D2_BecomeGhost(int client, bool flag=true);
+native bool L4D2_CanBecomeGhost(int client, bool flag=true);
+native void L4D2_TakeOverBot(int client, bool flag=true);
+native void L4D2_TakeOverZombieBot(int client, int bot);
+native void L4D2_ReplaceWithBot(int client, bool flag=true);
+native void L4D2_SetHumanSpectator(int bot, int client);
+native void L4D2_ChangeTeam(int client, L4D2Team team);
+native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
+native bool L4D2_IsMissionFinalMap();
+native bool L4D2_IsMissionStartMap();
+native bool L4D2_IsClassAllowed(L4D2ClassType class);
+native bool L4D2_GetRandomPZSpawnPosition(L4D2ClassType class, int tries=5, int client, float[3] vector);
+native bool L4D2_FindNearbySpawnSpot(int client, float[3] vector, L4D2Team team, bool flag, float radius);
+native void L4D2_WarpToValidPositionIfStuck(int client);
+native bool ExecuteCheatCommand(int client, const char[] fmt, any ...);
+native bool HasCheatPermissions(int client);
+```
 ## Misc
 ```c
 public bool TraceEntityFilter_PlayersOnly(int entity, int contentsMask);
