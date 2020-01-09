@@ -2,42 +2,67 @@
 A collection of plugins to help make development easier and reduce repetitiveness.
 ## Documentation
 Work in progress.
-## Natives
-### NyxTools - Cheats
+## Stocks
 ```c
-/**
- * Executes a cheat command on the server without being networked. This bypasses
- * the sv_cheats cvar without changing it. This ignores the 'nyx_cheats_override'
- * cvar setting.
- *
- * @param client        Index of the client.
- * @param fmt           Format of the client command.
- * @param ...           Format parameters
- * @error               Invalid client index
- */
-void FakeClientCommandCheat(int client, const char[] fmt, any ...);
-
-/**
- * Returns true if the client has access to cheat commands.
- *
- * @param client        Index of the client.
- * @return              True if they hace access to cheats
- */
-bool HasCheatPermissions(int client);
+stock bool IsClientPlaying(int client)
+stock int GetPlayerCount(bool playing = false)
+stock void TF2_ChangeClientTeamEx(int client, int team, bool respawn = true)
+stock void TF2_RemoveAllWearables(int client)
+stock void TF2_RemoveWearables(int client, const int[] items, int len)
+stock void TF2_SwitchToSlot(int client, int slot)
+stock int TF2_StringToSlot(char[] str)
+stock int TF2_StringToTeam(char[] str)
+stock void TF2_TeamToString(int team, char[] str, int maxlength)
+stock void TF2_ClassToString(TFClassType class, char[] str, int maxlength)
+stock TFClassType TF2_StringToClass(char[] str)
+stock bool IsValidClient(int client, bool filterBots = false, bool filterReplay = true, bool filterSourceTV = true)
+stock bool IsClientAdmin(int client, int flags = ADMFLAG_GENERIC)
+stock void NyxMsg(char[] format, any ...)
+stock void NyxMsgReply(int client, char[] format, any ...)
+stock void NyxMsgConsole(int client, char[] format, any ...)
+stock void NyxMsgClient(int client, char[] format, any ...)
+stock void NyxMsgAll(char[] format, any ...)
+stock void NyxMsgTeam(int team, char[] format, any ...)
+stock void NyxMsgAdmin(char[] format, any ...)
+stock void NyxMsgDebug(char[] format, any ...)
+stock void NyxAct(int client, char[] format, any ...)
+stock void SayText2(int client, int from, char[] msg)
+stock int GetCmdTarget(int argnum, int client, bool nobots = false, bool immunity = true)
+stock bool GetCmdBool(int argnum, bool def = false)
+stock int GetCmdInt(int argnum, int def = 0)
+stock int GetCmdIntEx(int argnum, int min = INT_MIN, int max = INT_MAX, int def = 0)
+stock float GetCmdFloat(int argnum, float def = 0.0)
+stock float GetCmdFloatEx(int argnum, float min, float max, float def = 0.0)
+stock void GetCmdVector(int argnum, float vec[3], float def[3]={ 0.0, 0.0, 0.0 })
+stock bool GetClientAimPos(int client, float vec[3], int mask = MASK_ALL)
+stock bool GetClientAimPosEx(int client, float vec[3], float normal[3], int mask = MASK_ALL)
+stock int GetClientAimTargetEx(int client, bool only_clients=true, int mask = MASK_ALL)
+stock int FindClosestPlayer(int client, bool filterTeam=true, float distMin=0.0, float distMax=0.0)
+stock int FindEntityByClassnameSafe(int startEnt, const char[] classname)
+stock any MathMin(any x, any y)
+stock any MathMax(any x, any y)
+stock void CopyVectors(const float vector[3], float copy[3])
+stock bool StringToVector(const char[] str, float vector[3])
+stock void MatrixToAngles(const float fwd[3], const float left[3], const float up[3], float angles[3])
+stock void ShowURLPanel(int client, const char[] title, const char[] url, bool show = true)
+stock bool IsPlayerSurvivor(int client)
+stock bool IsPlayerInfected(int client)
+stock bool IsPlayerGhost(int client)
+stock bool IsPlayerTank(int client)
+stock bool IsPlayerGrabbed(int client)
+stock bool IsPlayerIncapacitated(int client)
+stock bool IsClientPlaying(int client)
+stock int GetPlayerCount(bool playing = false)
+stock L4D2ClassType L4D2_StringToClass(const char[] classname)
+stock L4D2ClassType L4D2_GetClientClass(int client)
+stock L4D2ClassType L4D2_GetClassFromInt(int class)
+stock L4D2Team L4D2_GetTeamFromInt(int team)
+stock L4D2Team L4D2_GetClientTeam(int client)
+stock L4D2Team L4D2_StringToTeam(char[] str)
+stock void L4D2_TeamToString(L4D2Team team, char[] str, int maxlength)
 ```
-### NyxTools - L4D2 (Linux Support Only)
+## Forwards
 ```c
-native void L4D2_RespawnPlayer(int client);
-native void L4D2_WarpGhostToInitialPosition(int client, bool flag=true);
-native void L4D2_BecomeGhost(int client, bool flag=true);
-native bool L4D2_CanBecomeGhost(int client, bool flag=true);
-native void L4D2_TakeOverBot(int client, bool flag=true);
-native void L4D2_TakeOverZombieBot(int bot, int client);
-native void L4D2_ReplaceWithBot(int client, bool flag=true);
-native void L4D2_SetHumanSpectator(int bot, int client);
-native void L4D2_ChangeTeam(int client, int team);
-native void L4D2_SetInfectedClass(int client, L4D2ClassType class);
-native bool L4D2_IsMissionFinalMap();
 forward Action L4D2_OnReplaceTank(int client_1, int client_2);
 forward Action L4D2_OnTakeOverBot(int bot, bool flag);
 forward Action L4D2_OnTakeOverZombieBot(int client, int bot);
@@ -45,11 +70,15 @@ forward Action L4D2_OnReplaceWithBot(int client, bool flag);
 forward Action L4D2_OnSetHumanSpectator(int bot, int client);
 forward Action L4D2_OnFirstSurvivorLeftSafeArea(int client);
 forward Action L4D2_OnEndVersusModeRound(bool flag);
+forward Action L4D2_OnSwapTeams();
 ```
-### NyxTools - TF2 (Linux Support Only)
+## Misc
 ```c
-void TF2_RemoveAllObjects(int client, bool flag=true);
-int TF2_GetObjectCount(int client);
+public bool TraceEntityFilter_PlayersOnly(int entity, int contentsMask)
+public bool TraceEntityFilter_Players(int entity, int contentsMask)
+public bool TraceEntityFilter_PlayersOnlyEx(int entity, int contentsMask, any self)
+public bool TraceEntityFilter_PlayersEx(int entity, int contentsMask, any self)
+public bool TraceEntityFilter_Self(int entity, int contentsMask, any self)
 ```
 ## Commands
 ### NyxTools
