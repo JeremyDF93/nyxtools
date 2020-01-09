@@ -15,12 +15,12 @@ public Plugin myinfo = {
 };
 
 /***
- *        ______                          
+ *        ______
  *       / ____/___  __  ______ ___  _____
  *      / __/ / __ \/ / / / __ `__ \/ ___/
- *     / /___/ / / / /_/ / / / / / (__  ) 
- *    /_____/_/ /_/\__,_/_/ /_/ /_/____/  
- *                                        
+ *     / /___/ / / / /_/ / / / / / (__  )
+ *    /_____/_/ /_/\__,_/_/ /_/ /_/____/
+ *
  */
 
 enum NyxSDK {
@@ -29,24 +29,24 @@ enum NyxSDK {
 }
 
 /***
- *       ________      __          __    
+ *       ________      __          __
  *      / ____/ /___  / /_  ____ _/ /____
  *     / / __/ / __ \/ __ \/ __ `/ / ___/
- *    / /_/ / / /_/ / /_/ / /_/ / (__  ) 
- *    \____/_/\____/_.___/\__,_/_/____/  
- *                                       
+ *    / /_/ / / /_/ / /_/ / /_/ / (__  )
+ *    \____/_/\____/_.___/\__,_/_/____/
+ *
  */
 
 Handle g_hGameConf;
 Handle g_hSDKCall[NyxSDK];
 
 /***
- *        ____  __            _          ____      __            ____              
- *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________ 
+ *        ____  __            _          ____      __            ____
+ *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________
  *      / /_/ / / / / / __ `/ / __ \    / // __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
  *     / ____/ / /_/ / /_/ / / / / /  _/ // / / / /_/  __/ /  / __/ /_/ / /__/  __/
- *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/ 
- *                  /____/                                                         
+ *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/
+ *                  /____/
  */
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
@@ -93,12 +93,12 @@ public void OnPluginStart() {
 }
 
 /***
- *        _   __      __  _                
+ *        _   __      __  _
  *       / | / /___ _/ /_(_)   _____  _____
  *      /  |/ / __ `/ __/ / | / / _ \/ ___/
- *     / /|  / /_/ / /_/ /| |/ /  __(__  ) 
- *    /_/ |_/\__,_/\__/_/ |___/\___/____/  
- *                                         
+ *     / /|  / /_/ / /_/ /| |/ /  __(__  )
+ *    /_/ |_/\__,_/\__/_/ |___/\___/____/
+ *
  */
 
 public int Native_RemoveAllObjects(Handle plugin, int numArgs) {
@@ -122,17 +122,17 @@ public int Native_GetObjectCount(Handle plugin, int numArgs) {
 }
 
 /***
- *        ______                 __      
+ *        ______                 __
  *       / ____/   _____  ____  / /______
  *      / __/ | | / / _ \/ __ \/ __/ ___/
- *     / /___ | |/ /  __/ / / / /_(__  ) 
- *    /_____/ |___/\___/_/ /_/\__/____/  
- *                                       
+ *     / /___ | |/ /  __/ / / / /_(__  )
+ *    /_____/ |___/\___/_/ /_/\__/____/
+ *
  */
 
 public Action Event_PostInventoryApplication(Event event, const char[] name, bool dontBroadcast) {
   if (!TF2_IsUpgradesEnabled()) return Plugin_Continue;
-  
+
   int client = GetClientOfUserId(event.GetInt("userid"));
   if (!GetEntProp(client, Prop_Send, "m_bInUpgradeZone")) {
     SetEntProp(client, Prop_Send, "m_bInUpgradeZone", 1);
@@ -142,12 +142,12 @@ public Action Event_PostInventoryApplication(Event event, const char[] name, boo
 }
 
 /***
- *       ______                                          __    
+ *       ______                                          __
  *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /____
  *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  / ___/
- *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  ) 
- *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/  
- *                                                             
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  )
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/
+ *
  */
 
 public Action ConCmd_Respawn(int client, int args) {
@@ -262,7 +262,7 @@ public Action ConCmd_ChangeClass(int client, int args) {
       SetEntityHealth(target_list[i], 25);
       TF2_RegeneratePlayer(target_list[i]);
     }
-    
+
     LogAction(client, target_list[i], "\"%L\" changed \"%L\" to class \"%s\"", client, target_list[i], classStr);
   }
   NyxAct(client, "Changed %s to class %s", target_name, classStr);
@@ -389,12 +389,12 @@ public Action ConCmd_RemoveCond(int client, int args) {
 }
 
 /***
- *       ______                                          __    
+ *       ______                                          __
  *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /____
  *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  / ___/
- *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  ) 
- *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/  
- *                                                             
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  )
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/
+ *
  */
 
 public Action ConCmd_Upgrades(int client, int args) {

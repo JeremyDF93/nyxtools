@@ -60,12 +60,12 @@
 #define SOLID_VPHYSICS 6 // solid vphysics object, get vcollide from the model and collide with that
 
 /***
- *       _________            __     ________              __       
+ *       _________            __     ________              __
  *      / ____/ (_)__  ____  / /_   / ____/ /_  ___  _____/ /_______
  *     / /   / / / _ \/ __ \/ __/  / /   / __ \/ _ \/ ___/ //_/ ___/
- *    / /___/ / /  __/ / / / /_   / /___/ / / /  __/ /__/ ,< (__  ) 
- *    \____/_/_/\___/_/ /_/\__/   \____/_/ /_/\___/\___/_/|_/____/  
- *                                                                  
+ *    / /___/ / /  __/ / / / /_   / /___/ / / /  __/ /__/ ,< (__  )
+ *    \____/_/_/\___/_/ /_/\__/   \____/_/ /_/\___/\___/_/|_/____/
+ *
  */
 
 stock bool IsValidClient(int client, bool filterBots = false, bool filterReplay = true, bool filterSourceTV = true) {
@@ -83,12 +83,12 @@ stock bool IsClientAdmin(int client, int flags = ADMFLAG_GENERIC) {
 }
 
 /***
- *        __  ___                                    
+ *        __  ___
  *       /  |/  /__  ______________ _____ ____  _____
  *      / /|_/ / _ \/ ___/ ___/ __ `/ __ `/ _ \/ ___/
- *     / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  ) 
- *    /_/  /_/\___/____/____/\__,_/\__, /\___/____/  
- *                                /____/             
+ *     / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  )
+ *    /_/  /_/\___/____/____/\__,_/\__, /\___/____/
+ *                                /____/
  */
 
 stock void NyxMsg(char[] format, any ...) {
@@ -189,20 +189,20 @@ stock void SayText2(int client, int from, char[] msg) {
   Handle hBf;
   hBf = StartMessageOne("SayText2", client);
   if (hBf != null) {
-    BfWriteByte(hBf, from); 
-    BfWriteByte(hBf, 0); 
+    BfWriteByte(hBf, from);
+    BfWriteByte(hBf, 0);
     BfWriteString(hBf, msg);
     EndMessage();
   }
 }
 
 /***
- *       ______                                          __   __  __     __                    
+ *       ______                                          __   __  __     __
  *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /  / / / /__  / /___  ___  __________
  *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  /  / /_/ / _ \/ / __ \/ _ \/ ___/ ___/
- *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ /  / __  /  __/ / /_/ /  __/ /  (__  ) 
- *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/  /_/ /_/\___/_/ .___/\___/_/  /____/  
- *                                                                    /_/                      
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ /  / __  /  __/ / /_/ /  __/ /  (__  )
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/  /_/ /_/\___/_/ .___/\___/_/  /____/
+ *                                                                    /_/
  */
 
 stock int GetCmdTarget(int argnum, int client, bool nobots = false, bool immunity = true) {
@@ -270,12 +270,12 @@ stock void GetCmdVector(int argnum, float vec[3], float def[3]={ 0.0, 0.0, 0.0 }
 }
 
 /***
- *        ____                 ______                _            
+ *        ____                 ______                _
  *       / __ \____ ___  __   /_  __/________ ______(_)___  ____ _
  *      / /_/ / __ `/ / / /    / / / ___/ __ `/ ___/ / __ \/ __ `/
- *     / _, _/ /_/ / /_/ /    / / / /  / /_/ / /__/ / / / / /_/ / 
- *    /_/ |_|\__,_/\__, /    /_/ /_/   \__,_/\___/_/_/ /_/\__, /  
- *                /____/                                 /____/   
+ *     / _, _/ /_/ / /_/ /    / / / /  / /_/ / /__/ / / / / /_/ /
+ *    /_/ |_|\__,_/\__, /    /_/ /_/   \__,_/\___/_/_/ /_/\__, /
+ *                /____/                                 /____/
  */
 
 stock bool GetClientAimPos(int client, float vec[3], int mask = MASK_ALL) {
@@ -390,12 +390,12 @@ public bool TraceEntityFilter_Self(int entity, int contentsMask, any self) {
 }
 
 /***
- *        ______      __  _ __  _          
+ *        ______      __  _ __  _
  *       / ____/___  / /_(_) /_(_)__  _____
  *      / __/ / __ \/ __/ / __/ / _ \/ ___/
- *     / /___/ / / / /_/ / /_/ /  __(__  ) 
- *    /_____/_/ /_/\__/_/\__/_/\___/____/  
- *                                         
+ *     / /___/ / / / /_/ / /_/ /  __(__  )
+ *    /_____/_/ /_/\__/_/\__/_/\___/____/
+ *
  */
 
 stock int FindEntityByClassnameSafe(int startEnt, const char[] classname) {
@@ -404,12 +404,12 @@ stock int FindEntityByClassnameSafe(int startEnt, const char[] classname) {
 }
 
 /***
- *        __  ___      __  __  
- *       /  |/  /___ _/ /_/ /_ 
+ *        __  ___      __  __
+ *       /  |/  /___ _/ /_/ /_
  *      / /|_/ / __ `/ __/ __ \
  *     / /  / / /_/ / /_/ / / /
- *    /_/  /_/\__,_/\__/_/ /_/ 
- *                             
+ *    /_/  /_/\__,_/\__/_/ /_/
+ *
  */
 
 stock any MathMin(any x, any y) {
@@ -425,12 +425,12 @@ stock any MathMax(any x, any y) {
 }
 
 /***
- *     _    __          __                 
+ *     _    __          __
  *    | |  / /__  _____/ /_____  __________
  *    | | / / _ \/ ___/ __/ __ \/ ___/ ___/
- *    | |/ /  __/ /__/ /_/ /_/ / /  (__  ) 
- *    |___/\___/\___/\__/\____/_/  /____/  
- *                                         
+ *    | |/ /  __/ /__/ /_/ /_/ / /  (__  )
+ *    |___/\___/\___/\__/\____/_/  /____/
+ *
  */
 
 stock void CopyVectors(const float vector[3], float copy[3]) {
@@ -455,7 +455,7 @@ stock bool StringToVector(const char[] str, float vector[3]) {
 
 stock void MatrixToAngles(const float fwd[3], const float left[3], const float up[3], float angles[3]) {
   float xyDist = SquareRoot(fwd[0] * fwd[0] + fwd[1] * fwd[1]);
-  
+
   if (xyDist > 0.001) {
     angles[1] = RadToDeg(ArcTangent2(fwd[1], fwd[0]));
     angles[0] = RadToDeg(ArcTangent2(-fwd[2], xyDist));
@@ -468,12 +468,12 @@ stock void MatrixToAngles(const float fwd[3], const float left[3], const float u
 }
 
 /***
- *        __  ____          
+ *        __  ____
  *       /  |/  (_)_________
  *      / /|_/ / / ___/ ___/
- *     / /  / / (__  ) /__  
- *    /_/  /_/_/____/\___/  
- *                          
+ *     / /  / / (__  ) /__
+ *    /_/  /_/_/____/\___/
+ *
  */
 
 stock void ShowURLPanel(int client, const char[] title, const char[] url, bool show = true) {

@@ -9,15 +9,15 @@
 #define L4D2_TEAM_INFECTED    3
 
 /***
- *        ______                          
+ *        ______
  *       / ____/___  __  ______ ___  _____
  *      / __/ / __ \/ / / / __ `__ \/ ___/
- *     / /___/ / / / /_/ / / / / / (__  ) 
- *    /_____/_/ /_/\__,_/_/ /_/ /_/____/  
- *                                        
+ *     / /___/ / / / /_/ / / / / / (__  )
+ *    /_____/_/ /_/\__,_/_/ /_/ /_/____/
+ *
  */
 
-// Smoker = 1, Boomer = 2, Hunter = 3, Spitter = 4, Jockey = 5, 
+// Smoker = 1, Boomer = 2, Hunter = 3, Spitter = 4, Jockey = 5,
 // Charger = 6, Witch = 7, Tank = 8, Survivor = 9
 enum L4D2ClassType {
   L4D2Class_Unknown = 0,
@@ -41,12 +41,12 @@ enum L4D2Team {
 }
 
 /***
- *        _   __      __  _                
+ *        _   __      __  _
  *       / | / /___ _/ /_(_)   _____  _____
  *      /  |/ / __ `/ __/ / | / / _ \/ ___/
- *     / /|  / /_/ / /_/ /| |/ /  __(__  ) 
- *    /_/ |_/\__,_/\__/_/ |___/\___/____/  
- *                                         
+ *     / /|  / /_/ / /_/ /| |/ /  __(__  )
+ *    /_/ |_/\__,_/\__/_/ |___/\___/____/
+ *
  */
 
 native void L4D2_RespawnPlayer(int client);
@@ -97,12 +97,12 @@ public __pl_nyxtools_l4d2_SetNTVOptional() {
 #endif
 
 /***
- *        ______                 __  _                 
+ *        ______                 __  _
  *       / ____/_  ______  _____/ /_(_)___  ____  _____
  *      / /_  / / / / __ \/ ___/ __/ / __ \/ __ \/ ___/
- *     / __/ / /_/ / / / / /__/ /_/ / /_/ / / / (__  ) 
- *    /_/    \__,_/_/ /_/\___/\__/_/\____/_/ /_/____/  
- *                                                     
+ *     / __/ / /_/ / / / / /__/ /_/ / /_/ / / / (__  )
+ *    /_/    \__,_/_/ /_/\___/\__/_/\____/_/ /_/____/
+ *
  */
 
 stock bool IsPlayerSurvivor(int client) {
@@ -130,7 +130,7 @@ stock bool IsPlayerTank(int client) {
   if (!IsValidClient(client)) return false;
   if (IsPlayerSurvivor(client)) return false;
   if (GetEntProp(client, Prop_Send, "m_zombieClass") != 8) return false;
-  
+
   return true;
 }
 
@@ -146,7 +146,7 @@ stock bool IsPlayerGrabbed(int client) {
 
 stock bool IsPlayerIncapacitated(int client) {
   if (GetEntProp(client, Prop_Send, "m_isIncapacitated") > 0) return true;
-  
+
   return false;
 }
 
@@ -178,12 +178,12 @@ stock int GetPlayerCount(bool playing = false) {
 }
 
 /***
- *        __   __ __  ____ ___ 
+ *        __   __ __  ____ ___
  *       / /  / // / / __ \__ \
  *      / /  / // /_/ / / /_/ /
- *     / /__/__  __/ /_/ / __/ 
- *    /_____/ /_/ /_____/____/ 
- *                             
+ *     / /__/__  __/ /_/ / __/
+ *    /_____/ /_/ /_____/____/
+ *
  */
 
 stock L4D2ClassType L4D2_StringToClass(const char[] classname) {
@@ -237,12 +237,12 @@ stock void L4D2_TeamToString(L4D2Team team, char[] str, int maxlength) {
 }
 
 /***
- *        __    _ __                         
+ *        __    _ __
  *       / /   (_) /_  _________ ________  __
  *      / /   / / __ \/ ___/ __ `/ ___/ / / /
- *     / /___/ / /_/ / /  / /_/ / /  / /_/ / 
- *    /_____/_/_.___/_/   \__,_/_/   \__, /  
- *                                  /____/   
+ *     / /___/ / /_/ / /  / /_/ / /  / /_/ /
+ *    /_____/_/_.___/_/   \__,_/_/   \__, /
+ *                                  /____/
  */
 
 public SharedPlugin:__pl_nyxtools_l4d2 = {

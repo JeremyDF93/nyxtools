@@ -13,17 +13,17 @@ public Plugin myinfo = {
 };
 
 /***
- *        ____  __            _          ____      __            ____              
- *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________ 
+ *        ____  __            _          ____      __            ____
+ *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________
  *      / /_/ / / / / / __ `/ / __ \    / // __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
  *     / ____/ / /_/ / /_/ / / / / /  _/ // / / / /_/  __/ /  / __/ /_/ / /__/  __/
- *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/ 
- *                  /____/                                                         
+ *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/
+ *                  /____/
  */
 
 public void OnPluginStart() {
   LoadTranslations("common.phrases");
-  
+
   RegAdminCmd("nyx_sendcvar", ConCmd_SendConVar, ADMFLAG_ROOT, "nyx_sendcvar <#userid|name> <convar> <value>");
   RegAdminCmd("nyx_querycvar", ConCmd_QueryConVar, ADMFLAG_ROOT, "nyx_querycvar <#userid|name> <convar>");
   RegAdminCmd("nyx_connectmethod", ConCmd_ConnectMethod, ADMFLAG_ROOT, "nyx_connectmethod");
@@ -33,12 +33,12 @@ public void OnPluginStart() {
 }
 
 /***
- *       ______      ______               __       
+ *       ______      ______               __
  *      / ____/___ _/ / / /_  ____ ______/ /_______
  *     / /   / __ `/ / / __ \/ __ `/ ___/ //_/ ___/
- *    / /___/ /_/ / / / /_/ / /_/ / /__/ ,< (__  ) 
- *    \____/\__,_/_/_/_.___/\__,_/\___/_/|_/____/  
- *                                                 
+ *    / /___/ /_/ / / / /_/ / /_/ / /__/ ,< (__  )
+ *    \____/\__,_/_/_/_.___/\__,_/\___/_/|_/____/
+ *
  */
 
 public void OnConVarQuery(QueryCookie cookie, int target, ConVarQueryResult result, const char[] cvarName, const char[] cvarValue, any value) {
@@ -49,12 +49,12 @@ public void OnConVarQuery(QueryCookie cookie, int target, ConVarQueryResult resu
 }
 
 /***
- *       ______                                          __    
+ *       ______                                          __
  *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /____
  *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  / ___/
- *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  ) 
- *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/  
- *                                                             
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  )
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/
+ *
  */
 
 public Action ConCmd_SendConVar(int client, int args) {

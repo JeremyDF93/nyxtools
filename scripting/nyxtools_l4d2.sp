@@ -16,12 +16,12 @@ public Plugin myinfo = {
 };
 
 /***
- *        ______                          
+ *        ______
  *       / ____/___  __  ______ ___  _____
  *      / __/ / __ \/ / / / __ `__ \/ ___/
- *     / /___/ / / / /_/ / / / / / (__  ) 
- *    /_____/_/ /_/\__,_/_/ /_/ /_/____/  
- *                                        
+ *     / /___/ / / / /_/ / / / / / (__  )
+ *    /_____/_/ /_/\__,_/_/ /_/ /_/____/
+ *
  */
 
 enum NyxSDK {
@@ -46,12 +46,12 @@ enum NyxSDK {
 }
 
 /***
- *       ________      __          __    
+ *       ________      __          __
  *      / ____/ /___  / /_  ____ _/ /____
  *     / / __/ / __ \/ __ \/ __ `/ / ___/
- *    / /_/ / / /_/ / /_/ / /_/ / (__  ) 
- *    \____/_/\____/_.___/\__,_/_/____/  
- *                                       
+ *    / /_/ / / /_/ / /_/ / /_/ / (__  )
+ *    \____/_/\____/_.___/\__,_/_/____/
+ *
  */
 
 Handle g_hGameConf;
@@ -61,12 +61,12 @@ Address g_pZombieManager;
 Address g_pTheDirector;
 
 /***
- *        ____  __            _          ____      __            ____              
- *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________ 
+ *        ____  __            _          ____      __            ____
+ *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________
  *      / /_/ / / / / / __ `/ / __ \    / // __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
  *     / ____/ / /_/ / /_/ / / / / /  _/ // / / / /_/  __/ /  / __/ /_/ / /__/  __/
- *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/ 
- *                  /____/                                                         
+ *    /_/   /_/\__,_/\__, /_/_/ /_/  /___/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/
+ *                  /____/
  */
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
@@ -102,8 +102,8 @@ public void OnPluginStart() {
   LoadTranslations("common.phrases");
   LoadTranslations("nyxtools.phrases");
 
-  AddMultiTargetFilter("@survivors", MultiTargetFilter_Survivors, "survivors", true);  
-  AddMultiTargetFilter("@infected", MultiTargetFilter_Infected, "infected", true);  
+  AddMultiTargetFilter("@survivors", MultiTargetFilter_Survivors, "survivors", true);
+  AddMultiTargetFilter("@infected", MultiTargetFilter_Infected, "infected", true);
 
   RegAdminCmd("nyx_respawn", ConCmd_Respawn, ADMFLAG_SLAY, "Usage: nyx_respawn <#userid|name>");
   RegAdminCmd("nyx_takeoverbot", ConCmd_TakeOverBot, ADMFLAG_SLAY, "Usage: nyx_takeoverbot <#userid|name>");
@@ -115,12 +115,12 @@ public void OnPluginStart() {
   g_hGameConf = LoadGameConfigFile("nyxtools.l4d2");
 
  /***
-  *     _____                   __    _      __  ___                                 
+  *     _____                   __    _      __  ___
   *    /__  /  ____  ____ ___  / /_  (_)__  /  |/  /___ _____  ____ _____ ____  _____
   *      / /  / __ \/ __ `__ \/ __ \/ / _ \/ /|_/ / __ `/ __ \/ __ `/ __ `/ _ \/ ___/
-  *     / /__/ /_/ / / / / / / /_/ / /  __/ /  / / /_/ / / / / /_/ / /_/ /  __/ /    
-  *    /____/\____/_/ /_/ /_/_.___/_/\___/_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/     
-  *                                                               /____/             
+  *     / /__/ /_/ / / / / / / /_/ / /  __/ /  / / /_/ / / / / /_/ / /_/ /  __/ /
+  *    /____/\____/_/ /_/ /_/_.___/_/\___/_/  /_/\__,_/_/ /_/\__,_/\__, /\___/_/
+  *                                                               /____/
   */
 
   g_pZombieManager = GameConfGetAddress(g_hGameConf, "TheZombieManager");
@@ -137,23 +137,23 @@ public void OnPluginStart() {
   if (g_hSDKCall[SDK_GetRandomPZSpawnPosition] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for ZombieManager::GetRandomPZSpawnPosition");
 
  /***
-  *       __________  _                __            
+  *       __________  _                __
   *      / ____/ __ \(_)_______  _____/ /_____  _____
   *     / /   / / / / / ___/ _ \/ ___/ __/ __ \/ ___/
-  *    / /___/ /_/ / / /  /  __/ /__/ /_/ /_/ / /    
-  *    \____/_____/_/_/   \___/\___/\__/\____/_/     
-  *                                                  
+  *    / /___/ /_/ / / /  /  __/ /__/ /_/ /_/ / /
+  *    \____/_____/_/_/   \___/\___/\__/\____/_/
+  *
   */
 
   g_pTheDirector = GameConfGetAddress(g_hGameConf, "TheDirector");
   if (g_pTheDirector == Address_Null) SetFailState("Failed to get address of TheDirector");
-  
+
   StartPrepSDKCall(SDKCall_Raw);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CDirector::IsMissionStartMap");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
   g_hSDKCall[SDK_IsMissionStartMap] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_IsMissionStartMap] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CDirector::IsMissionStartMap");
-  
+
   StartPrepSDKCall(SDKCall_Raw);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CDirector::IsClassAllowed");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
@@ -162,31 +162,31 @@ public void OnPluginStart() {
   if (g_hSDKCall[SDK_IsClassAllowed] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CDirector::IsClassAllowed");
 
  /***
-  *       ____________                          ____  __                     
+  *       ____________                          ____  __
   *      / ____/_  __/__  ______________  _____/ __ \/ /___ ___  _____  _____
   *     / /     / / / _ \/ ___/ ___/ __ \/ ___/ /_/ / / __ `/ / / / _ \/ ___/
-  *    / /___  / / /  __/ /  / /  / /_/ / /  / ____/ / /_/ / /_/ /  __/ /    
-  *    \____/ /_/  \___/_/  /_/   \____/_/  /_/   /_/\__,_/\__, /\___/_/     
-  *                                                       /____/             
+  *    / /___  / / /  __/ /  / /  / /_/ / /  / ____/ / /_/ / /_/ /  __/ /
+  *    \____/ /_/  \___/_/  /_/   \____/_/  /_/   /_/\__,_/\__, /\___/_/
+  *                                                       /____/
   */
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::RoundRespawn");
   g_hSDKCall[SDK_RoundRespawn] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_RoundRespawn] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::RoundRespawn");
-  
+
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::WarpGhostToInitialPosition");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_WarpGhostToInitialPosition] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_WarpGhostToInitialPosition] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpGhostToInitialPosition");
-  
+
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::BecomeGhost");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
   g_hSDKCall[SDK_BecomeGhost] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_BecomeGhost] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::BecomeGhost");
-  
+
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::CanBecomeGhost");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
@@ -224,13 +224,13 @@ public void OnPluginStart() {
   g_hSDKCall[SDK_SetClass] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_SetClass] == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CTerrorPlayer::SetClass");
-      
+
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::WarpToValidPositionIfStuck");
   g_hSDKCall[SDK_WarpToValidPositionIfStuck] = EndPrepSDKCall();
   if (g_hSDKCall[SDK_WarpToValidPositionIfStuck] == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpToValidPositionIfStuck");
-  
+
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ScriptStaggerPlayer");
   PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_Pointer);
@@ -239,12 +239,12 @@ public void OnPluginStart() {
       SetFailState("Failed to create SDKCall for CTerrorPlayer::ScriptStaggerPlayer");
 
  /***
-  *        __  ____          
+  *        __  ____
   *       /  |/  (_)_________
   *      / /|_/ / / ___/ ___/
-  *     / /  / / (__  ) /__  
-  *    /_/  /_/_/____/\___/  
-  *                          
+  *     / /  / / (__  ) /__
+  *    /_/  /_/_/____/\___/
+  *
   */
 
   StartPrepSDKCall(SDKCall_Player);
@@ -285,12 +285,12 @@ public void OnPluginStart() {
 }
 
 /***
- *        _   __      __  _                
+ *        _   __      __  _
  *       / | / /___ _/ /_(_)   _____  _____
  *      /  |/ / __ `/ __/ / | / / _ \/ ___/
- *     / /|  / /_/ / /_/ /| |/ /  __(__  ) 
- *    /_/ |_/\__,_/\__/_/ |___/\___/____/  
- *                                         
+ *     / /|  / /_/ / /_/ /| |/ /  __(__  )
+ *    /_/ |_/\__,_/\__/_/ |___/\___/____/
+ *
  */
 
 public int Native_RespawnPlayer(Handle plugin, int numArgs) {
@@ -506,12 +506,12 @@ public int Native_ScriptStaggerPlayer(Handle plugin, int numArgs) {
 }
 
 /***
- *        __  ___      ____  _ ______                      __  _______ ____           
+ *        __  ___      ____  _ ______                      __  _______ ____
  *       /  |/  /_  __/ / /_(_)_  __/___ __________ ____  / /_/ ____(_) / /____  _____
  *      / /|_/ / / / / / __/ / / / / __ `/ ___/ __ `/ _ \/ __/ /_  / / / __/ _ \/ ___/
- *     / /  / / /_/ / / /_/ / / / / /_/ / /  / /_/ /  __/ /_/ __/ / / / /_/  __/ /    
- *    /_/  /_/\__,_/_/\__/_/ /_/  \__,_/_/   \__, /\___/\__/_/   /_/_/\__/\___/_/     
- *                                          /____/                                    
+ *     / /  / / /_/ / / /_/ / / / / /_/ / /  / /_/ /  __/ /_/ __/ / / / /_/  __/ /
+ *    /_/  /_/\__,_/_/\__/_/ /_/  \__,_/_/   \__, /\___/\__/_/   /_/_/\__/\___/_/
+ *                                          /____/
  */
 
 public bool MultiTargetFilter_Survivors(const char[] pattern, Handle clients) {
@@ -533,12 +533,12 @@ public bool MultiTargetFilter_Infected(const char[] pattern, Handle clients) {
 }
 
 /***
- *       ______                                          __    
+ *       ______                                          __
  *      / ____/___  ____ ___  ____ ___  ____ _____  ____/ /____
  *     / /   / __ \/ __ `__ \/ __ `__ \/ __ `/ __ \/ __  / ___/
- *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  ) 
- *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/  
- *                                                             
+ *    / /___/ /_/ / / / / / / / / / / / /_/ / / / / /_/ (__  )
+ *    \____/\____/_/ /_/ /_/_/ /_/ /_/\__,_/_/ /_/\__,_/____/
+ *
  */
 
 public Action ConCmd_Respawn(int client, int args) {
