@@ -6,10 +6,10 @@
 class RegNatives
 {
 public:
-	void Register(ICallWrapper *pWrapper);
-	void UnregisterAll();
+  void Register(ICallWrapper *pWrapper);
+  void UnregisterAll();
 private:
-	ke::Vector<ICallWrapper *> m_Natives;
+  ke::Vector<ICallWrapper *> m_Natives;
 };
 
 extern RegNatives g_RegNatives;
