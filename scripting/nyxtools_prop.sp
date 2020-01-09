@@ -59,6 +59,9 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_prop", ConCmd_Prop, ADMFLAG_ROOT, "nyx_prop <model> [x y z] [pitch yaw roll] [scale] [physics] [nocollide]");
   RegAdminCmd("nyx_clearprops", ConCmd_ClearProps, ADMFLAG_ROOT);
   RegAdminCmd("nyx_regenprops", ConCmd_RegenProps, ADMFLAG_ROOT);
+  RegAdminCmd("nyx_exportprops", ConCmd_ExportProps, ADMFLAG_ROOT);
+
+  HookEvent("round_start", Event_RoundStart);
 }
 
 public void OnPluginEnd() {
@@ -67,6 +70,34 @@ public void OnPluginEnd() {
 
 public void OnMapEnd() {
   g_hProps.Clear();
+}
+
+public void OnMapStart() {
+  char map[PLATFORM_MAX_PATH];
+  GetNextMap(map, sizeof(map));
+  GetMapDisplayName(map, map, sizeof(map));
+
+  char path[PLATFORM_MAX_PATH];
+  Format(path, sizeof(path), "cfg/nyxtools/prop/%s.cfg", map);
+
+  if (FileExists(path)) {
+    ServerCommand("exec \"%s\"", path[4]);
+  }
+}
+
+/***
+ *        ______                 __      
+ *       / ____/   _____  ____  / /______
+ *      / __/ | | / / _ \/ __ \/ __/ ___/
+ *     / /___ | |/ /  __/ / / / /_(__  ) 
+ *    /_____/ |___/\___/_/ /_/\__/____/  
+ *                                       
+ */
+
+public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcast) {
+  RegenerateProps();
+
+  return Plugin_Continue;
 }
 
 /***
@@ -84,9 +115,15 @@ public void OnMapEnd() {
     return Plugin_Handled;
   }
 
-  char model[PLATFORM_MAX_PATH], buffer[PLATFORM_MAX_PATH];
-  GetCmdArg(1, buffer, sizeof(buffer));
-  Format(model, sizeof(model), "models/%s", buffer);
+  char model[PLATFORM_MAX_PATH];
+  GetCmdArg(1, model, sizeof(model));
+  if (strncmp(model, "models/", 7, false) != 0) {
+    Format(model, sizeof(model), "models/%s", model);
+  }
+  if (strncmp(model, ".mdl", 4, false) != 0) {
+    Format(model, sizeof(model), "%s.mdl", model);
+  }
+
   if (!FileExists(model, true)) {
     NyxMsgReply(client, "Missing model '%s'", model);
     return Plugin_Handled;
@@ -164,6 +201,43 @@ public Action ConCmd_ClearProps(int client, int args) {
 public Action ConCmd_RegenProps(int client, int args) {
   int count = RegenerateProps();
   NyxAct(client, "Regenerated %d props", count);
+  return Plugin_Handled;
+}
+
+public Action ConCmd_ExportProps(int client, int args) {
+  char map[PLATFORM_MAX_PATH];
+  GetNextMap(map, sizeof(map));
+  GetMapDisplayName(map, map, sizeof(map));
+
+  char path[PLATFORM_MAX_PATH];
+  Format(path, sizeof(path), "cfg/nyxtools/prop/%s.cfg", map);
+
+  File file = OpenFile(path, "wt");
+  if (file == null) {
+    NyxMsgReply(client, "Error in %s: Directory not found or missing write permissions", path);
+    return Plugin_Handled;
+  }
+
+  any aProp[eProp];
+  for (int i = 0; i < g_hProps.Length; i++) {
+    g_hProps.GetArray(i, aProp);
+
+    int ent = EntRefToEntIndex(aProp[Prop_Ref]);
+    if (IsValidEntity(ent)) {
+      file.WriteLine("nyx_prop %s \"%f %f %f\" \"%f %f %f\" %f %d %d",
+          aProp[Prop_Model],
+          aProp[Prop_Pos][0], aProp[Prop_Pos][1], aProp[Prop_Pos][2],
+          aProp[Prop_Angle][0], aProp[Prop_Angle][1], aProp[Prop_Angle][2],
+          aProp[Prop_Scale],
+          aProp[Prop_Physics],
+          aProp[Prop_NoCollide]
+      );
+    }
+  }
+  
+  FlushFile(file);
+  file.Close();
+
   return Plugin_Handled;
 }
 
