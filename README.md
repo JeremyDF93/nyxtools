@@ -63,14 +63,14 @@ stock void L4D2_TeamToString(L4D2Team team, char[] str, int maxlength);
 ```
 ## Forwards
 ```c
-forward Action L4D2_OnReplaceTank(int client_1, int client_2);;
-forward Action L4D2_OnTakeOverBot(int bot, bool flag);;
-forward Action L4D2_OnTakeOverZombieBot(int client, int bot);;
-forward Action L4D2_OnReplaceWithBot(int client, bool flag);;
-forward Action L4D2_OnSetHumanSpectator(int bot, int client);;
-forward Action L4D2_OnFirstSurvivorLeftSafeArea(int client);;
-forward Action L4D2_OnEndVersusModeRound(bool flag);;
-forward Action L4D2_OnSwapTeams();;
+forward Action L4D2_OnReplaceTank(int client_1, int client_2);
+forward Action L4D2_OnTakeOverBot(int bot, bool flag);
+forward Action L4D2_OnTakeOverZombieBot(int client, int bot);
+forward Action L4D2_OnReplaceWithBot(int client, bool flag);
+forward Action L4D2_OnSetHumanSpectator(int bot, int client);
+forward Action L4D2_OnFirstSurvivorLeftSafeArea(int client);
+forward Action L4D2_OnEndVersusModeRound(bool flag);
+forward Action L4D2_OnSwapTeams();
 ```
 ## Misc
 ```c
