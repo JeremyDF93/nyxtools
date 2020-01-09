@@ -440,8 +440,8 @@ stock void CopyVectors(const float vector[3], float copy[3]) {
 }
 
 stock bool StringToVector(const char[] str, float vector[3]) {
-  char num[64][3];
-  int found = ExplodeString(str, " ", num, 3, sizeof(num), false);
+  char num[3][64];
+  int found = ExplodeString(str, " ", num, 3, 64, false);
   if (found == 3) {
     vector[0] = StringToFloat(num[0]);
     vector[1] = StringToFloat(num[1]);
