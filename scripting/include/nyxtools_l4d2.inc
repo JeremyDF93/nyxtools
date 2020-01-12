@@ -177,6 +177,19 @@ stock int GetPlayerCount(bool playing = false) {
   return playerCount;
 }
 
+stock void RunScriptCode(const char[] fmt, any ...) {
+  char buffer[512];
+  VFormat(buffer, sizeof(buffer), fmt, 2);
+
+  int ent = CreateEntityByName("logic_script");
+  DispatchSpawn(ent);
+
+  SetVariantString(buffer);
+  AcceptEntityInput(ent, "RunScriptCode");
+
+  RemoveEntity(ent);
+}
+
 /***
  *        __   __ __  ____ ___
  *       / /  / // / / __ \__ \
@@ -218,7 +231,7 @@ stock L4D2Team L4D2_GetClientTeam(int client) {
   return view_as<L4D2Team>(GetClientTeam(client));
 }
 
-stock L4D2Team L4D2_StringToTeam(char[] str) {
+stock L4D2Team L4D2_StringToTeam(const char[] str) {
   if (strcmp(str, "unassigned", false) == 0) return L4D2Team_Unassigned;
   if (strncmp(str, "spectator", 4, false) == 0) return L4D2Team_Spectator;
   if (strcmp(str, "survivor", false) == 0) return L4D2Team_Survivor;

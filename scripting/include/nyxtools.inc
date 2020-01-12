@@ -91,14 +91,14 @@ stock bool IsClientAdmin(int client, int flags = ADMFLAG_GENERIC) {
  *                                /____/
  */
 
-stock void NyxMsg(char[] format, any ...) {
+stock void NyxMsg(const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 2);
 
   PrintToServer("[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
-stock void NyxMsgReply(int client, char[] format, any ...) {
+stock void NyxMsgReply(int client, const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
@@ -110,28 +110,28 @@ stock void NyxMsgReply(int client, char[] format, any ...) {
   }
 }
 
-stock void NyxMsgConsole(int client, char[] format, any ...) {
+stock void NyxMsgConsole(int client, const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
   PrintToConsole(client, "[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
-stock void NyxMsgClient(int client, char[] format, any ...) {
+stock void NyxMsgClient(int client, const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
   PrintToChat(client, "[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
-stock void NyxMsgAll(char[] format, any ...) {
+stock void NyxMsgAll(const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 2);
 
   PrintToChatAll("[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
-stock void NyxMsgTeam(int team, char[] format, any ...) {
+stock void NyxMsgTeam(int team, const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
@@ -144,7 +144,7 @@ stock void NyxMsgTeam(int team, char[] format, any ...) {
   }
 }
 
-stock void NyxMsgAdmin(char[] format, any ...) {
+stock void NyxMsgAdmin(const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 2);
 
@@ -159,7 +159,7 @@ stock void NyxMsgAdmin(char[] format, any ...) {
   PrintToServer("[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
-stock void NyxMsgDebug(char[] format, any ...) {
+stock void NyxMsgDebug(const char[] format, any ...) {
 #if defined NYX_DEBUG
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 2);
@@ -172,7 +172,7 @@ stock void NyxMsgDebug(char[] format, any ...) {
 #endif
 }
 
-stock void NyxAct(int client, char[] format, any ...) {
+stock void NyxAct(int client, const char[] format, any ...) {
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 3);
 
@@ -182,7 +182,7 @@ stock void NyxAct(int client, char[] format, any ...) {
   ShowActivity2(client, prefix, "%s", buffer);
 }
 
-stock void SayText2(int client, int from, char[] msg) {
+stock void SayText2(int client, int from, const char[] msg) {
   char buffer[256];
   Format(buffer, sizeof(buffer), "\x01%s", msg);
 

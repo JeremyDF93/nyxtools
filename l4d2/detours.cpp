@@ -229,49 +229,49 @@ void CreateDetours() {
   } else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::TakeOverBot");
   }
-  
+
   Detour_TakeOverZombieBot = DETOUR_CREATE_MEMBER(TakeOverZombieBot, "CTerrorPlayer::TakeOverZombieBot");
   if (Detour_TakeOverZombieBot != nullptr) {
     Detour_TakeOverZombieBot->EnableDetour();
   } else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::TakeOverZombieBot");
   }
-  
+
   Detour_ReplaceWithBot = DETOUR_CREATE_MEMBER(ReplaceWithBot, "CTerrorPlayer::ReplaceWithBot");
   if (Detour_ReplaceWithBot != nullptr) {
     Detour_ReplaceWithBot->EnableDetour();
   } else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::ReplaceWithBot");
   }
-  
+
   Detour_SetHumanSpectator = DETOUR_CREATE_MEMBER(SetHumanSpectator, "SurvivorBot::SetHumanSpectator");
   if (Detour_SetHumanSpectator != nullptr) {
     Detour_SetHumanSpectator->EnableDetour();
   } else {
     g_pSM->LogError(myself, "Failed to get signature for CTerrorPlayer::SetHumanSpectator");
   }
-  
+
   Detour_OnFirstSurvivorLeftSafeArea = DETOUR_CREATE_MEMBER(OnFirstSurvivorLeftSafeArea, "CDirector::OnFirstSurvivorLeftSafeArea");
   if (Detour_OnFirstSurvivorLeftSafeArea != nullptr) {
     Detour_OnFirstSurvivorLeftSafeArea->EnableDetour();
   } else {
     g_pSM->LogError(myself, "Failed to get signature for CDirector::OnFirstSurvivorLeftSafeArea");
   }
-  
+
   Detour_EndVersusModeRound = DETOUR_CREATE_MEMBER(EndVersusModeRound, "CDirectorVersusMode::EndVersusModeRound");
   if (Detour_EndVersusModeRound != nullptr) {
     Detour_EndVersusModeRound->EnableDetour();
   } else {
     g_pSM->LogError(myself, "Failed to get signature for CDirectorVersusMode::EndVersusModeRound");
   }
-  
+
   Detour_SwapTeams = DETOUR_CREATE_MEMBER(SwapTeams, "CDirector::SwapTeams");
   if (Detour_SwapTeams != nullptr) {
     Detour_SwapTeams->EnableDetour();
   } else {
     g_pSM->LogError(myself, "Failed to get signature for CDirector::SwapTeams");
   }
-  
+
   /*
   Detour_GetRandomPZSpawnPosition = DETOUR_CREATE_MEMBER(GetRandomPZSpawnPosition, "ZombieManager::GetRandomPZSpawnPosition");
   if (Detour_GetRandomPZSpawnPosition != nullptr) {
@@ -280,7 +280,7 @@ void CreateDetours() {
     g_pSM->LogError(myself, "Failed to get signature for ZombieManager::GetRandomPZSpawnPosition");
   }
   */
-  
+
   /*
   Detour_StackTrace = DETOUR_CREATE_MEMBER(StackTrace, "StackTrace");
   if (Detour_StackTrace != nullptr) {
