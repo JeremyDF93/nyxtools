@@ -224,7 +224,7 @@ public Action ConCmd_ExportProps(int client, int args) {
 
     int ent = EntRefToEntIndex(aProp[Prop_Ref]);
     if (IsValidEntity(ent)) {
-      file.WriteLine("nyx_prop %s \"%f %f %f\" \"%f %f %f\" %f %d %d",
+      file.WriteLine("nyx_prop %s \"%.3f %.3f %.3f\" \"%.3f %.3f %.3f\" %.3f %d %d",
           aProp[Prop_Model],
           aProp[Prop_Pos][0], aProp[Prop_Pos][1], aProp[Prop_Pos][2],
           aProp[Prop_Angle][0], aProp[Prop_Angle][1], aProp[Prop_Angle][2],
