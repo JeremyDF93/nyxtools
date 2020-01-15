@@ -85,5 +85,8 @@ void CreateDetours() {
 }
 
 void DestroyDetours() {
-  Detour_EventKilled->Destroy();
+  if (Detour_EventKilled) Detour_EventKilled->Destroy();
+  if (Detour_CycleMission) Detour_CycleMission->Destroy();
+  if (Detour_GameModeUsesUpgrades) Detour_GameModeUsesUpgrades->Destroy();
+  if (Detour_ClientCommandKeyValues) Detour_ClientCommandKeyValues->Destroy();
 }
