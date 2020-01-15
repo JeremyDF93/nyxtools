@@ -47,6 +47,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_entremove", ConCmd_EntRemove, ADMFLAG_ROOT, "nyx_entremove [classname]");
 
   g_hSDKConf = LoadGameConfigFile("sdktools.games");
+  if (g_hSDKConf == INVALID_HANDLE) SetFailState("Could not read sdktools.games");
 
   GameConfGetKeyValue(g_hSDKConf, "GameRulesProxy", g_sGameRulesProxy, sizeof(g_sGameRulesProxy));
   if (strlen(g_sGameRulesProxy) == 0) SetFailState("Failed to get key value of GameRulesProxy");
