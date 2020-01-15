@@ -13,6 +13,18 @@ public Plugin myinfo = {
 };
 
 /***
+ *       ________      __          __
+ *      / ____/ /___  / /_  ____ _/ /____
+ *     / / __/ / __ \/ __ \/ __ `/ / ___/
+ *    / /_/ / / /_/ / /_/ / /_/ / (__  )
+ *    \____/_/\____/_.___/\__,_/_/____/
+ *
+ */
+
+Handle g_hSDKConf;
+char g_sGameRulesProxy[255];
+
+/***
  *        ____  __            _          ____      __            ____
  *       / __ \/ /_  ______ _(_)___     /  _/___  / /____  _____/ __/___ _________
  *      / /_/ / / / / / __ `/ / __ \    / // __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
@@ -28,10 +40,16 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_entfire_class", ConCmd_EntFireClass, ADMFLAG_ROOT, "nyx_entfire_class <classname> <input> [value]");
   RegAdminCmd("nyx_entprop_aim", ConCmd_EntPropAim, ADMFLAG_ROOT, "nyx_entprop_aim <prop> [value]");
   RegAdminCmd("nyx_entfire_aim", ConCmd_EntFireAim, ADMFLAG_ROOT, "nyx_entfire_aim <input> [value]");
+  RegAdminCmd("nyx_entprop_gamerules", ConCmd_EntPropGameRules, ADMFLAG_ROOT, "nyx_entprop_gamerules <prop> [value]");
   RegAdminCmd("nyx_entprop_player", ConCmd_EntPropPlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <prop> [value]");
   RegAdminCmd("nyx_entfire_player", ConCmd_EntFirePlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <input> [value]");
   RegAdminCmd("nyx_entprop_weapon", ConCmd_EntPropWeapon, ADMFLAG_ROOT, "nyx_entprop_weapon <#userid|name> <slot> <prop> [value]");
   RegAdminCmd("nyx_entremove", ConCmd_EntRemove, ADMFLAG_ROOT, "nyx_entremove [classname]");
+
+  g_hSDKConf = LoadGameConfigFile("sdktools.games");
+
+  GameConfGetKeyValue(g_hSDKConf, "GameRulesProxy", g_sGameRulesProxy, sizeof(g_sGameRulesProxy));
+  if (strlen(g_sGameRulesProxy) == 0) SetFailState("Failed to get key value of GameRulesProxy");
 }
 
 /***
@@ -147,6 +165,28 @@ public Action ConCmd_EntFireAim(int client, int args) {
     NyxAct(client, "Ran ent fire %s [%s] on %s", input, value, classname);
   } else {
     NyxMsgReply(client, "No aim target found.");
+  }
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_EntPropGameRules(int client, int args) {
+  if (args < 1) {
+    NyxMsgReply(client, "Usage: nyx_entprop_gamerules <prop> [value]");
+    return Plugin_Handled;
+  }
+
+  char prop[32], value[32];
+  GetCmdArg(1, prop, sizeof(prop));
+  GetCmdArg(2, value, sizeof(value));
+
+  int ent = FindEntityByNetClass(GetMaxClients(), g_sGameRulesProxy);
+  if (IsValidEdict(ent)) {
+    if (args == 2) {
+      WriteEntProp(ent, prop, client, value);
+    } else {
+      ReadEntProp(ent, prop, client);
+    }
   }
 
   return Plugin_Handled;
