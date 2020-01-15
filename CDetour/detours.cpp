@@ -8,7 +8,7 @@
 * This program is free software; you can redistribute it and/or modify it under
 * the terms of the GNU General Public License, version 3.0, as published by the
 * Free Software Foundation.
-* 
+*
 * This program is distributed in the hope that it will be useful, but WITHOUT
 * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
 * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
@@ -158,7 +158,7 @@ bool CDetour::CreateDetour()
 	JitWriter wr;
 	JitWriter *jit = &wr;
 	jit_uint32_t CodeSize = 0;
-	
+
 	wr.outbase = NULL;
 	wr.outptr = NULL;
 
