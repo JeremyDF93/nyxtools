@@ -32,7 +32,7 @@ sources = project.sources
 
 for sdk_name in Extension.sdks:
   sdk = Extension.sdks[sdk_name]
-  
+
   copy = sources.copy()
   if sdk_name == 'l4d2':
     copy += [
@@ -48,7 +48,7 @@ for sdk_name in Extension.sdks:
       'tf2/natives.cpp',
     ]
   project.sources = copy
-  
+
   binary = Extension.HL2Config(project, projectName + '.ext.' + sdk.ext, sdk)
 
 Extension.extensions = builder.Add(project)
