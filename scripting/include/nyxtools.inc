@@ -400,13 +400,14 @@ public bool TraceEntityFilter_Self(int entity, int contentsMask, any self) {
 
 stock int FindEntityByNetClass(int startEnt, const char[] classname) {
   int maxEntities = GetMaxEntities();
-  for (int i = startEnt; i <= maxEntities; i++) {
+  for (int i = startEnt + 1; i <= maxEntities; i++) {
     if (!IsValidEdict(i)) continue;
 
     char name[255];
     GetEntityNetClass(i, name, sizeof(name));
 
     if (strcmp(name, classname, false) == 0) {
+      startEnt = i;
       return i;
     }
   }

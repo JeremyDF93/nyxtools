@@ -43,6 +43,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_entprop_aim", ConCmd_EntPropAim, ADMFLAG_ROOT, "nyx_entprop_aim <prop> [value]");
   RegAdminCmd("nyx_entfire_aim", ConCmd_EntFireAim, ADMFLAG_ROOT, "nyx_entfire_aim <input> [value]");
   RegAdminCmd("nyx_entprop_gamerules", ConCmd_EntPropGameRules, ADMFLAG_ROOT, "nyx_entprop_gamerules <prop> [value]");
+  RegAdminCmd("nyx_entprop_netclass", ConCmd_EntPropNetClass, ADMFLAG_ROOT, "nyx_entprop_netclass <classname> <prop> [value]");
   RegAdminCmd("nyx_entprop_player", ConCmd_EntPropPlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <prop> [value]");
   RegAdminCmd("nyx_entfire_player", ConCmd_EntFirePlayer, ADMFLAG_ROOT, "nyx_entprop_player <#userid|name> <input> [value]");
   RegAdminCmd("nyx_entprop_weapon", ConCmd_EntPropWeapon, ADMFLAG_ROOT, "nyx_entprop_weapon <#userid|name> <slot> <prop> [value]");
@@ -187,9 +188,32 @@ public Action ConCmd_EntPropGameRules(int client, int args) {
   GetCmdArg(1, prop, sizeof(prop));
   GetCmdArg(2, value, sizeof(value));
 
-  int ent = FindEntityByNetClass(GetMaxClients(), g_sGameRulesProxy);
+  int ent = FindEntityByNetClass(GetMaxClients() - 1, g_sGameRulesProxy);
   if (IsValidEdict(ent)) {
     if (args == 2) {
+      WriteEntProp(ent, prop, client, value);
+    } else {
+      ReadEntProp(ent, prop, client);
+    }
+  }
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_EntPropNetClass(int client, int args) {
+  if (args < 2) {
+    NyxMsgReply(client, "Usage: nyx_entprop_netclass <classname> <prop> [value]");
+    return Plugin_Handled;
+  }
+
+  char classname[64], prop[32], value[32];
+  GetCmdArg(1, classname, sizeof(classname));
+  GetCmdArg(2, prop, sizeof(prop));
+  GetCmdArg(3, value, sizeof(value));
+
+  int ent = -1;
+  while ((ent = FindEntityByNetClass(ent, classname)) != -1) {
+    if (args == 3) {
       WriteEntProp(ent, prop, client, value);
     } else {
       ReadEntProp(ent, prop, client);
