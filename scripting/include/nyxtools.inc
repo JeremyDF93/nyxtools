@@ -398,9 +398,20 @@ public bool TraceEntityFilter_Self(int entity, int contentsMask, any self) {
  *
  */
 
-stock int FindEntityByClassnameSafe(int startEnt, const char[] classname) {
-  while (startEnt > -1 && !IsValidEntity(startEnt)) startEnt--;
-  return FindEntityByClassname(startEnt, classname);
+stock int FindEntityByNetClass(int startEnt, const char[] classname) {
+  int maxEntities = GetMaxEntities();
+  for (int i = startEnt; i <= maxEntities; i++) {
+    if (!IsValidEdict(i)) continue;
+
+    char name[255];
+    GetEntityNetClass(i, name, sizeof(name));
+
+    if (strcmp(name, classname, false) == 0) {
+      return i;
+    }
+  }
+
+  return -1;
 }
 
 /***
