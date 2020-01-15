@@ -1,5 +1,7 @@
 #pragma semicolon 1
 #include <sourcemod>
+
+#define NYX_DEBUG 1
 #include <nyxtools>
 
 #pragma newdecls required
@@ -95,10 +97,12 @@ public Action ConCmd_EntFireClass(int client, int args) {
   GetCmdArgString(buffer, sizeof(buffer));
   TrimString(buffer);
 
-  int len1 = BreakString(buffer, classname, sizeof(classname));
-  int len2 = BreakString(buffer[len1], input, sizeof(input));
-  strcopy(value, sizeof(value), buffer[len1 + len2]);
-  StripQuotes(value);
+  int nameIdx = BreakString(buffer, classname, sizeof(classname));
+  int inputIdx = BreakString(buffer[nameIdx], input, sizeof(input));
+  if (inputIdx != -1) {
+    strcopy(value, sizeof(value), buffer[nameIdx + inputIdx]);
+    StripQuotes(value);
+  }
 
   int ent = -1;
   while ((ent = FindEntityByClassname(ent, classname)) != -1) {
@@ -148,9 +152,11 @@ public Action ConCmd_EntFireAim(int client, int args) {
   GetCmdArgString(buffer, sizeof(buffer));
   TrimString(buffer);
 
-  int len = BreakString(buffer, input, sizeof(input));
-  strcopy(value, sizeof(value), buffer[len]);
-  StripQuotes(value);
+  int inputIdx = BreakString(buffer, input, sizeof(input));
+  if (inputIdx != -1) {
+    strcopy(value, sizeof(value), buffer[inputIdx]);
+    StripQuotes(value);
+  }
 
   int ent = GetClientAimTargetEx(client, false);
   if (ent > 0) {
@@ -236,10 +242,12 @@ public Action ConCmd_EntFirePlayer(int client, int args) {
   GetCmdArgString(buffer, sizeof(buffer));
   TrimString(buffer);
 
-  int len1 = BreakString(buffer, target, sizeof(target));
-  int len2 = BreakString(buffer[len1], input, sizeof(input));
-  strcopy(value, sizeof(value), buffer[len1 + len2]);
-  StripQuotes(value);
+  int targetIdx = BreakString(buffer, target, sizeof(target));
+  int inputIdx = BreakString(buffer[targetIdx], input, sizeof(input));
+  if (inputIdx != -1) {
+    strcopy(value, sizeof(value), buffer[targetIdx + inputIdx]);
+    StripQuotes(value);
+  }
 
   char target_name[MAX_TARGET_LENGTH];
   int target_list[MAXPLAYERS], target_count;
