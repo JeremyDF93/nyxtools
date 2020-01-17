@@ -1,10 +1,12 @@
 #pragma semicolon 1
+#pragma newdecls required
+
 #include <sourcemod>
-#define NYX_DEBUG 2
+
+#define NYX_DEBUG 1
 #include <nyxtools>
 #include <nyxtools_tf2>
 
-#pragma newdecls required
 
 public Plugin myinfo = {
   name = "NyxTools - TF2",
@@ -52,7 +54,7 @@ Handle g_hSDKCall[NyxSDK];
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max) {
   EngineVersion engine = GetEngineVersion();
   if (engine != Engine_TF2) {
-    strcopy(error, err_max, "nyxtools_tf2 is incompatible with this game");
+    strcopy(error, err_max, "Incorrect game engine");
     return APLRes_SilentFailure;
   }
   RegPluginLibrary("nyxtools_tf2");

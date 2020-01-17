@@ -25,16 +25,6 @@ native int TF2_GetObjectCount(int client);
 native bool TF2_SetUpgradesMode(bool enabled, bool reviveEnabled);
 native bool TF2_IsUpgradesEnabled();
 
-public SharedPlugin:__pl_nyxtools_tf2 = {
-  name = "nyxtools_tf2",
-  file = "nyxtools_tf2.smx",
-#if defined REQUIRE_PLUGIN
-  required = 1,
-#else
-  required = 0,
-#endif
-};
-
 #if !defined REQUIRE_PLUGIN
 public __pl_nyxtools_tf2_SetNTVOptional() {
   MarkNativeAsOptional("TF2_RemoveAllObjects");
@@ -227,7 +217,7 @@ stock TFClassType TF2_StringToClass(char[] str) {
  *                                  /____/
  */
 
-public SharedPlugin:__pl_nyxtools_tf2 = {
+public SharedPlugin __pl_nyxtools_tf2 = {
   name = "nyxtools_tf2",
   file = "nyxtools_tf2.smx",
 #if defined REQUIRE_PLUGIN

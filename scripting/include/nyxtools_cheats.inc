@@ -6,7 +6,7 @@
 native bool ExecuteCheatCommand(int client, const char[] fmt, any ...);
 native bool HasCheatPermissions(int client);
 
-public SharedPlugin:__pl_nyxtools_cheats = {
+public SharedPlugin __pl_nyxtools_cheats = {
   name = "nyxtools_cheats",
   file = "nyxtools_cheats.smx",
 #if defined REQUIRE_PLUGIN

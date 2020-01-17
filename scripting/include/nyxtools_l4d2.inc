@@ -258,7 +258,7 @@ stock void L4D2_TeamToString(L4D2Team team, char[] str, int maxlength) {
  *                                  /____/
  */
 
-public SharedPlugin:__pl_nyxtools_l4d2 = {
+public SharedPlugin __pl_nyxtools_l4d2 = {
   name = "nyxtools_l4d2",
   file = "nyxtools_l4d2.smx",
 #if defined REQUIRE_PLUGIN

@@ -1,8 +1,10 @@
 #pragma semicolon 1
-#include <sourcemod>
-#include <nyxtools>
-
 #pragma newdecls required
+
+#include <sourcemod>
+
+#define NYX_DEBUG 1
+#include <nyxtools>
 
 public Plugin myinfo = {
   name = "NyxTools - Event",

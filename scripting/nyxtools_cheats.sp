@@ -1,9 +1,11 @@
 #pragma semicolon 1
+#pragma newdecls required
+
 #include <sourcemod>
+
+#define NYX_DEBUG 1
 #include <nyxtools>
 #include <nyxtools_cheats>
-
-#pragma newdecls required
 
 public Plugin myinfo = {
   name = "NyxTools - Cheats",
