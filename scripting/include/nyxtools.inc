@@ -38,13 +38,12 @@
                                    ````
 */
 
-#tryinclude <nyxtools_version_auto>
-#include <nyxtools_version>
 #include <sdktools>
 
-#if !defined NYXTOOLS_TAG
-  #define NYXTOOLS_TAG "Nyx"
-#endif
+#tryinclude <nyxtools_version_auto>
+#include <nyxtools_version>
+#include <nyxtools_logger>
+
 #define NYXTOOLS_AUTHOR "Kiwi, JeremyDF93"
 #define NYXTOOLS_WEBSITE "https://praisethemoon.com/"
 
@@ -80,120 +79,6 @@ stock bool IsValidClient(int client, bool filterBots = false, bool filterReplay 
 
 stock bool IsClientAdmin(int client, int flags = ADMFLAG_GENERIC) {
   return (GetUserFlagBits(client) & flags) > 0 || (GetUserFlagBits(client) & ADMFLAG_ROOT) > 0;
-}
-
-/***
- *        __  ___
- *       /  |/  /__  ______________ _____ ____  _____
- *      / /|_/ / _ \/ ___/ ___/ __ `/ __ `/ _ \/ ___/
- *     / /  / /  __(__  |__  ) /_/ / /_/ /  __(__  )
- *    /_/  /_/\___/____/____/\__,_/\__, /\___/____/
- *                                /____/
- */
-
-stock void NyxMsg(const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 2);
-
-  PrintToServer("[%s] %s", NYXTOOLS_TAG, buffer);
-}
-
-stock void NyxMsgReply(int client, const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 3);
-
-  ReplySource rs = GetCmdReplySource();
-  if (rs == SM_REPLY_TO_CONSOLE) {
-    NyxMsgConsole(client, buffer);
-  } else {
-    NyxMsgClient(client, buffer);
-  }
-}
-
-stock void NyxMsgConsole(int client, const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 3);
-
-  PrintToConsole(client, "[%s] %s", NYXTOOLS_TAG, buffer);
-}
-
-stock void NyxMsgClient(int client, const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 3);
-
-  PrintToChat(client, "[%s] %s", NYXTOOLS_TAG, buffer);
-}
-
-stock void NyxMsgAll(const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 2);
-
-  PrintToChatAll("[%s] %s", NYXTOOLS_TAG, buffer);
-}
-
-stock void NyxMsgTeam(int team, const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 3);
-
-  for (int i = 1; i <= MaxClients; i++) {
-    if (!IsValidClient(i, true)) continue;
-    if (GetClientTeam(i) != team) continue;
-
-    PrintToChat(i, "[%s] %s", NYXTOOLS_TAG, buffer);
-    PrintToConsole(i, "[%s] %s", NYXTOOLS_TAG, buffer);
-  }
-}
-
-stock void NyxMsgAdmin(const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 2);
-
-  for (int i = 1; i <= MaxClients; i++) {
-    if (!IsValidClient(i, true)) continue;
-    if (!IsClientAdmin(i)) continue;
-
-    PrintToChat(i, "[%s] %s", NYXTOOLS_TAG, buffer);
-    PrintToConsole(i, "[%s] %s", NYXTOOLS_TAG, buffer);
-  }
-
-  PrintToServer("[%s] %s", NYXTOOLS_TAG, buffer);
-}
-
-stock void NyxMsgDebug(const char[] format, any ...) {
-#if defined NYXTOOLS_DEBUG
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 2);
-
-  // use a switch statement because you'll 'redundant code' warnings in the compiler
-  switch (NYXTOOLS_DEBUG) {
-    case 1: NyxMsg(buffer);
-    case 2: NyxMsgAdmin(buffer);
-  }
-#endif
-}
-
-stock void NyxAct(int client, const char[] format, any ...) {
-  char buffer[256];
-  VFormat(buffer, sizeof(buffer), format, 3);
-
-  char prefix[64];
-  FormatEx(prefix, sizeof(prefix), "[%s] ", NYXTOOLS_TAG);
-
-  ShowActivity2(client, prefix, "%s", buffer);
-}
-
-stock void SayText2(int client, int from, const char[] msg) {
-  char buffer[256];
-  Format(buffer, sizeof(buffer), "\x01%s", msg);
-
-  Handle hBf;
-  hBf = StartMessageOne("SayText2", client);
-  if (hBf != null) {
-    BfWriteByte(hBf, from);
-    BfWriteByte(hBf, 0);
-    BfWriteString(hBf, msg);
-    EndMessage();
-  }
 }
 
 /***
