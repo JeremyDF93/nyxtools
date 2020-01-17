@@ -12,7 +12,7 @@
 char nyx_prefix[16];
 
 methodmap Logger __nullable__ {
-  public Logger(const char[] prefix="[Nyx]") {
+  public Logger(const char[] prefix="[Nyx] ") {
     strcopy(nyx_prefix, sizeof(nyx_prefix), prefix);
 
     return view_as<Logger>(0);
@@ -22,38 +22,35 @@ methodmap Logger __nullable__ {
     char buffer[255];
     VFormat(buffer, sizeof(buffer), fmt, 3);
 
-    PrintToServer("%s %s", nyx_prefix, buffer);
+    PrintToServer("%s%s", nyx_prefix, buffer);
   }
 
   public void console(int client, const char[] fmt, any ...) {
     char buffer[255];
     VFormat(buffer, sizeof(buffer), fmt, 4);
 
-    PrintToConsole(client, "%s %s", nyx_prefix, buffer);
+    PrintToConsole(client, "%s%s", nyx_prefix, buffer);
   }
 
   public void chat(int client, const char[] fmt, any ...) {
     char buffer[255];
     VFormat(buffer, sizeof(buffer), fmt, 4);
 
-    PrintToChat(client, "%s %s", nyx_prefix, buffer);
+    PrintToChat(client, "%s%s", nyx_prefix, buffer);
   }
 
   public void all(const char[] fmt, any ...) {
     char buffer[255];
     VFormat(buffer, sizeof(buffer), fmt, 3);
 
-    PrintToChatAll("%s %s", nyx_prefix, buffer);
+    PrintToChatAll("%s%s", nyx_prefix, buffer);
   }
 
   public void act(int client, const char[] fmt, any ...) {
     char buffer[255];
     VFormat(buffer, sizeof(buffer), fmt, 4);
 
-    char prefix[16];
-    FormatEx(prefix, sizeof(prefix), "%s ", nyx_prefix);
-
-    ShowActivity2(client, prefix, "%s", buffer);
+    ShowActivity2(client, nyx_prefix, "%s", buffer);
   }
 
   public void team(int team, const char[] fmt, any ...) {
