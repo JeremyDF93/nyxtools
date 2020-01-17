@@ -97,7 +97,7 @@ methodmap Logger __nullable__ {
 
   public void debug(const char[] fmt, any ...) {
 #if defined _DEBUG
-    char buffer[256];
+    char buffer[255];
     VFormat(buffer, sizeof(buffer), fmt, 3);
 
     this.server(buffer);
@@ -106,14 +106,14 @@ methodmap Logger __nullable__ {
 }
 
 stock void NyxMsg(const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 2);
 
   PrintToServer("[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
 stock void NyxMsgReply(int client, const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 3);
 
   ReplySource rs = GetCmdReplySource();
@@ -125,28 +125,28 @@ stock void NyxMsgReply(int client, const char[] format, any ...) {
 }
 
 stock void NyxMsgConsole(int client, const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 3);
 
   PrintToConsole(client, "[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
 stock void NyxMsgClient(int client, const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 3);
 
   PrintToChat(client, "[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
 stock void NyxMsgAll(const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 2);
 
   PrintToChatAll("[%s] %s", NYXTOOLS_TAG, buffer);
 }
 
 stock void NyxMsgTeam(int team, const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 3);
 
   for (int i = 1; i <= MaxClients; i++) {
@@ -159,7 +159,7 @@ stock void NyxMsgTeam(int team, const char[] format, any ...) {
 }
 
 stock void NyxMsgAdmin(const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 2);
 
   for (int i = 1; i <= MaxClients; i++) {
@@ -175,7 +175,7 @@ stock void NyxMsgAdmin(const char[] format, any ...) {
 
 stock void NyxMsgDebug(const char[] format, any ...) {
 #if defined NYXTOOLS_DEBUG
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 2);
 
   // use a switch statement because you'll 'redundant code' warnings in the compiler
@@ -187,7 +187,7 @@ stock void NyxMsgDebug(const char[] format, any ...) {
 }
 
 stock void NyxAct(int client, const char[] format, any ...) {
-  char buffer[256];
+  char buffer[255];
   VFormat(buffer, sizeof(buffer), format, 3);
 
   char prefix[64];
@@ -197,7 +197,7 @@ stock void NyxAct(int client, const char[] format, any ...) {
 }
 
 stock void SayText2(int client, int from, const char[] msg) {
-  char buffer[256];
+  char buffer[255];
   Format(buffer, sizeof(buffer), "\x01%s", msg);
 
   Handle hBf;
