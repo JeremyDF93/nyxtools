@@ -1,3 +1,8 @@
+#if defined _nyxtools_logger_included
+  #endinput
+#endif
+#define _nyxtools_logger_included
+
 #include <nyxtools>
 
 #if !defined NYXTOOLS_TAG
