@@ -3,7 +3,7 @@
 
 #include <sourcemod>
 
-#define NYX_DEBUG 2
+#define NYXTOOLS_DEBUG 1
 #include <nyxtools>
 #include <nyxtools_l4d2>
 

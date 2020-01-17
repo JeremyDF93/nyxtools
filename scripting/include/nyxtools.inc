@@ -160,12 +160,12 @@ stock void NyxMsgAdmin(const char[] format, any ...) {
 }
 
 stock void NyxMsgDebug(const char[] format, any ...) {
-#if defined NYX_DEBUG
+#if defined NYXTOOLS_DEBUG
   char buffer[256];
   VFormat(buffer, sizeof(buffer), format, 2);
 
   // use a switch statement because you'll 'redundant code' warnings in the compiler
-  switch (NYX_DEBUG) {
+  switch (NYXTOOLS_DEBUG) {
     case 1: NyxMsg(buffer);
     case 2: NyxMsgAdmin(buffer);
   }
