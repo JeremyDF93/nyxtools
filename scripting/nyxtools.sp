@@ -3,7 +3,7 @@
 
 #include <sourcemod>
 
-#define NYXTOOLS_DEBUG 1
+#define _DEBUG
 #include <nyxtools>
 
 public Plugin myinfo = {
@@ -13,6 +13,8 @@ public Plugin myinfo = {
   version = NYXTOOLS_VERSION,
   url = NYXTOOLS_WEBSITE
 };
+
+Logger logger;
 
 /***
  *        ____  __            _          ____      __            ____
@@ -24,6 +26,8 @@ public Plugin myinfo = {
  */
 
 public void OnPluginStart() {
+  logger = new Logger();
+
   LoadTranslations("common.phrases");
 
   RegAdminCmd("nyx_sendcvar", ConCmd_SendConVar, ADMFLAG_ROOT, "nyx_sendcvar <#userid|name> <convar> <value>");
@@ -46,7 +50,7 @@ public void OnPluginStart() {
 public void OnConVarQuery(QueryCookie cookie, int target, ConVarQueryResult result, const char[] cvarName, const char[] cvarValue, any value) {
   int client = GetClientOfUserId(value);
   if (IsValidClient(client) && IsValidClient(target)) {
-    NyxMsgReply(client, "Query of '%s' returned '%s' for %N", cvarName, cvarValue, target);
+    logger.reply(client, "Query of '%s' returned '%s' for %N", cvarName, cvarValue, target);
   }
 }
 
@@ -61,7 +65,7 @@ public void OnConVarQuery(QueryCookie cookie, int target, ConVarQueryResult resu
 
 public Action ConCmd_SendConVar(int client, int args) {
   if (args < 3) {
-    NyxMsgReply(client, "Usage: nyx_sendcvar <#userid|name> <convar> <value>");
+    logger.reply(client, "Usage: nyx_sendcvar <#userid|name> <convar> <value>");
     return Plugin_Handled;
   }
 
@@ -85,7 +89,7 @@ public Action ConCmd_SendConVar(int client, int args) {
 
   ConVar convar = FindConVar(cvar);
   if (convar == null) {
-    NyxMsgReply(client, "Unable to find cvar '%s'", cvar);
+    logger.reply(client, "Unable to find cvar '%s'", cvar);
     return Plugin_Handled;
   }
 
@@ -93,14 +97,14 @@ public Action ConCmd_SendConVar(int client, int args) {
     SendConVarValue(target_list[i], convar, value);
     LogAction(client, target_list[i], "\"%L\" changed cvar \"%s\" to \"%s\" on \"%L\"", client, cvar, value, target_list[i]);
   }
-  NyxAct(client, "Changed cvar '%s' to '%s' on %s", cvar, value, target_name);
+  logger.act(client, "Changed cvar '%s' to '%s' on %s", cvar, value, target_name);
 
   return Plugin_Handled;
 }
 
 public Action ConCmd_QueryConVar(int client, int args) {
   if (args < 2) {
-    NyxMsgReply(client, "Usage: nyx_querycvar <#userid|name> <convar>");
+    logger.reply(client, "Usage: nyx_querycvar <#userid|name> <convar>");
     return Plugin_Handled;
   }
 
@@ -125,7 +129,7 @@ public Action ConCmd_QueryConVar(int client, int args) {
     QueryClientConVar(target_list[i], arg2, OnConVarQuery, GetClientUserId(client));
     LogAction(client, target_list[i], "\"%L\" queried cvar \"%s\" on \"%L\"", client, arg2, target_list[i]);
   }
-  NyxAct(client, "Queried cvar '%s' on %s", arg2, target_name);
+  logger.act(client, "Queried cvar '%s' on %s", arg2, target_name);
 
   return Plugin_Handled;
 }
@@ -136,7 +140,7 @@ public Action ConCmd_ConnectMethod(int client, int args) {
 
     char value[64];
     bool ret = GetClientInfo(i, "cl_connectmethod", value, sizeof(value));
-    NyxMsgReply(client, "<%i> \"%N\" -- %s", GetClientUserId(i), i, ret ? value : "QUERY FAILED");
+    logger.reply(client, "<%i> \"%N\" -- %s", GetClientUserId(i), i, ret ? value : "QUERY FAILED");
   }
 
   return Plugin_Handled;
@@ -144,7 +148,7 @@ public Action ConCmd_ConnectMethod(int client, int args) {
 
 public Action ConCmd_FakeCmd(int client, int args) {
   if (args < 2) {
-    NyxMsgReply(client, "Usage: nyx_fakecmd <#userid|name> <cmd>");
+    logger.reply(client, "Usage: nyx_fakecmd <#userid|name> <cmd>");
     return Plugin_Handled;
   }
 
@@ -171,14 +175,14 @@ public Action ConCmd_FakeCmd(int client, int args) {
       LogAction(client, target_list[i], "\"%L\" ran fake command \"%s\" on \"%L\"", client, cmd, target_list[i]);
     }
   }
-  NyxAct(client, "Ran fake command '%s' on %s", cmd, target_name);
+  logger.act(client, "Ran fake command '%s' on %s", cmd, target_name);
 
   return Plugin_Handled;
 }
 
 public Action ConCmd_ShowURL(int client, int args) {
   if (args < 2) {
-    NyxMsgReply(client, "Usage: nyx_showurl <#userid|name> <url> [show]");
+    logger.reply(client, "Usage: nyx_showurl <#userid|name> <url> [show]");
     return Plugin_Handled;
   }
 
@@ -205,14 +209,14 @@ public Action ConCmd_ShowURL(int client, int args) {
       LogAction(client, target_list[i], "\"%L\" showed \"%s\" to \"%L\"", client, url, target_list[i]);
     }
   }
-  NyxAct(client, "Showed '%s' to %s", url, target_name);
+  logger.act(client, "Showed '%s' to %s", url, target_name);
 
   return Plugin_Handled;
 }
 
 public Action ConCmd_Teleport(int client, int args) {
   if (args < 1) {
-    NyxMsgReply(client, "Usage: nyx_tele <#userid|name> [stack]");
+    logger.reply(client, "Usage: nyx_tele <#userid|name> [stack]");
     return Plugin_Handled;
   }
 
@@ -232,7 +236,7 @@ public Action ConCmd_Teleport(int client, int args) {
 
   float pos[3];
   if (!GetClientAimPos(client, pos)) {
-    NyxMsgReply(client, "Could not get teleport end point");
+    logger.reply(client, "Could not get teleport end point");
     return Plugin_Handled;
   }
 
@@ -254,7 +258,7 @@ public Action ConCmd_Teleport(int client, int args) {
 
     LogAction(client, target_list[i], "\"%L\" teleported \"%L\"", client, target_list[i]);
   }
-  NyxAct(client, "Teleported %s", target_name);
+  logger.act(client, "Teleported %s", target_name);
 
   return Plugin_Handled;
 }
