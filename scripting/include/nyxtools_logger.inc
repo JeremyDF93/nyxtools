@@ -18,6 +18,13 @@ methodmap Logger __nullable__ {
     return view_as<Logger>(0);
   }
 
+  public void log(int client, int target, const char[] fmt, any ...) {
+    char buffer[255];
+    VFormat(buffer, sizeof(buffer), fmt, 5);
+
+    LogAction(client, target, buffer);
+  }
+
   public void server(const char[] fmt, any ...) {
     char buffer[255];
     VFormat(buffer, sizeof(buffer), fmt, 3);

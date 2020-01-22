@@ -95,7 +95,7 @@ public Action ConCmd_SendConVar(int client, int args) {
 
   for (int i = 0; i < target_count; i++) {
     SendConVarValue(target_list[i], convar, value);
-    LogAction(client, target_list[i], "\"%L\" changed cvar \"%s\" to \"%s\" on \"%L\"", client, cvar, value, target_list[i]);
+    logger.log(client, target_list[i], "\"%L\" changed cvar \"%s\" to \"%s\" on \"%L\"", client, cvar, value, target_list[i]);
   }
   logger.act(client, "Changed cvar '%s' to '%s' on %s", cvar, value, target_name);
 
@@ -127,7 +127,7 @@ public Action ConCmd_QueryConVar(int client, int args) {
 
   for (int i = 0; i < target_count; i++) {
     QueryClientConVar(target_list[i], arg2, OnConVarQuery, GetClientUserId(client));
-    LogAction(client, target_list[i], "\"%L\" queried cvar \"%s\" on \"%L\"", client, arg2, target_list[i]);
+    logger.log(client, target_list[i], "\"%L\" queried cvar \"%s\" on \"%L\"", client, arg2, target_list[i]);
   }
   logger.act(client, "Queried cvar '%s' on %s", arg2, target_name);
 
@@ -172,7 +172,7 @@ public Action ConCmd_FakeCmd(int client, int args) {
   for (int i = 0; i < target_count; i++) {
     if (IsValidClient(target_list[i])) {
       FakeClientCommandEx(target_list[i], cmd);
-      LogAction(client, target_list[i], "\"%L\" ran fake command \"%s\" on \"%L\"", client, cmd, target_list[i]);
+      logger.log(client, target_list[i], "\"%L\" ran fake command \"%s\" on \"%L\"", client, cmd, target_list[i]);
     }
   }
   logger.act(client, "Ran fake command '%s' on %s", cmd, target_name);
@@ -206,7 +206,7 @@ public Action ConCmd_ShowURL(int client, int args) {
   for (int i = 0; i < target_count; i++) {
     if (IsValidClient(target_list[i])) {
       ShowURLPanel(target_list[i], "", url, GetCmdBool(3, true));
-      LogAction(client, target_list[i], "\"%L\" showed \"%s\" to \"%L\"", client, url, target_list[i]);
+      logger.log(client, target_list[i], "\"%L\" showed \"%s\" to \"%L\"", client, url, target_list[i]);
     }
   }
   logger.act(client, "Showed '%s' to %s", url, target_name);
@@ -256,7 +256,7 @@ public Action ConCmd_Teleport(int client, int args) {
       pos[2] += 40.0;
     }
 
-    LogAction(client, target_list[i], "\"%L\" teleported \"%L\"", client, target_list[i]);
+    logger.log(client, target_list[i], "\"%L\" teleported \"%L\"", client, target_list[i]);
   }
   logger.act(client, "Teleported %s", target_name);
 
