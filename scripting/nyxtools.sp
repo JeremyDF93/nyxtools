@@ -36,6 +36,7 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_fakecmd", ConCmd_FakeCmd, ADMFLAG_ROOT, "nyx_fakecmd <#userid|name> <cmd>");
   RegAdminCmd("nyx_showurl", ConCmd_ShowURL, ADMFLAG_ROOT, "nyx_showurl <#userid|name> <url> [show]");
   RegAdminCmd("nyx_tele", ConCmd_Teleport, ADMFLAG_SLAY, "nyx_tele <#userid|name> [stack]");
+  RegAdminCmd("nyx_setmodel", ConCmd_SetModel, ADMFLAG_SLAY, "nyx_setmodel <#userid|name> <model>");
 }
 
 /***
@@ -259,6 +260,56 @@ public Action ConCmd_Teleport(int client, int args) {
     logger.log(client, target_list[i], "\"%L\" teleported \"%L\"", client, target_list[i]);
   }
   logger.act(client, "Teleported %s", target_name);
+
+  return Plugin_Handled;
+}
+
+public Action ConCmd_SetModel(int client, int args) {
+  if (args < 2) {
+    logger.reply(client, "Usage: nyx_setmodel <#userid|name> <model>");
+    return Plugin_Handled;
+  }
+
+  char target[MAX_NAME_LENGTH];
+  GetCmdArg(1, target, sizeof(target));
+
+  char target_name[MAX_TARGET_LENGTH];
+  int target_list[MAXPLAYERS], target_count;
+  bool tn_is_ml;
+
+  if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS,
+      COMMAND_FILTER_CONNECTED, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+  {
+    ReplyToTargetError(client, target_count);
+    return Plugin_Handled;
+  }
+
+  char model[PLATFORM_MAX_PATH];
+  GetCmdArg(2, model, sizeof(model));
+
+  if (StrContains(model, "models/", false) == -1)
+    Format(model, sizeof(model), "models/%s", model);
+  if (StrContains(model, ".mdl", false) == -1)
+    Format(model, sizeof(model), "%s.mdl", model);
+
+  if (!FileExists(model, true)) {
+    logger.reply(client, "Missing model '%s'", model);
+    return Plugin_Handled;
+  }
+
+  if (!IsModelPrecached(model)) {
+    if (PrecacheModel(model) == 0) {
+      logger.reply(client, "Failed to precache model '%s'", model);
+      return Plugin_Handled;
+    }
+  }
+
+  for (int i = 0; i < target_count; i++) {
+    SetEntityModel(target_list[i], model);
+
+    logger.log(client, target_list[i], "\"%L\" set player model \"%s\" on \"%L\"", client, model, target_list[i]);
+  }
+  logger.act(client, "Changed player model on %s", target_name);
 
   return Plugin_Handled;
 }
