@@ -307,9 +307,9 @@ public Action ConCmd_SetModel(int client, int args) {
   for (int i = 0; i < target_count; i++) {
     SetEntityModel(target_list[i], model);
 
-    logger.log(client, target_list[i], "\"%L\" set player model \"%s\" on \"%L\"", client, model, target_list[i]);
+    logger.log(client, target_list[i], "\"%L\" set model \"%s\" on \"%L\"", client, model, target_list[i]);
   }
-  logger.act(client, "Changed player model on %s", target_name);
+  logger.act(client, "Set model '%s' on %s", model, target_name);
 
   return Plugin_Handled;
 }
