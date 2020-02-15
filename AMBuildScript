@@ -301,7 +301,7 @@ class ExtensionConfig(object):
 
   def configure_windows(self, cxx):
     cxx.defines += ['WIN32', '_WINDOWS']
-	
+
   def ConfigureForExtension(self, context, compiler):
     compiler.cxxincludes += [
       os.path.join(context.currentSourcePath),

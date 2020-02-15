@@ -129,7 +129,7 @@ stock float GetCmdFloat(int argnum, float def = 0.0) {
   return result;
 }
 
-stock float GetCmdFloatEx(int argnum, float min, float max, float def = 0.0) {
+stock float GetCmdFloatEx(int argnum, float min, float max, const float def = 0.0) {
   char arg[32];
   GetCmdArg(argnum, arg, sizeof(arg));
 
@@ -144,7 +144,7 @@ stock float GetCmdFloatEx(int argnum, float min, float max, float def = 0.0) {
   return result;
 }
 
-stock void GetCmdVector(int argnum, float vec[3], float def[3]={ 0.0, 0.0, 0.0 }) {
+stock void GetCmdVector(int argnum, float vec[3], const float def[3]={ 0.0, 0.0, 0.0 }) {
   char arg[64];
   GetCmdArg(argnum, arg, sizeof(arg));
 
@@ -348,6 +348,10 @@ stock bool StringToVector(const char[] str, float vector[3]) {
   }
 
   return false;
+}
+
+stock void VectorToString(const float vector[3], char[] buffer, int maxlength) {
+  Format(buffer, maxlength, "%0.3f %0.3f %0.3f", vector[0], vector[1], vector[2]);
 }
 
 stock void MatrixToAngles(const float fwd[3], const float left[3], const float up[3], float angles[3]) {
