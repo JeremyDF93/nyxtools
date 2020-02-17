@@ -190,6 +190,46 @@ stock void RunScriptCode(const char[] fmt, any ...) {
   RemoveEntity(ent);
 }
 
+stock void DisplayInstructorHint(
+    int client,
+    const char[] caption="",
+    const char[] icon_onscreen="icon_alert",
+    const char[] icon_offscreen="icon_alert",
+    float timeout=5.0,
+    const int color[3]={255,255,255},
+    float offset=0.0,
+    float range=0.0,
+    int flags=0,
+    const char[] binding="",
+    bool allow_nodraw_target=true,
+    bool nooffscreen=false,
+    bool forcecaption=false
+) {
+  char hintName[32];
+  Format(hintName, sizeof(hintName), "hint_%d", GetClientUserId(client));
+
+  char hintColor[32];
+  Format(hintColor, sizeof(hintColor), "%d,%d,%d", color[0], color[1], color[2]);
+
+  Event event = CreateEvent("instructor_server_hint_create", true);
+  event.SetString("hint_name", hintName);
+  event.SetInt("hint_target", client);
+  event.SetFloat("hint_timeout", timeout);
+  event.SetString("hint_icon_onscreen", icon_onscreen);
+  event.SetString("hint_icon_offscreen", icon_offscreen);
+  event.SetString("hint_caption", caption);
+  event.SetString("hint_color", hintColor);
+  event.SetFloat("hint_icon_offset", offset);
+  event.SetFloat("hint_range", range);
+  event.SetInt("hint_flags", flags);
+  event.SetString("hint_binding", binding);
+  event.SetBool("hint_allow_nodraw_target", allow_nodraw_target);
+  event.SetBool("hint_nooffscreen", nooffscreen);
+  event.SetBool("hint_forcecaption", forcecaption);
+  event.FireToClient(client);
+  event.Cancel();
+}
+
 /***
  *        __   __ __  ____ ___
  *       / /  / // / / __ \__ \
