@@ -63,7 +63,13 @@ public void OnPluginStart() {
   RegAdminCmd("nyx_regenprops", ConCmd_RegenProps, ADMFLAG_ROOT);
   RegAdminCmd("nyx_exportprops", ConCmd_ExportProps, ADMFLAG_ROOT);
 
-  HookEvent("round_start", Event_RoundStart);
+  EngineVersion engine = GetEngineVersion();
+  if (engine == Engine_TF2) {
+    HookEvent("teamplay_round_active", Event_TPRoundActive);
+    HookEvent("teamplay_round_start", Event_TPRoundStart);
+  } else {
+    HookEvent("round_start", Event_RoundStart);
+  }
 }
 
 public void OnPluginEnd() {
@@ -95,6 +101,18 @@ public void OnMapStart() {
  *    /_____/ |___/\___/_/ /_/\__/____/
  *
  */
+
+public Action Event_TPRoundActive(Event event, const char[] name, bool dontBroadcast) {
+  RegenerateProps();
+
+  return Plugin_Continue;
+}
+
+public Action Event_TPRoundStart(Event event, const char[] name, bool dontBroadcast) {
+  if (event.GetBool("full_reset")) RegenerateProps();
+
+  return Plugin_Continue;
+}
 
 public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcast) {
   RegenerateProps();
