@@ -188,7 +188,7 @@ public Action ConCmd_EntPropGameRules(int client, int args) {
   GetCmdArg(1, prop, sizeof(prop));
   GetCmdArg(2, value, sizeof(value));
 
-  int ent = FindEntityByNetClass(GetMaxClients() - 1, g_sGameRulesProxy);
+  int ent = FindEntityByNetClass(MaxClients - 1, g_sGameRulesProxy);
   if (IsValidEdict(ent)) {
     if (args == 2) {
       WriteEntProp(ent, prop, client, value);

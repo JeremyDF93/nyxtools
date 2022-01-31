@@ -25,25 +25,25 @@ public Plugin myinfo = {
  *
  */
 
-enum NyxSDK {
-  Handle:SDK_RoundRespawn,
-  Handle:SDK_TakeOverBot,
-  Handle:SDK_TakeOverZombieBot,
-  Handle:SDK_ReplaceWithBot,
-  Handle:SDK_SetHumanSpectator,
-  Handle:SDK_ChangeTeam,
-  Handle:SDK_SetClass,
-  Handle:SDK_CreateAbility,
-  Handle:SDK_WarpGhostToInitialPosition,
-  Handle:SDK_BecomeGhost,
-  Handle:SDK_CanBecomeGhost,
-  Handle:SDK_IsMissionFinalMap,
-  Handle:SDK_GetRandomPZSpawnPosition,
-  Handle:SDK_IsMissionStartMap,
-  Handle:SDK_IsClassAllowed,
-  Handle:SDK_FindNearbySpawnSpot,
-  Handle:SDK_WarpToValidPositionIfStuck,
-  Handle:SDK_ScriptStaggerPlayer,
+enum struct NyxSDK {
+  Handle SDK_RoundRespawn;
+  Handle SDK_TakeOverBot;
+  Handle SDK_TakeOverZombieBot;
+  Handle SDK_ReplaceWithBot;
+  Handle SDK_SetHumanSpectator;
+  Handle SDK_ChangeTeam;
+  Handle SDK_SetClass;
+  Handle SDK_CreateAbility;
+  Handle SDK_WarpGhostToInitialPosition;
+  Handle SDK_BecomeGhost;
+  Handle SDK_CanBecomeGhost;
+  Handle SDK_IsMissionFinalMap;
+  Handle SDK_GetRandomPZSpawnPosition;
+  Handle SDK_IsMissionStartMap;
+  Handle SDK_IsClassAllowed;
+  Handle SDK_FindNearbySpawnSpot;
+  Handle SDK_WarpToValidPositionIfStuck;
+  Handle SDK_ScriptStaggerPlayer;
 }
 
 /***
@@ -56,7 +56,7 @@ enum NyxSDK {
  */
 
 Handle g_hGameConf;
-Handle g_hSDKCall[NyxSDK];
+NyxSDK g_hSDKCall;
 
 Address g_pZombieManager;
 Address g_pTheDirector;
@@ -134,8 +134,8 @@ public void OnPluginStart() {
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_Pointer, _, VENCODE_FLAG_COPYBACK);
-  g_hSDKCall[SDK_GetRandomPZSpawnPosition] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_GetRandomPZSpawnPosition] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for ZombieManager::GetRandomPZSpawnPosition");
+  g_hSDKCall.SDK_GetRandomPZSpawnPosition = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_GetRandomPZSpawnPosition == INVALID_HANDLE) SetFailState("Failed to create SDKCall for ZombieManager::GetRandomPZSpawnPosition");
 
  /***
   *       __________  _                __
@@ -152,15 +152,15 @@ public void OnPluginStart() {
   StartPrepSDKCall(SDKCall_Raw);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CDirector::IsMissionStartMap");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
-  g_hSDKCall[SDK_IsMissionStartMap] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_IsMissionStartMap] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CDirector::IsMissionStartMap");
+  g_hSDKCall.SDK_IsMissionStartMap = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_IsMissionStartMap == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CDirector::IsMissionStartMap");
 
   StartPrepSDKCall(SDKCall_Raw);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CDirector::IsClassAllowed");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-  g_hSDKCall[SDK_IsClassAllowed] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_IsClassAllowed] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CDirector::IsClassAllowed");
+  g_hSDKCall.SDK_IsClassAllowed = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_IsClassAllowed == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CDirector::IsClassAllowed");
 
  /***
   *       ____________                          ____  __
@@ -173,70 +173,70 @@ public void OnPluginStart() {
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::RoundRespawn");
-  g_hSDKCall[SDK_RoundRespawn] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_RoundRespawn] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::RoundRespawn");
+  g_hSDKCall.SDK_RoundRespawn = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_RoundRespawn == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::RoundRespawn");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::WarpGhostToInitialPosition");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
-  g_hSDKCall[SDK_WarpGhostToInitialPosition] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_WarpGhostToInitialPosition] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpGhostToInitialPosition");
+  g_hSDKCall.SDK_WarpGhostToInitialPosition = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_WarpGhostToInitialPosition == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpGhostToInitialPosition");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::BecomeGhost");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
-  g_hSDKCall[SDK_BecomeGhost] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_BecomeGhost] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::BecomeGhost");
+  g_hSDKCall.SDK_BecomeGhost = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_BecomeGhost == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::BecomeGhost");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::CanBecomeGhost");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
-  g_hSDKCall[SDK_CanBecomeGhost] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_CanBecomeGhost] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::CanBecomeGhost");
+  g_hSDKCall.SDK_CanBecomeGhost = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_CanBecomeGhost == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::CanBecomeGhost");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverBot");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
-  g_hSDKCall[SDK_TakeOverBot] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_TakeOverBot] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::TakeOverBot");
+  g_hSDKCall.SDK_TakeOverBot = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_TakeOverBot == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::TakeOverBot");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::TakeOverZombieBot");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
-  g_hSDKCall[SDK_TakeOverZombieBot] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_TakeOverZombieBot] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::TakeOverZombieBot");
+  g_hSDKCall.SDK_TakeOverZombieBot = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_TakeOverZombieBot == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::TakeOverZombieBot");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ReplaceWithBot");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
-  g_hSDKCall[SDK_ReplaceWithBot] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_ReplaceWithBot] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::ReplaceWithBot");
+  g_hSDKCall.SDK_ReplaceWithBot = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_ReplaceWithBot == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::ReplaceWithBot");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ChangeTeam");
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-  g_hSDKCall[SDK_ChangeTeam] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_ChangeTeam] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::ChangeTeam");
+  g_hSDKCall.SDK_ChangeTeam = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_ChangeTeam == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTerrorPlayer::ChangeTeam");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::SetClass");
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
-  g_hSDKCall[SDK_SetClass] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_SetClass] == INVALID_HANDLE)
+  g_hSDKCall.SDK_SetClass = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_SetClass == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CTerrorPlayer::SetClass");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::WarpToValidPositionIfStuck");
-  g_hSDKCall[SDK_WarpToValidPositionIfStuck] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_WarpToValidPositionIfStuck] == INVALID_HANDLE)
+  g_hSDKCall.SDK_WarpToValidPositionIfStuck = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_WarpToValidPositionIfStuck == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CTerrorPlayer::WarpToValidPositionIfStuck");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorPlayer::ScriptStaggerPlayer");
   PrepSDKCall_AddParameter(SDKType_Vector, SDKPass_Pointer);
-  g_hSDKCall[SDK_ScriptStaggerPlayer] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_ScriptStaggerPlayer] == INVALID_HANDLE)
+  g_hSDKCall.SDK_ScriptStaggerPlayer = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_ScriptStaggerPlayer == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CTerrorPlayer::ScriptStaggerPlayer");
 
  /***
@@ -251,23 +251,23 @@ public void OnPluginStart() {
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "SurvivorBot::SetHumanSpectator");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
-  g_hSDKCall[SDK_SetHumanSpectator] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_SetHumanSpectator] == INVALID_HANDLE)
+  g_hSDKCall.SDK_SetHumanSpectator = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_SetHumanSpectator == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for SurvivorBot::SetHumanSpectator");
 
   StartPrepSDKCall(SDKCall_Static);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CBaseAbility::CreateForPlayer");
   PrepSDKCall_AddParameter(SDKType_CBasePlayer, SDKPass_Pointer);
   PrepSDKCall_SetReturnInfo(SDKType_CBaseEntity, SDKPass_Pointer);
-  g_hSDKCall[SDK_CreateAbility] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_CreateAbility] == INVALID_HANDLE)
+  g_hSDKCall.SDK_CreateAbility = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_CreateAbility == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CBaseAbility::CreateForPlayer");
 
   StartPrepSDKCall(SDKCall_Static);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTerrorGameRules::IsMissionFinalMap");
   PrepSDKCall_SetReturnInfo(SDKType_Bool, SDKPass_ByValue);
-  g_hSDKCall[SDK_IsMissionFinalMap] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_IsMissionFinalMap] == INVALID_HANDLE)
+  g_hSDKCall.SDK_IsMissionFinalMap = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_IsMissionFinalMap == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for CTerrorGameRules::IsMissionFinalMap");
   StartPrepSDKCall(SDKCall_Static);
 
@@ -280,8 +280,8 @@ public void OnPluginStart() {
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
   PrepSDKCall_AddParameter(SDKType_PlainOldData, SDKPass_Plain);
   PrepSDKCall_AddParameter(SDKType_Float, SDKPass_Plain);
-  g_hSDKCall[SDK_FindNearbySpawnSpot] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_FindNearbySpawnSpot] == INVALID_HANDLE)
+  g_hSDKCall.SDK_FindNearbySpawnSpot = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_FindNearbySpawnSpot == INVALID_HANDLE)
       SetFailState("Failed to create SDKCall for FindNearbySpawnSpot");
 }
 
@@ -301,7 +301,7 @@ public int Native_RespawnPlayer(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_RoundRespawn], client);
+  return SDKCall(g_hSDKCall.SDK_RoundRespawn, client);
 }
 
 public int Native_WarpGhostToInitialPosition(Handle plugin, int numArgs) {
@@ -312,7 +312,7 @@ public int Native_WarpGhostToInitialPosition(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_WarpGhostToInitialPosition], client, flag);
+  return SDKCall(g_hSDKCall.SDK_WarpGhostToInitialPosition, client, flag);
 }
 
 public int Native_BecomeGhost(Handle plugin, int numArgs) {
@@ -323,7 +323,7 @@ public int Native_BecomeGhost(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_BecomeGhost], client, flag);
+  return SDKCall(g_hSDKCall.SDK_BecomeGhost, client, flag);
 }
 
 public int Native_CanBecomeGhost(Handle plugin, int numArgs) {
@@ -334,7 +334,7 @@ public int Native_CanBecomeGhost(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_CanBecomeGhost], client, flag);
+  return SDKCall(g_hSDKCall.SDK_CanBecomeGhost, client, flag);
 }
 
 public int Native_TakeOverBot(Handle plugin, int numArgs) {
@@ -345,7 +345,7 @@ public int Native_TakeOverBot(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_TakeOverBot], client, flag);
+  return SDKCall(g_hSDKCall.SDK_TakeOverBot, client, flag);
 }
 
 public int Native_TakeOverZombieBot(Handle plugin, int numArgs) {
@@ -358,7 +358,7 @@ public int Native_TakeOverZombieBot(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid bot index (%d)", bot);
   }
 
-  return SDKCall(g_hSDKCall[SDK_TakeOverZombieBot], client, bot);
+  return SDKCall(g_hSDKCall.SDK_TakeOverZombieBot, client, bot);
 }
 
 public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
@@ -369,7 +369,7 @@ public int Native_ReplaceWithBot(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_ReplaceWithBot], client, flag);
+  return SDKCall(g_hSDKCall.SDK_ReplaceWithBot, client, flag);
 }
 
 public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
@@ -382,7 +382,7 @@ public int Native_SetHumanSpectator(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_SetHumanSpectator], bot, client);
+  return SDKCall(g_hSDKCall.SDK_SetHumanSpectator, bot, client);
 }
 
 public int Native_ChangeTeam(Handle plugin, int numArgs) {
@@ -395,7 +395,7 @@ public int Native_ChangeTeam(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid team index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_ChangeTeam], client, team);
+  return SDKCall(g_hSDKCall.SDK_ChangeTeam, client, team);
 }
 
 public int Native_SetInfectedClass(Handle plugin, int numArgs) {
@@ -418,14 +418,14 @@ public int Native_SetInfectedClass(Handle plugin, int numArgs) {
     RemoveEdict(weapon);
   }
 
-  SDKCall(g_hSDKCall[SDK_SetClass], client, class);
+  SDKCall(g_hSDKCall.SDK_SetClass, client, class);
 
   int customAbility = GetEntProp(client, Prop_Send, "m_customAbility");
   if (customAbility != -1) {
     AcceptEntityInput(MakeCompatEntRef(customAbility), "Kill");
   }
 
-  int ent = SDKCall(g_hSDKCall[SDK_CreateAbility], client);
+  int ent = SDKCall(g_hSDKCall.SDK_CreateAbility, client);
   int offs = FindDataMapInfo(ent, "m_angRotation") + 12; // the offset we want is 12 bytes after 'm_angRotation'
   SetEntProp(client, Prop_Send, "m_customAbility", GetEntData(ent, offs));
 
@@ -433,7 +433,7 @@ public int Native_SetInfectedClass(Handle plugin, int numArgs) {
 }
 
 public int Native_IsMissionFinalMap(Handle plugin, int numArgs) {
-  return SDKCall(g_hSDKCall[SDK_IsMissionFinalMap]);
+  return SDKCall(g_hSDKCall.SDK_IsMissionFinalMap);
 }
 
 public int Native_GetRandomPZSpawnPosition(Handle plugin, int numArgs) {
@@ -448,7 +448,7 @@ public int Native_GetRandomPZSpawnPosition(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  bool retVal = SDKCall(g_hSDKCall[SDK_GetRandomPZSpawnPosition], g_pZombieManager, class, tries, client, vector);
+  bool retVal = SDKCall(g_hSDKCall.SDK_GetRandomPZSpawnPosition, g_pZombieManager, class, tries, client, vector);
   SetNativeArray(4, vector, sizeof(vector));
   return retVal;
 }
@@ -466,13 +466,13 @@ public int Native_FindNearbySpawnSpot(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid team index (%d)", client);
   }
 
-  bool retVal = SDKCall(g_hSDKCall[SDK_FindNearbySpawnSpot], client, vector, team, flag, radius);
+  bool retVal = SDKCall(g_hSDKCall.SDK_FindNearbySpawnSpot, client, vector, team, flag, radius);
   SetNativeArray(2, vector, sizeof(vector));
   return retVal;
 }
 
 public int Native_IsMissionStartMap(Handle plugin, int numArgs) {
-  return SDKCall(g_hSDKCall[SDK_IsMissionStartMap], g_pTheDirector);
+  return SDKCall(g_hSDKCall.SDK_IsMissionStartMap, g_pTheDirector);
 }
 
 public int Native_IsClassAllowed(Handle plugin, int numArgs) {
@@ -482,7 +482,7 @@ public int Native_IsClassAllowed(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid or class index (%d)", class);
   }
 
-  return SDKCall(g_hSDKCall[SDK_IsClassAllowed], g_pTheDirector, class);
+  return SDKCall(g_hSDKCall.SDK_IsClassAllowed, g_pTheDirector, class);
 }
 
 public int Native_WarpToValidPositionIfStuck(Handle plugin, int numArgs) {
@@ -492,7 +492,7 @@ public int Native_WarpToValidPositionIfStuck(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_WarpToValidPositionIfStuck], client);
+  return SDKCall(g_hSDKCall.SDK_WarpToValidPositionIfStuck, client);
 }
 
 public int Native_ScriptStaggerPlayer(Handle plugin, int numArgs) {
@@ -503,7 +503,7 @@ public int Native_ScriptStaggerPlayer(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_ScriptStaggerPlayer], client, vector);
+  return SDKCall(g_hSDKCall.SDK_ScriptStaggerPlayer, client, vector);
 }
 
 /***

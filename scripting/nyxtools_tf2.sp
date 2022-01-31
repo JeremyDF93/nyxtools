@@ -25,9 +25,9 @@ public Plugin myinfo = {
  *
  */
 
-enum NyxSDK {
-  Handle:SDK_RemoveAllObjects,
-  Handle:SDK_GetObjectCount
+enum struct NyxSDK {
+  Handle SDK_RemoveAllObjects;
+  Handle SDK_GetObjectCount;
 }
 
 /***
@@ -40,7 +40,7 @@ enum NyxSDK {
  */
 
 Handle g_hGameConf;
-Handle g_hSDKCall[NyxSDK];
+NyxSDK g_hSDKCall;
 
 /***
  *        ____  __            _          ____      __            ____
@@ -85,13 +85,13 @@ public void OnPluginStart() {
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTFPlayer::RemoveAllObjects");
   PrepSDKCall_AddParameter(SDKType_Bool, SDKPass_Plain);
-  g_hSDKCall[SDK_RemoveAllObjects] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_RemoveAllObjects] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTFPlayer::RemoveAllObjects");
+  g_hSDKCall.SDK_RemoveAllObjects = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_RemoveAllObjects == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTFPlayer::RemoveAllObjects");
 
   StartPrepSDKCall(SDKCall_Player);
   PrepSDKCall_SetFromConf(g_hGameConf, SDKConf_Signature, "CTFPlayer::GetObjectCount");
-  g_hSDKCall[SDK_GetObjectCount] = EndPrepSDKCall();
-  if (g_hSDKCall[SDK_GetObjectCount] == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTFPlayer::GetObjectCount");
+  g_hSDKCall.SDK_GetObjectCount = EndPrepSDKCall();
+  if (g_hSDKCall.SDK_GetObjectCount == INVALID_HANDLE) SetFailState("Failed to create SDKCall for CTFPlayer::GetObjectCount");
 }
 
 /***
@@ -110,7 +110,7 @@ public int Native_RemoveAllObjects(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  SDKCall(g_hSDKCall[SDK_RemoveAllObjects], client, flag);
+  SDKCall(g_hSDKCall.SDK_RemoveAllObjects, client, flag);
   return 0;
 }
 
@@ -120,7 +120,7 @@ public int Native_GetObjectCount(Handle plugin, int numArgs) {
     return ThrowNativeError(SP_ERROR_NATIVE, "Invalid client index (%d)", client);
   }
 
-  return SDKCall(g_hSDKCall[SDK_GetObjectCount], client);
+  return SDKCall(g_hSDKCall.SDK_GetObjectCount, client);
 }
 
 /***

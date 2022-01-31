@@ -226,6 +226,7 @@ class ExtensionConfig(object):
         cxx.cxxflags += ['-Wno-null-dereference']
       if cxx.version >= 'clang-3.9':
         cxx.cxxflags += ['-Wno-expansion-to-defined']
+        cxx.cxxflags += ['-Wno-implicit-const-int-float-conversion']
 
     if have_gcc:
       cxx.cflags += ['-mfpmath=sse']

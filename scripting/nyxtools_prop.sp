@@ -23,14 +23,14 @@ public Plugin myinfo = {
  *
  */
 
-enum eProp {
-  Prop_Ref,
-  String:Prop_Model[PLATFORM_MAX_PATH],
-  Float:Prop_Pos[3],
-  Float:Prop_Angle[3],
-  Float:Prop_Scale,
-  bool:Prop_Physics,
-  bool:Prop_NoCollide,
+enum struct eProp {
+  int Prop_Ref;
+  char Prop_Model[PLATFORM_MAX_PATH];
+  float Prop_Pos[3];
+  float Prop_Angle[3];
+  float Prop_Scale;
+  bool Prop_Physics;
+  bool Prop_NoCollide;
 }
 
 /***
@@ -56,7 +56,7 @@ ArrayList g_hProps;
 public void OnPluginStart() {
   LoadTranslations("common.phrases");
 
-  g_hProps = new ArrayList(view_as<int>(eProp));
+  g_hProps = new ArrayList(sizeof(eProp));
 
   RegAdminCmd("nyx_prop", ConCmd_Prop, ADMFLAG_ROOT, "nyx_prop <model> [x y z] [pitch yaw roll] [scale] [physics] [nocollide]");
   RegAdminCmd("nyx_clearprops", ConCmd_ClearProps, ADMFLAG_ROOT);
@@ -76,7 +76,7 @@ public void OnMapEnd() {
 
 public void OnMapStart() {
   char map[PLATFORM_MAX_PATH];
-  GetNextMap(map, sizeof(map));
+  GetCurrentMap(map, sizeof(map));
   GetMapDisplayName(map, map, sizeof(map));
 
   char path[PLATFORM_MAX_PATH];
@@ -181,14 +181,14 @@ public Action Event_RoundStart(Event event, const char[] name, bool dontBroadcas
     AcceptEntityInput(prop, "DisableCollision");
   }
 
-  any aProp[eProp];
-  aProp[Prop_Ref] = EntIndexToEntRef(prop);
-  strcopy(aProp[Prop_Model], sizeof(aProp[Prop_Model]), model);
-  CopyVectors(endpos, aProp[Prop_Pos]);
-  CopyVectors(angles, aProp[Prop_Angle]);
-  aProp[Prop_Scale] = scale;
-  aProp[Prop_Physics] = physics;
-  aProp[Prop_NoCollide] = nocollide;
+  eProp aProp;
+  aProp.Prop_Ref= EntIndexToEntRef(prop);
+  strcopy(aProp.Prop_Model, sizeof(aProp.Prop_Model), model);
+  CopyVectors(endpos, aProp.Prop_Pos);
+  CopyVectors(angles, aProp.Prop_Angle);
+  aProp.Prop_Scale = scale;
+  aProp.Prop_Physics = physics;
+  aProp.Prop_NoCollide = nocollide;
   g_hProps.PushArray(aProp);
 
   return Plugin_Handled;
@@ -220,19 +220,19 @@ public Action ConCmd_ExportProps(int client, int args) {
     return Plugin_Handled;
   }
 
-  any aProp[eProp];
+  eProp aProp;
   for (int i = 0; i < g_hProps.Length; i++) {
     g_hProps.GetArray(i, aProp);
 
-    int ent = EntRefToEntIndex(aProp[Prop_Ref]);
+    int ent = EntRefToEntIndex(aProp.Prop_Ref);
     if (IsValidEntity(ent)) {
       file.WriteLine("nyx_prop %s \"%.3f %.3f %.3f\" \"%.3f %.3f %.3f\" %.3f %d %d",
-          aProp[Prop_Model],
-          aProp[Prop_Pos][0], aProp[Prop_Pos][1], aProp[Prop_Pos][2],
-          aProp[Prop_Angle][0], aProp[Prop_Angle][1], aProp[Prop_Angle][2],
-          aProp[Prop_Scale],
-          aProp[Prop_Physics],
-          aProp[Prop_NoCollide]
+          aProp.Prop_Model,
+          aProp.Prop_Pos[0], aProp.Prop_Pos[1], aProp.Prop_Pos[2],
+          aProp.Prop_Angle[0], aProp.Prop_Angle[1], aProp.Prop_Angle[2],
+          aProp.Prop_Scale,
+          aProp.Prop_Physics,
+          aProp.Prop_NoCollide
       );
     }
   }
@@ -256,26 +256,26 @@ stock int RegenerateProps() {
   ArrayList props = g_hProps.Clone();
   ClearProps();
 
-  any aProp[eProp];
+  eProp aProp;
   for (int i = 0; i < props.Length; i++) {
     props.GetArray(i, aProp);
 
     int prop;
-    if (aProp[Prop_Physics]) {
+    if (aProp.Prop_Physics) {
       prop = CreateEntityByName("physics_prop");
     } else {
       prop = CreateEntityByName("prop_dynamic");
     }
-    if (!IsModelPrecached(aProp[Prop_Model])) PrecacheModel(aProp[Prop_Model]);
-    SetEntityModel(prop, aProp[Prop_Model]);
+    if (!IsModelPrecached(aProp.Prop_Model)) PrecacheModel(aProp.Prop_Model);
+    SetEntityModel(prop, aProp.Prop_Model);
     SetEntProp(prop, Prop_Send, "m_nSolidType", SOLID_VPHYSICS);
-    SetEntPropFloat(prop, Prop_Send, "m_flModelScale", aProp[Prop_Scale]);
-    TeleportEntity(prop, aProp[Prop_Pos], aProp[Prop_Angle], NULL_VECTOR);
+    SetEntPropFloat(prop, Prop_Send, "m_flModelScale", aProp.Prop_Scale);
+    TeleportEntity(prop, aProp.Prop_Pos, aProp.Prop_Angle, NULL_VECTOR);
     DispatchSpawn(prop);
 
-    aProp[Prop_Ref] = EntIndexToEntRef(prop);
+    aProp.Prop_Ref = EntIndexToEntRef(prop);
 
-    if (aProp[Prop_NoCollide]) {
+    if (aProp.Prop_NoCollide) {
       AcceptEntityInput(prop, "DisableCollision");
     }
 
@@ -289,12 +289,12 @@ stock int RegenerateProps() {
 
 stock int ClearProps() {
   int count;
-  any aProp[eProp];
+  eProp aProp;
 
   for (int i = 0; i < g_hProps.Length; i++) {
     g_hProps.GetArray(i, aProp);
 
-    int ent = EntRefToEntIndex(aProp[Prop_Ref]);
+    int ent = EntRefToEntIndex(aProp.Prop_Ref);
     if (IsValidEntity(ent)) {
       count++;
       AcceptEntityInput(ent, "Kill");
